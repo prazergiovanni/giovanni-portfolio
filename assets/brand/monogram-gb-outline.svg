@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Outlined GB monogram candidate</title>
+  <desc id="desc">An outlined GB monogram candidate for internal comparison.</desc>
+  <rect x="4" y="4" width="56" height="56" rx="12" fill="none" stroke="#b8944b" stroke-width="3"/>
+  <path d="M31 15c-9 0-15 7-15 17s6 17 15 17c5 0 9-2 12-5V32H31v6h6v3c-1 1-3 2-6 2-5 0-8-4-8-11s3-11 8-11c4 0 7 2 9 5l4-4c-3-5-7-7-13-7Zm7 0h6c6 0 9 3 9 8 0 3-1 5-4 7 3 1 5 4 5 8 0 5-4 8-10 8h-6v-7h5c3 0 4-1 4-3 0-2-1-3-4-3h-5v-6h4c2 0 3-1 3-3s-1-2-4-2h-5v-7Z" fill="#f6f1e8"/>
+</svg>

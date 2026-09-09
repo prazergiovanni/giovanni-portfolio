@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "identity": "Giovanni Barcelos",
+  "status": "PENDING_HUMAN_APPROVAL",
+  "primary_wordmark": "assets/brand/wordmark.svg",
+  "selected_monogram": "assets/brand/monogram-gb.svg",
+  "monogram_candidates": [
+    "assets/brand/monogram-gb.svg",
+    "assets/brand/monogram-g.svg",
+    "assets/brand/monogram-gb-outline.svg"
+  ],
+  "favicon": {
+    "selected_mark": "G",
+    "svg": "assets/brand/favicon.svg",
+    "png_16": "assets/brand/favicon-16x16.png",
+    "png_32": "assets/brand/favicon-32x32.png",
+    "apple_touch_icon": "assets/brand/apple-touch-icon.png"
+  },
+  "visual_language": ["navy", "gold", "ivory", "editorial", "minimal"],
+  "new_font_dependency": false
+}
