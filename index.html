@@ -448,7 +448,8 @@ function closeNav(){if(!navToggle||!navLinks)return;navLinks.classList.remove('i
 navToggle?.addEventListener('click',()=>{const open=navLinks.classList.toggle('is-open');navToggle.setAttribute('aria-expanded',String(open))});
 navLinks?.querySelectorAll('a').forEach(link=>link.addEventListener('click',closeNav));
 document.addEventListener('keydown',event=>{if(event.key==='Escape')closeNav()});
-const navSections=[...document.querySelectorAll('main > section[id]')];
+const primaryNavIds=['remote','capabilities','work','video','journey','highlights','about','resume','contact'];
+const navSections=primaryNavIds.map(id=>document.getElementById(id)).filter(Boolean);
 const navAnchors=[...document.querySelectorAll('.links a')];
 const markActive=(id)=>navAnchors.forEach(link=>link.setAttribute('aria-current',link.getAttribute('href')==='#'+id?'true':'false'));
 if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{entries.filter(entry=>entry.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio).slice(0,1).forEach(entry=>markActive(entry.target.id))},{rootMargin:`-${getComputedStyle(document.documentElement).getPropertyValue('--navh').trim()} 0px -55% 0px`,threshold:[0.1,0.3,0.6]});navSections.forEach(section=>observer.observe(section))}
