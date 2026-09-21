@@ -1629,3 +1629,56 @@ body.scrolled .site-header {
 }
 
 .skip-link{position:fixed;left:12px;top:8px;z-index:1000;padding:10px 14px;background:#f8f5ef;color:#030b14;text-decoration:none;transform:translateY(-160%);transition:transform .15s ease}.skip-link:focus{transform:translateY(0)}
+
+/* Final responsive correction: keep the Capability feature readable on narrow
+   screens after the desktop editorial split is applied later in this file. */
+@media (max-width: 720px) {
+  .portfolio-rest .capability-feature {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .portfolio-rest .capability-feature-media {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* The locked Remote master remains unchanged. On very narrow crops, restore a
+   restrained reading veil over its bright upper field so the approved copy does
+   not compete with the baked-in image labels. */
+@media (max-width: 620px) {
+  .remote-v4-copy {
+    isolation: isolate;
+  }
+
+  .remote-v4-copy::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -14px -12px -16px -14px;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(8, 24, 38, .56) 0%,
+      rgba(8, 24, 38, .40) 70%,
+      rgba(8, 24, 38, .08) 100%
+    );
+  }
+
+  .remote-v4-media::after {
+    content: "" !important;
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      rgba(8, 24, 38, .78) 0%,
+      rgba(8, 24, 38, .58) 42%,
+      rgba(8, 24, 38, .20) 68%,
+      transparent 88%
+    ) !important;
+  }
+}
