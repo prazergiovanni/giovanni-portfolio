@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://giovanni.sejasagaz.com/sitemap.xml
