@@ -1,0 +1,46 @@
+{
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "giovannibarcelos.vercel.app"
+        }
+      ],
+      "destination": "https://giovanni.sejasagaz.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "giovanni-portfolio-midiahub.vercel.app"
+        }
+      ],
+      "destination": "https://giovanni.sejasagaz.com/:path*",
+      "permanent": true
+    }
+  ]
+}
