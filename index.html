@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Giovanni Barcelos — systems, operations and automation." />
+  <title>Giovanni Barcelos — Operations, Systems &amp; Automation</title>
+  <style>
+    :root {
+      --ink: #f8f5ef;
+      --gold: #f7c964;
+      --gold-bright: #ffdc88;
+      --night: #030b14;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-width: 320px;
+      min-height: 100%;
+      margin: 0;
+      background: var(--night);
+      color: var(--ink);
+      font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+    .hero {
+      position: relative;
+      min-height: 650px;
+      height: max(100svh, 56.28vw);
+      overflow: hidden;
+      isolation: isolate;
+      background: var(--night);
+    }
+
+    .stage,
+    .scene-layer,
+    .canvas-layer {
+      position: absolute;
+      inset: 0;
+    }
+
+    .stage { overflow: hidden; }
+    .scene-layer { pointer-events: none; }
+    .canvas-layer,
+    .panel {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* The stage is a physical scene: each group owns one depth plane. */
+    .layer-background { z-index: 1; }
+    .layer-rear { z-index: 2; }
+    .layer-path { z-index: 3; }
+    .layer-subject {
+      z-index: 4;
+      transform: scale(.84);
+      transform-origin: 66% 100%;
+    }
+    .layer-foreground { z-index: 5; }
+    .layer-front-panels { z-index: 6; }
+
+    .layer-background .atmosphere {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 53% 82% at 12% 43%, rgba(2, 14, 29, .86) 0%, rgba(2, 14, 29, .61) 48%, transparent 100%),
+        linear-gradient(90deg, rgba(2, 11, 24, .68) 0%, rgba(2, 13, 26, .38) 36%, rgba(2, 10, 19, .10) 68%, rgba(2, 8, 14, .14) 100%),
+        linear-gradient(180deg, rgba(1, 7, 15, .22), transparent 24%, rgba(1, 7, 12, .14) 100%);
+    }
+
+    .layer-path .light-path {
+      position: absolute;
+      inset: auto;
+      left: 33.05%;
+      top: 7.55%;
+      width: 51.25%;
+      height: auto;
+      object-fit: contain;
+      transform-origin: left center;
+      clip-path: inset(0 100% 0 0);
+      animation: reveal-path 1.8s cubic-bezier(.22, .78, .26, 1) .4s forwards;
+    }
+
+    .light-path-endpoint {
+      position: absolute;
+      left: 82.15%;
+      top: 13.4%;
+      width: clamp(120px, 13vw, 220px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 240, 174, .4) 0%, rgba(255, 196, 80, .2) 16%, rgba(255, 179, 64, .08) 33%, transparent 68%);
+      filter: blur(3px);
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.62);
+      mix-blend-mode: screen;
+      animation: endpoint-bloom .95s ease-out 2.35s forwards;
+    }
+
+    .panel {
+      position: absolute;
+      height: auto;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .20));
+    }
+
+    .panel-from {
+      top: 14.85%;
+      left: 39.05%;
+      width: 17.35%;
+      transform: rotate(-1deg);
+    }
+
+    .panel-to {
+      top: 14.45%;
+      right: 2.55%;
+      width: 17.2%;
+      transform: rotate(-1deg);
+    }
+
+    .site-header {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+      min-height: 104px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      padding: 10px 5.25% 0;
+      border-bottom: 1px solid transparent;
+      background: linear-gradient(180deg, rgba(1, 7, 15, .28), transparent);
+      transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .brand {
+      display: block;
+      flex: 0 0 auto;
+      width: 16.1%;
+      max-width: 270px;
+      height: auto;
+    }
+
+    .site-header > a { margin-left: 5%; }
+
+    .site-nav {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: clamp(18px, 1.65vw, 30px);
+      font-size: clamp(11px, .82vw, 14px);
+      font-weight: 650;
+      letter-spacing: -.01em;
+    }
+
+    .site-nav a {
+      position: relative;
+      text-decoration: none;
+      white-space: nowrap;
+      color: rgba(255, 253, 247, .93);
+      transition: color .2s ease;
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible { color: var(--gold-bright); }
+
+    .site-nav a:focus-visible,
+    .action:focus-visible,
+    .button:focus-visible,
+    .language:focus-visible {
+      outline: 2px solid var(--gold-bright);
+      outline-offset: 5px;
+    }
+
+    .site-nav .active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -13px;
+      height: 2px;
+      background: var(--gold);
+      box-shadow: 0 0 12px rgba(247, 201, 100, .5);
+    }
+
+    .action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      min-width: 190px;
+      margin-left: 12px;
+      padding: 0 25px;
+      border: 1px solid rgba(247, 201, 100, .82);
+      border-radius: 999px;
+      color: var(--ink) !important;
+      font-size: .92em;
+      font-weight: 800;
+      letter-spacing: .18em;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    .action:hover,
+    .action:focus-visible { background: rgba(247, 201, 100, .12); border-color: var(--gold-bright); }
+
+    .languages {
+      display: flex;
+      gap: 11px;
+      margin-left: 3px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    .language { text-decoration: none; color: rgba(255, 253, 247, .68); }
+    .language.current { color: var(--gold-bright); }
+
+    .hero-copy {
+      position: absolute;
+      z-index: 20;
+      top: 20.55%;
+      left: 5.48%;
+      width: min(35.2%, 590px);
+    }
+
+    .eyebrow {
+      margin: 0 0 25px;
+      color: var(--gold-bright);
+      font-size: clamp(10px, .72vw, 12px);
+      font-weight: 800;
+      letter-spacing: .34em;
+      line-height: 1.2;
+    }
+
+    h1 {
+      margin: 0;
+      color: #f9f7f2;
+      font-size: clamp(56px, 5.68vw, 95px);
+      font-weight: 400;
+      letter-spacing: -.065em;
+      line-height: .95;
+    }
+
+    h1 span { display: block; }
+    h1 .gold {
+      color: var(--gold-bright);
+      text-shadow: 0 0 22px rgba(255, 193, 74, .25);
+    }
+
+    .support {
+      max-width: 500px;
+      margin: 28px 0 36px;
+      color: rgba(249, 247, 242, .9);
+      font-size: clamp(15px, 1.08vw, 18px);
+      line-height: 1.55;
+      letter-spacing: .005em;
+    }
+
+    .buttons { display: flex; gap: 18px; }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 235px;
+      min-height: 58px;
+      padding: 0 25px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .17em;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+    .button.primary { background: linear-gradient(105deg, #ffe096, #f4c867); color: #09111a; }
+    .button.secondary { border: 1px solid rgba(247, 201, 100, .84); background: rgba(2, 9, 17, .2); color: var(--ink); }
+    .button.secondary:hover { background: rgba(247, 201, 100, .1); }
+
+    .quote {
+      position: absolute;
+      z-index: 20;
+      right: 4.8%;
+      bottom: 25.3%;
+      width: 230px;
+      color: rgba(249, 247, 242, .88);
+      font-size: clamp(11px, .76vw, 13px);
+      font-style: italic;
+      line-height: 1.45;
+    }
+
+    .quote::after {
+      content: "";
+      display: block;
+      width: 33px;
+      height: 2px;
+      margin-top: 17px;
+      background: var(--gold-bright);
+      box-shadow: 0 0 10px rgba(247, 201, 100, .4);
+    }
+
+    .ticker {
+      position: absolute;
+      z-index: 35;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 9.5%;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      border-top: 1px solid rgba(247, 201, 100, .2);
+      background: rgba(2, 8, 15, .68);
+      backdrop-filter: blur(5px);
+    }
+
+    .ticker-label {
+      flex: 0 0 11.2%;
+      padding-left: 2.45%;
+      color: rgba(249, 247, 242, .9);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      line-height: 1.3;
+    }
+
+    .ticker-track-wrap { flex: 1 1 auto; overflow: hidden; }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      white-space: nowrap;
+      animation: ticker-flow 34s linear infinite;
+      color: rgba(249, 247, 242, .84);
+      font-size: 12px;
+      letter-spacing: .01em;
+    }
+
+    .ticker-track span { display: inline-flex; align-items: center; }
+    .ticker-track span::after {
+      content: "";
+      width: 4px;
+      height: 4px;
+      margin: 0 26px;
+      border-radius: 50%;
+      background: var(--gold-bright);
+      box-shadow: 0 0 8px rgba(247, 201, 100, .55);
+    }
+
+    .signature {
+      flex: 0 0 17.2%;
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      color: var(--gold-bright);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      white-space: nowrap;
+    }
+
+    .signature::before {
+      content: "";
+      display: block;
+      width: 54px;
+      height: 1px;
+      background: var(--gold);
+      box-shadow: 0 0 8px rgba(247, 201, 100, .4);
+    }
+
+    .scroll-space { height: 28vh; min-height: 190px; background: #030b14; }
+
+    body.scrolled .site-header {
+      position: fixed;
+      min-height: 84px;
+      padding-top: 0;
+      border-bottom-color: rgba(247, 201, 100, .14);
+      background: rgba(3, 12, 24, .96);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .28);
+    }
+
+    @keyframes reveal-path {
+      from { clip-path: inset(0 100% 0 0); }
+      to { clip-path: inset(0 0 0 0); }
+    }
+
+    @keyframes endpoint-bloom {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.62); }
+      45% { opacity: .9; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: .48; transform: translate(-50%, -50%) scale(1.18); }
+    }
+
+    @keyframes ticker-flow {
+      from { transform: translateX(-50%); }
+      to { transform: translateX(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .layer-path .light-path { animation: none; clip-path: none; }
+      .light-path-endpoint { animation: none; opacity: .48; transform: translate(-50%, -50%) scale(1); }
+      .ticker-track { animation: none; }
+      .button:hover { transform: none; }
+    }
+
+    @media (max-width: 1250px) {
+      .site-nav { gap: 15px; }
+      .action { min-width: 155px; margin-left: 5px; padding: 0 15px; }
+      .hero-copy { width: 40%; }
+      .button { min-width: 190px; }
+    }
+
+    @media (max-width: 920px) {
+      .site-header { min-height: 82px; padding-inline: 6%; }
+      .site-header > a { margin-left: 0; }
+      .brand { width: 205px; }
+      .site-nav > a:not(.action), .languages { display: none; }
+      .site-nav { gap: 0; }
+      .hero-copy { top: 18%; width: 52%; }
+      .panel-from { left: 45%; width: 23%; }
+      .panel-to { width: 22%; }
+      .quote { right: 4%; }
+      .ticker-label { flex-basis: 17%; }
+      .signature { flex-basis: 21%; }
+    }
+
+    @media (max-width: 680px) {
+      .hero { min-height: 860px; height: 178vw; max-height: 1000px; }
+      .stage { height: 100%; }
+      .background, .subject, .foreground { object-position: 63% center; }
+      .layer-background .atmosphere {
+        background:
+          linear-gradient(180deg, rgba(2, 12, 25, .88) 0%, rgba(2, 12, 25, .55) 39%, rgba(2, 9, 17, .18) 74%),
+          radial-gradient(ellipse 100% 46% at 18% 20%, rgba(2, 14, 29, .72), transparent 100%);
+      }
+      .site-header { min-height: 76px; }
+      .brand { width: 174px; }
+      .action { min-height: 42px; min-width: 132px; font-size: 9px; letter-spacing: .14em; }
+      .hero-copy { top: 17%; left: 7%; width: 86%; }
+      .eyebrow { margin-bottom: 20px; font-size: 10px; letter-spacing: .25em; }
+      h1 { font-size: clamp(52px, 13vw, 72px); line-height: .94; }
+      .support { max-width: 360px; margin: 25px 0 28px; font-size: 16px; }
+      .buttons { flex-direction: column; width: 220px; gap: 11px; }
+      .button { min-width: 220px; min-height: 52px; }
+      .layer-path, .layer-rear, .layer-front-panels, .quote { display: none; }
+      .ticker { min-height: 62px; height: 8%; }
+      .ticker-label, .signature { display: none; }
+      .ticker-track { font-size: 11px; }
+    }
+
+/* REMOTE WORK FORENSIC PREVIEW */
+body.scrolled .hero{overflow:visible;z-index:100}
+.remote-work{position:relative;height:100svh;min-height:760px;overflow:hidden;background:radial-gradient(circle at 88% 45%,rgba(24,70,98,.36),transparent 38%),linear-gradient(90deg,#102b42 0%,#0d263b 47%,#091d30 100%);color:#f8f5ef;isolation:isolate}
+.remote-grid{position:absolute;inset:0;display:grid;grid-template-columns:48% 52%;min-height:100%}
+.remote-media{position:relative;overflow:hidden;margin:0;background:#c9c0ad}
+.remote-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 36%}
+.remote-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 70%,rgba(9,29,48,.18) 86%,#0b2237 100%);pointer-events:none}
+.remote-rail{position:absolute;z-index:2;right:7%;top:25%;display:flex;align-items:center;gap:16px;margin:0;color:rgba(248,245,239,.72);font-size:10px;line-height:2.05;letter-spacing:.22em}
+.remote-rail:before{content:"";width:1px;height:138px;background:linear-gradient(transparent,#ffdc88,transparent);box-shadow:0 0 11px rgba(255,220,136,.35)}
+.remote-copy{position:relative;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:86px 4.2vw 34px 3.8vw}
+.remote-kicker{display:flex;align-items:center;gap:22px;margin:0 0 18px;color:#ffdc88;font-size:11px;font-weight:800;letter-spacing:.30em}
+.remote-kicker:after{content:"";width:150px;max-width:27%;height:1px;background:rgba(255,220,136,.82)}
+.remote-title{margin:0 0 24px;color:#fbfaf5;font-size:clamp(50px,4.3vw,74px);font-weight:400;letter-spacing:-.055em;line-height:.98}
+.remote-title span{display:block;color:#ffdc88}
+.remote-body{max-width:720px;color:rgba(248,245,239,.84);font-size:clamp(14px,.98vw,17px);line-height:1.48}
+.remote-body p{margin:0 0 14px}
+.remote-evidence{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:8px;border-top:1px solid rgba(255,220,136,.22);border-bottom:1px solid rgba(255,220,136,.18)}
+.remote-evidence-item{min-width:0;padding:14px 12px 14px 0}.remote-evidence-item+.remote-evidence-item{padding-left:14px;border-left:1px solid rgba(248,245,239,.14)}
+.remote-evidence-item span,.remote-evidence-item b,.remote-evidence-item small{display:block}.remote-evidence-item span{margin-bottom:7px;color:#ffdc88;font-size:11px;font-weight:800;letter-spacing:.13em}.remote-evidence-item b{color:#fbfaf5;font-size:9px;line-height:1.35;letter-spacing:.055em}.remote-evidence-item small{margin-top:5px;color:rgba(248,245,239,.67);font-size:10px;line-height:1.35}
+.remote-signature{display:flex;align-items:center;gap:16px;margin-top:17px;color:rgba(248,245,239,.88);font-size:11px;white-space:nowrap}.remote-signature i{width:1px;height:17px;background:#d2b56f}.remote-signature strong{margin-left:auto;color:rgba(248,245,239,.70);font-size:9px;letter-spacing:.18em}.remote-signature strong:before{content:"";display:inline-block;width:45px;height:1px;margin:0 14px 3px 0;background:#d2b56f}
+.remote-orbit{position:absolute;right:-220px;top:21%;width:355px;height:355px;border:1px solid rgba(247,201,100,.38);border-radius:50%;pointer-events:none}.remote-orbit:after{content:"";position:absolute;left:27px;top:83px;width:9px;height:9px;border-radius:50%;background:#ffdc88;box-shadow:0 0 18px rgba(255,220,136,.9)}
+@media(max-height:850px) and (min-width:981px){.remote-copy{padding-top:76px;padding-bottom:25px}.remote-title{font-size:clamp(44px,3.8vw,62px);margin-bottom:16px}.remote-body{font-size:14px;line-height:1.42}.remote-body p{margin-bottom:9px}.remote-evidence-item{padding-top:10px;padding-bottom:10px}.remote-signature{margin-top:11px}}
+@media(max-width:980px){.remote-work{height:auto;min-height:0}.remote-grid{position:relative;grid-template-columns:1fr}.remote-media{height:58svh;min-height:460px}.remote-photo{object-position:50% 29%}.remote-rail{display:none}.remote-copy{padding:72px 7% 56px}.remote-evidence{grid-template-columns:repeat(2,1fr)}.remote-evidence-item:nth-child(3){border-left:0}.remote-signature{flex-wrap:wrap;white-space:normal}.remote-signature strong{width:100%;margin:6px 0 0}.remote-orbit{display:none}}
+@media(max-width:620px){.remote-copy{padding:58px 7% 44px}.remote-title{font-size:clamp(43px,13vw,60px)}.remote-body{font-size:15px}.remote-evidence{grid-template-columns:1fr}.remote-evidence-item+.remote-evidence-item{padding-left:0;border-left:0;border-top:1px solid rgba(248,245,239,.10)}.remote-signature i{display:none}.remote-signature{gap:10px 18px}}
+
+</style>
+  <link rel="stylesheet" href="portfolio-rest.css" />
+  <link rel="stylesheet" href="portfolio-final.css?v=final8" />
+  <link rel="stylesheet" href="remote-v4.css?v=1" />
+  <link rel="stylesheet" href="portfolio-v4-next.css?v=1" />
+  <link rel="stylesheet" href="remote-reference-forensic.css?v=20260921r13" />
+  <link rel="stylesheet" href="image-performance.css?v=20260920b" />
+  <link rel="preload" as="image" href="assets/optimized/layers/HERO_BACKGROUND_CUMBUCO_SUN_1672x941.webp" type="image/webp" fetchpriority="high" />
+</head>
+<body>
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="stage" aria-hidden="true">
+      <div class="scene-layer layer-background" data-layer="background-office">
+        <img class="canvas-layer background" src="assets/optimized/layers/HERO_BACKGROUND_CUMBUCO_SUN_1672x941.webp" alt="" fetchpriority="high" decoding="async" />
+        <div class="canvas-layer atmosphere"></div>
+      </div>
+
+      <div class="scene-layer layer-rear" data-layer="rear-panels">
+        <img class="panel panel-from" data-panel-key="from" src="assets/optimized/panels/PANEL_FROM_COMPLEXITY_EN_GLASS.webp" alt="From Complexity: Processes, People, Tools, Silos, Manual work" decoding="async" />
+        <img class="panel panel-to" data-panel-key="to" src="assets/optimized/panels/PANEL_TO_PROGRESS_EN_GLASS.webp" alt="To Progress: Clarity, Automation, Efficiency, Scalability, Freedom" decoding="async" />
+      </div>
+
+      <div class="scene-layer layer-path" data-layer="gold-light-path">
+        <img class="light-path" src="assets/optimized/effects/alternates/HERO_LIGHT_PATH_ORIGINAL_CLEAN.webp" alt="" decoding="async" />
+        <span class="light-path-endpoint" aria-hidden="true"></span>
+      </div>
+
+      <div class="scene-layer layer-subject" data-layer="giovanni-subject">
+        <img class="canvas-layer subject" src="assets/optimized/layers/HERO_GIOVANNI_CHAIR_LOCKED.webp" alt="" decoding="async" />
+      </div>
+
+      <div class="scene-layer layer-foreground" data-layer="desk-and-objects">
+        <img class="canvas-layer foreground" src="assets/layers/HERO_FOREGROUND_CUMBUCO_DESK_USER_COMPOSITE_2172x724.png" alt="" decoding="async" />
+      </div>
+
+      <div class="scene-layer layer-front-panels" data-layer="front-panels">
+      </div>
+
+    </div>
+
+    <div class="hero-copy" data-layer="hero-ui">
+      <p class="eyebrow" data-i18n="hero.kicker">SYSTEMS FOR A MORE HUMAN TOMORROW</p>
+      <h1 id="hero-title"><span data-i18n="hero.titleLine1">Operations,</span><span data-i18n="hero.titleLine2">Systems &amp;</span><span class="gold" data-i18n="hero.titleLine3">Automation</span></h1>
+      <p class="support" data-i18n="hero.support">I turn operational friction into practical systems that make work move.</p>
+    </div>
+
+    <div class="ticker" data-layer="ticker-interface" aria-label="Tools and technologies">
+      <div class="ticker-label" data-i18n="ticker.label">TOOLS &amp;<br />TECHNOLOGIES</div>
+      <div class="ticker-track-wrap">
+        <div class="ticker-track" aria-hidden="true">
+          <span data-i18n="ticker.1">CRM &amp; Customer Journey</span><span data-i18n="ticker.2">Transaction Coordination</span><span data-i18n="ticker.3">Video Editing</span><span data-i18n="ticker.4">Sales Prospecting</span><span data-i18n="ticker.5">Business Operations</span><span data-i18n="ticker.6">Systems &amp; Automation</span><span data-i18n="ticker.7">U.S. Real Estate</span>
+          <span data-i18n="ticker.1">CRM &amp; Customer Journey</span><span data-i18n="ticker.2">Transaction Coordination</span><span data-i18n="ticker.3">Video Editing</span><span data-i18n="ticker.4">Sales Prospecting</span><span data-i18n="ticker.5">Business Operations</span><span data-i18n="ticker.6">Systems &amp; Automation</span><span data-i18n="ticker.7">U.S. Real Estate</span>
+        </div>
+      </div>
+      <div class="signature" data-i18n="ticker.signature">IDEAS TO OPERATIONS</div>
+    </div>
+  </section>
+  <header class="site-header" data-layer="header-interface">
+    <a href="#top" aria-label="Giovanni Barcelos home">
+      <img class="brand brand-full" src="assets/brand/GIOVANNI_BARCELOS_WORDMARK_USER_20260921.png" alt="Giovanni Barcelos" />
+      <img class="brand-monogram" src="assets/brand/GIOVANNI_BARCELOS_MONOGRAM_USER_20260921.png" alt="" aria-hidden="true" />
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="active" href="#remote-work" data-i18n="nav.remote">Remote Work</a>
+      <a href="#capabilities" data-i18n="nav.capabilities">Capabilities</a>
+      <a href="#practice-areas" data-i18n="nav.practiceAreas">Practice Areas</a>
+      <a href="#journey" data-i18n="nav.journey">Journey</a>
+      <a href="#highlights" data-i18n="nav.moments">Highlights</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#resume" data-i18n="nav.resume">Resume</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+      <span class="languages" aria-label="Language controls">
+        <a class="language current" href="#top" aria-current="page" data-setlang="en">EN</a>
+        <a class="language" href="#top" data-setlang="pt">PT</a>
+        <a class="language" href="#top" data-setlang="es">ES</a>
+      </span>
+    </nav>
+  </header>
+  <section class="remote-work remote-v4" id="remote-work" aria-labelledby="remote-title">
+  <figure class="remote-v4-media">
+    <picture>
+      <source srcset="assets/optimized/remote/REMOTE_WORK_MASTER_LOCKED_20260919.webp" type="image/webp" />
+      <img class="remote-v4-master" src="assets/remote/REMOTE_WORK_MASTER_LOCKED_20260919.png" alt="Giovanni Barcelos seated outdoors at a café with the U.S. operations visual composition" fetchpriority="high" decoding="async" />
+    </picture>
+  </figure>
+  <div class="remote-v4-copy">
+    <p class="remote-kicker" data-i18n="remote.kicker">REMOTE WORK</p>
+    <h2 class="remote-title" id="remote-title"><span data-i18n="remote.titleLine1">Remote doesn’t</span><span data-i18n="remote.titleLine2">mean distant.</span></h2>
+    <div class="remote-body">
+      <p data-i18n="remote.body1">Supporting U.S. real estate operations remotely across North and South Carolina with clarity, coordination and follow-through. From CRM management to client support, I help keep operations organized, people informed and results moving — no matter the distance.</p>
+      <p data-i18n="remote.body2"></p>
+      <p data-i18n="remote.body3"></p>
+    </div>
+  </div>
+  <div class="remote-values" aria-label="Remote work principles">
+    <span data-i18n="remote.value1">AUTONOMY</span>
+    <span data-i18n="remote.value2">CLARITY</span>
+    <span data-i18n="remote.value3">FOLLOW-THROUGH</span>
+  </div>
+  <div class="remote-ops-panel" aria-label="U.S. operations context">
+    <div class="remote-panel-title"><strong data-rv4="panelTitle">U.S. OPERATIONS</strong><span data-rv4="panelRegion">NORTH + SOUTH CAROLINA</span></div>
+    <div class="remote-context-list" data-rv4="contexts"><span>REAL ESTATE</span><span>OPERATIONS</span><span>CRM</span><span>CLIENT SUPPORT</span><span>MARKETING</span><span>COORDINATION</span></div>
+    <div class="remote-panel-commitment" data-rv4="commitment">DIFFERENT PLACES.<br>SAME COMMITMENT.</div>
+  </div>
+  <img class="remote-better-panel" src="assets/optimized/panels/PANEL_BETTER_SYSTEMS_EN_GLASS.webp" alt="Better Systems — Bigger Possibilities" decoding="async" />
+</section>
+<div class="remote-to-capabilities" aria-hidden="true">
+  <svg class="remote-capability-bridge" viewBox="0 0 1000 220" preserveAspectRatio="none" focusable="false">
+    <defs>
+      <linearGradient id="remoteBridgeStroke" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#f3d58b" stop-opacity=".08" />
+        <stop offset=".28" stop-color="#d6aa58" stop-opacity=".48" />
+        <stop offset=".64" stop-color="#d6aa58" stop-opacity=".24" />
+        <stop offset="1" stop-color="#c69b45" stop-opacity=".10" />
+      </linearGradient>
+      <filter id="remoteBridgeBlur" x="-20%" y="-80%" width="140%" height="260%">
+        <feGaussianBlur stdDeviation="4" />
+      </filter>
+    </defs>
+    <path class="remote-capability-bridge-glow" d="M0 18 C150 104 326 212 526 207 C720 202 844 122 1000 72" />
+    <path class="remote-capability-bridge-line" d="M0 18 C150 104 326 212 526 207 C720 202 844 122 1000 72" />
+  </svg>
+</div>
+
+
+<div class="portfolio-rest">
+<section id="capabilities" class="screen ivory"><div class="wrap"><div class="capability-feature"><div class="section-head"><div class="eyebrow" data-i18n="cap.kicker">CAPABILITIES</div><div><h2 class="serif" data-i18n="cap.title">Different environments. One recurring way of working.</h2><p class="intro" data-i18n="cap.body">Learn the operation, identify friction, connect information and reduce avoidable manual work. The tools change; the operating logic is consistent.</p></div></div><figure class="capability-feature-media"><img src="assets/optimized/photos/13_professional-photo.webp" loading="lazy" decoding="async" data-i18n-alt="cap2.alt" alt="Giovanni Barcelos reviewing post-it notes on an operational board"></figure></div><div class="cap-grid"><div class="card"><div class="num">01</div><h3 data-i18n="cap1.t">Business Operations</h3><p data-i18n="cap1.b">Coordination, documentation, schedules, follow-up, handoffs and cross-functional execution.</p></div><div class="card"><div class="num">02</div><h3 data-i18n="cap2.t">Systems &amp; Automation</h3><p data-i18n="cap2.b">Custom workflows, CRM logic, operational controls and AI-assisted tools built around real work.</p></div><div class="card"><div class="num">03</div><h3 data-i18n="cap3.t">U.S. Real Estate Operations</h3><p data-i18n="cap3.b">Buyer and seller transaction coordination, MLS Canopy, SkySlope, Zillow Showcase and CMA support.</p></div><div class="card"><div class="num">04</div><h3 data-i18n="cap4.t">Customer Journey &amp; CRM</h3><p data-i18n="cap4.b">Lead intake, pipeline organization, follow-up, marketing triggers and continuity through closing.</p></div><div class="card"><div class="num">05</div><h3 data-i18n="cap5.t">Digital &amp; Web</h3><p data-i18n="cap5.b">WordPress, legacy preservation, SEO content, YouTube workflows and digital production.</p></div><div class="card"><div class="num">06</div><h3 data-i18n="cap6.t">Communication, Sales &amp; Client Support</h3><p data-i18n="cap6.b">English/Portuguese communication, teaching, interpretation, sales prospecting, marketing and client support.</p></div></div></div></section>
+<!-- Canonical runtime labels: Remote doesn't mean distant; Operational Systems & Workflow Design; Content Operations. -->
+<div id="practice-areas" class="practice-anchor" aria-hidden="true" data-canonical-areas="Operational Systems &amp; Workflow Design; Content Operations"></div>
+<section id="work" class="screen paper"><div class="wrap"><div class="work-index"><a href="#work" data-i18n="workIndex.1">WORK 01 · REAL ESTATE OPERATIONS</a><a href="#work02" data-i18n="workIndex.2">WORK 02 · SELLER NET SHEET</a><a href="#work03" data-i18n="workIndex.3">WORK 03 · WEB + CONTENT CONTINUITY</a><a href="#work04" data-i18n="workIndex.4">WORK 04 · PROFESSIONAL POSITIONING SYSTEM</a></div></div><div class="wrap case-grid case-workflow"><div><img class="case-photo top" src="assets/optimized/photos/22_professional-photo.webp" loading="lazy" decoding="async" data-i18n-alt="cap1.alt" alt="Giovanni Barcelos structuring an operational workflow at a desk"></div><div class="case-copy"><div class="case-label" data-i18n="case1.tag">WORK 01 · REAL ESTATE OPERATIONS</div><h2 class="serif" data-i18n="case1.t">From fragmented tasks to an end-to-end operating workflow.</h2><p data-i18n="case1.b">While supporting a U.S. real estate business, I connected lead intake, CRM data, marketing coordination, buyer and seller transaction coordination, closing records, time tracking and finance support into a tailored operational workflow instead of relying on disconnected manual steps.</p><div class="evidence"><span data-i18n="case1.p1">RE/MAX remote operations · 2023–2026</span><span data-i18n="case1.p2">MLS Canopy · SkySlope · Zillow Showcase</span></div></div><div class="flow"><div class="node"><b data-i18n="case1.a1">Lead → CRM</b><span data-i18n="case1.a2">Structured intake and organized data.</span></div><div class="node"><b data-i18n="case1.b1">CRM → Listings &amp; Marketing</b><span data-i18n="case1.b2">Coordinate listing information, campaign inputs and follow-up across the pipeline.</span></div><div class="node"><b data-i18n="case1.c1">Buyer/Seller → Transaction Flow</b><span data-i18n="case1.c2">Keep buyer and seller handoffs moving from contract through closing.</span></div><div class="node"><b data-i18n="case1.d1">Closing → Records &amp; Continuity</b><span data-i18n="case1.d2">Maintain closing records, time tracking and the next operational handoff.</span></div></div></div></section>
+<section id="work02" class="screen sand"><div class="wrap case-grid case-process"><div class="case-copy"><div class="case-label" data-i18n="case2.tag">WORK 02 · SELLER NET SHEET</div><h2 class="serif" data-i18n="case2.t">A Seller Net Sheet became a reusable operational tool.</h2><p data-i18n="case2.b">Instead of repeatedly handling a Seller Net Sheet as a static document, I converted its logic into a lightweight workflow built with HTML and Google tools. I redesigned the process to capture information once, reduce repetitive handling and allow transaction data to feed later operational steps.</p><div class="evidence"><span data-i18n="case2.p1">Seller Net Sheet workflow</span><span data-i18n="case2.p2">Data capture · storage · operational triggers</span></div><div class="bullet-grid"><div class="bullet"><b data-i18n="case2.a1">Capture once</b><span data-i18n="case2.a2">Relevant information could be structured instead of repeatedly retyped.</span></div><div class="bullet"><b data-i18n="case2.b1">Automatic handoffs</b><span data-i18n="case2.b2">Captured data could feed subsequent marketing and transaction work.</span></div><div class="bullet"><b data-i18n="case2.c1">Reusable logic</b><span data-i18n="case2.c2">A recurring document became part of a repeatable workflow.</span></div><div class="bullet"><b data-i18n="case2.d1">Fewer manual steps</b><span data-i18n="case2.d2">The required process stayed intact while repetitive handling was reduced.</span></div></div></div><div class="case-artifact"><div class="artifact-kicker" data-i18n="case2.vk">OPERATIONAL LOOP</div><h3 class="serif" data-i18n="case2.vt">Capture once. Reuse across the workflow.</h3><p class="artifact-intro" data-i18n="case2.vb">A Seller Net Sheet works best when its information can move forward without being rebuilt at every step.</p><div class="artifact-flow"><div class="artifact-step"><span class="artifact-index">01</span><div><b data-i18n="case2.v1t">Capture</b><span data-i18n="case2.v1b">Gather the recurring information in one structured entry.</span></div></div><div class="artifact-step"><span class="artifact-index">02</span><div><b data-i18n="case2.v2t">Validate</b><span data-i18n="case2.v2b">Keep the inputs consistent before the next handoff.</span></div></div><div class="artifact-step"><span class="artifact-index">03</span><div><b data-i18n="case2.v3t">Reuse</b><span data-i18n="case2.v3b">Carry the organized data into later operational steps.</span></div></div></div></div></div></section>
+<section id="work03" class="screen paper"><div class="wrap case-grid case-process"><div class="case-copy"><div class="case-label" data-i18n="case3.tag">WORK 03 · WEB + CONTENT CONTINUITY</div><h2 class="serif" data-i18n="case3.t">A new website without losing 16+ years of history.</h2><p data-i18n="case3.b">I rebuilt an outdated WordPress presence on a new platform while preserving the original site on a separate legacy domain as a working archive and reference. The new environment kept years of content, context and SEO value accessible while supporting current publishing needs.</p><div class="evidence"><span data-i18n="case3.p1">16+ years of content preserved</span><span data-i18n="case3.p2">WordPress · SEO · legacy archive</span></div><div class="bullet-grid"><div class="bullet"><b data-i18n="case3.a1">Preserve</b><span data-i18n="case3.a2">Historical content remained available and usable.</span></div><div class="bullet"><b data-i18n="case3.b1">Rebuild</b><span data-i18n="case3.b2">A cleaner environment supported current content and publishing needs.</span></div><div class="bullet"><b data-i18n="case3.c1">Connect</b><span data-i18n="case3.c2">The legacy environment remained a reference source for the new presence.</span></div><div class="bullet"><b data-i18n="case3.d1">Beyond redesign</b><span data-i18n="case3.d2">Migration, preservation and continuity were handled as one operational challenge.</span></div></div></div><div class="case-artifact"><div class="artifact-kicker" data-i18n="case3.vk">CONTENT CONTINUITY</div><h3 class="serif" data-i18n="case3.vt">Preserve the archive. Publish with context.</h3><p class="artifact-intro" data-i18n="case3.vb">The new presence can move forward while the legacy environment remains available as a working reference.</p><div class="artifact-flow"><div class="artifact-step"><span class="artifact-index">01</span><div><b data-i18n="case3.v1t">Preserve</b><span data-i18n="case3.v1b">Keep historical material accessible and usable.</span></div></div><div class="artifact-step"><span class="artifact-index">02</span><div><b data-i18n="case3.v2t">Connect</b><span data-i18n="case3.v2b">Use the archive as context for current content decisions.</span></div></div><div class="artifact-step"><span class="artifact-index">03</span><div><b data-i18n="case3.v3t">Publish</b><span data-i18n="case3.v3b">Support a cleaner, current publishing environment without erasing the past.</span></div></div></div></div></div></section>
+<section id="work04" class="screen paper"><div class="wrap work04-grid"><div class="work04-copy"><div class="case-label" data-i18n="work04.tag">WORK 04 · PROFESSIONAL POSITIONING SYSTEM</div><h2 class="serif" data-i18n="work04.title">From a fragmented professional trajectory to a system for identity, practice, portfolio and activation.</h2><p data-i18n="work04.body">I structured an end-to-end project for an architect returning to professional practice. The work connected an identity interview, positioning, website, private development environment, data recovery and persistence, conceptual studies and opportunity research. The goal was not to manufacture experience, but to create a system that helps the professional learn, produce evidence, present herself honestly and return to the market.</p><div class="work04-steps"><div><b data-i18n="work04.s1t">Diagnose</b><span data-i18n="work04.s1b">Turn diffuse context into criteria and priorities.</span></div><div><b data-i18n="work04.s2t">Structure</b><span data-i18n="work04.s2b">Connect identity, learning, data and digital presence.</span></div><div><b data-i18n="work04.s3t">Activate</b><span data-i18n="work04.s3b">Connect the system to real opportunities and next actions.</span></div></div></div><div class="work04-map"><div class="map-label" data-i18n="work04.map">POSITIONING SYSTEM · PUBLIC METHOD</div><div class="work04-flow"><div><b data-i18n="work04.m1t">Friction</b><span data-i18n="work04.m1b">Fragmented trajectory and disconnected presentation.</span></div><div><b data-i18n="work04.m2t">Diagnosis</b><span data-i18n="work04.m2b">Identity, skills, interests, market and opportunities brought into view.</span></div><div><b data-i18n="work04.m3t">System</b><span data-i18n="work04.m3b">Interview, persona, portfolio, learning, research and activation plan.</span></div><div><b data-i18n="work04.m4t">Flow</b><span data-i18n="work04.m4b">Dispersed information becomes executable professional positioning.</span></div></div></div></div></section>
+<section id="video" class="screen ivory"><div class="wrap video-grid"><div class="video-copy"><div class="case-label" data-video-i18n="tag">SELECTED PRACTICE · VIDEO EDITING</div><h2 class="serif" data-video-i18n="title">From full-length video to platform-ready cuts.</h2><p data-video-i18n="body">Video editing is a parallel operating track: not only cutting footage, but organizing the message, pacing the sequence and making the publishing process repeatable.</p><div class="video-evidence"><span data-video-i18n="e1">CapCut Desktop</span><span data-video-i18n="e2">YouTube editing</span><span data-video-i18n="e3">Long-form → shorter cuts</span><span data-video-i18n="e4">Social adaptation</span></div><div class="video-bullets"><div class="bullet"><b data-video-i18n="b1t">Condense the narrative</b><span data-video-i18n="b1b">Keep the message intact while making the material easier to follow.</span></div><div class="bullet"><b data-video-i18n="b2t">Shape the rhythm</b><span data-video-i18n="b2b">Use pacing, continuity and sequence to support the story.</span></div><div class="bullet"><b data-video-i18n="b3t">Adapt the format</b><span data-video-i18n="b3b">Prepare shorter, platform-ready cuts from longer material.</span></div><div class="bullet"><b data-video-i18n="b4t">Repeat the workflow</b><span data-video-i18n="b4b">Connect editing, review, approval and publishing protocols.</span></div></div></div><figure class="video-visual"><img class="video-photo" data-video-i18n-alt="photoAlt" src="assets/optimized/photos/05_video_editorial.webp" loading="lazy" decoding="async" alt="Giovanni Barcelos organizing a video production workflow on a whiteboard"></figure></div></section>
+<section id="journey" class="screen navy"><div class="wrap journey-grid"><div class="journey-copy"><div class="eyebrow" data-i18n="journey.kicker">CAREER JOURNEY</div><h2 class="serif" data-i18n="journey.title">A career built across operations, sales, communication and service.</h2><p data-i18n="journey.body">Real estate, ERP sales, teaching, coordination, marketing, events, hospitality and digital work developed a combination of commercial awareness, communication, process improvement and initiative.</p></div><div class="timeline"><div class="step"><small data-i18n="j1.k">REAL ESTATE</small><b data-i18n="j1.t">Luxury Real Estate Prospecting</b><span data-i18n="j1.b">Cold calling, lead generation and direct exposure to the property market in Goiânia.</span></div><div class="step"><small data-i18n="j2.k">BUSINESS SYSTEMS</small><b data-i18n="j2.t">ERP Sales · SIAGRI</b><span data-i18n="j2.b">Sales prospecting for ERP software based on business needs.</span></div><div class="step"><small data-i18n="j3.k">PEOPLE + PROCESS</small><b data-i18n="j3.t">English Teaching &amp; Academic Coordinator</b><span data-i18n="j3.b">Teaching, communication and coordination across people and processes.</span></div><div class="step"><small data-i18n="j4.k">MARKETING</small><b data-i18n="j4.t">Marketing, Events &amp; Online Business</b><span data-i18n="j4.b">Campaigns, events, content, digital business and commercial execution.</span></div><div class="step"><small data-i18n="j5.k">HOSPITALITY</small><b data-i18n="j5.t">Management / Concierge</b><span data-i18n="j5.b">Customer-facing service, coordination and problem-solving in hospitality.</span></div><div class="step"><small data-i18n="j6.k">SINCE 2014</small><b data-i18n="j6.t">Independent Digital Work</b><span data-i18n="j6.b">Inbound marketing, visual identity, websites, e-commerce and social/paid traffic.</span></div><div class="step"><small data-i18n="j7.k">2023–2026</small><b data-i18n="j7.t">Remote U.S. Real Estate Operations</b><span data-i18n="j7.b">Virtual assistance and transaction coordination supporting North and South Carolina.</span></div><div class="step"><small data-i18n="j8.k">CURRENT FOCUS</small><b data-i18n="j8.t">Operations, Systems &amp; Automation</b><span data-i18n="j8.b">Focused on organizing processes, connecting systems and reducing avoidable manual work.</span></div></div></div></section>
+<section id="capability-expansion" class="screen paper"><div class="wrap"><div class="section-head"><div class="eyebrow" data-i18n="proof.kicker">CAPABILITY EXPANSION</div><div><h2 class="serif" data-i18n="proof.title">Leadership, communication and remote execution in practice.</h2><p class="intro" data-i18n="proof.intro">The same operating discipline extends beyond task delivery: creating clarity, making ideas easier to follow and keeping work moving across people, tools and handoffs.</p></div></div><div class="proof-grid"><article class="proof-card"><img src="assets/optimized/photos/14_professional-photo.webp" loading="lazy" decoding="async" data-i18n-alt="proof1.alt" alt="Giovanni Barcelos presenting to a professional group in a gray blazer"><div class="proof-card-body"><div class="case-label" data-i18n="proof1.kicker">LEADERSHIP &amp; FACILITATION</div><h3 class="serif" data-i18n="proof1.title">Leadership that starts with clarity and execution.</h3><p data-i18n="proof1.body">Teaching, academic coordination, hospitality management and operational coordination taught me to align people, information and next steps around the work at hand.</p><span class="proof-index">01</span></div></article><article class="proof-card"><img src="assets/optimized/photos/english-classroom-professional.webp" loading="lazy" decoding="async" data-i18n-alt="proof2.alt" alt="Giovanni Barcelos teaching practical English to an adult professional group"><div class="proof-card-body"><div class="case-label" data-i18n="proof2.kicker">COMMUNICATION &amp; PRESENTATIONS</div><h3 class="serif" data-i18n="proof2.title">Communication that makes complex work easier to follow.</h3><p data-i18n="proof2.body">Interpretation, teaching and client-facing work shaped a practical communication style: clarify the context, make the process visible and keep the next action clear.</p><span class="proof-index">02</span></div></article><article class="proof-card"><img src="assets/optimized/photos/remote-headset-professional.webp" loading="lazy" decoding="async" data-i18n-alt="proof3.alt" alt="Giovanni Barcelos working remotely with a headset and computer screens"><div class="proof-card-body"><div class="case-label" data-i18n="proof3.kicker">REMOTE OPS &amp; CROSS-FUNCTIONAL EXECUTION</div><h3 class="serif" data-i18n="proof3.title">Remote work built around ownership, continuity and follow-through.</h3><p data-i18n="proof3.body">In 100% remote U.S. real estate operations, I coordinated calendars, email, listings, transactions and workflow continuity across the people and systems involved.</p><span class="proof-index">03</span></div></article></div></div></section>
+<section id="highlights" class="screen paper"><span id="moments" class="anchor-alias" aria-hidden="true"></span><div class="wrap moments-grid"><div class="copy-wide"><div class="eyebrow" data-i18n="mom.kicker">CAREER HIGHLIGHTS</div><h2 class="serif" style="font-size:clamp(2.2rem,3.8vw,3.75rem);line-height:1.02;letter-spacing:-.03em;margin:7px 0 9px;text-wrap:balance" data-i18n="mom.title">International interpretation, teaching, prospecting and continuous learning.</h2><p class="intro" data-i18n="mom.body">Experience across different environments strengthened communication, adaptability and confidence under pressure.</p><div class="moment-list"><div class="moment"><div class="k" data-i18n="m1.k">INTERPRETATION</div><h3 data-i18n="m1.t">Mariah Carey · Barretos 2010</h3><p data-i18n="m1.b">Provided English–Portuguese interpretation for Mariah Carey's team during a specific engagement in Barretos.</p></div><div class="moment"><div class="k" data-i18n="m2.k">INTERPRETATION</div><h3 data-i18n="m2.t">New Holland President · Agrishow</h3><p data-i18n="m2.b">Provided professional English–Portuguese interpretation for senior international leadership at Agrishow.</p></div><div class="moment"><div class="k" data-i18n="m3.k">LANGUAGE</div><h3 data-i18n="m3.t">English teacher and translator</h3><p data-i18n="m3.b">Teaching experience plus English–Portuguese translation of books and texts.</p></div><div class="moment"><div class="k" data-i18n="m4.k">COMMERCIAL</div><h3 data-i18n="m4.t">Sales prospecting in ERP and luxury real estate</h3><p data-i18n="m4.b">Prospecting experience across software and property markets.</p></div><div class="moment"><div class="k" data-i18n="m5.k">LEARNING</div><h3 data-i18n="m5.t">~60 SEBRAE courses</h3><p data-i18n="m5.b">Continuing education across commerce and marketing.</p></div></div></div></div></section>
+<section id="about" class="screen paper"><div class="wrap about-grid"><div class="about-copy"><div class="eyebrow" data-i18n="about.kicker">ABOUT</div><div class="quote" data-i18n="about.quote">“When a task keeps repeating, I tend to ask a different question: why are we still doing this manually?”</div><p data-i18n="about.body">My strongest pattern is initiative. A request for a list, document or repetitive control often became an opportunity to design a better workflow around the work. I am comfortable learning unfamiliar tools because the starting point is usually not the software itself; it is understanding the bottleneck, the information and the people who depend on the process.</p><div class="fact-grid"><div class="fact"><b data-i18n="f1.t">English</b><span data-i18n="f1.b">Fluent C1</span></div><div class="fact"><b data-i18n="f2.t">Portuguese</b><span data-i18n="f2.b">Native</span></div><div class="fact"><b data-i18n="f3.t">U.S. real estate</b><span data-i18n="f3.b">Nearly 3 years · buyer &amp; seller operations</span></div><div class="fact"><b data-i18n="f4.t">Operational focus</b><span data-i18n="f4.b">CRM, finance, sales workflows, process improvement and internal tools</span></div></div></div><div class="about-visual"><img class="about-photo" src="assets/optimized/photos/03_authorial_red_glasses.webp" loading="lazy" decoding="async" alt="Giovanni authorial systems portrait"></div></div></section>
+<section id="resume" class="screen sand"><div class="wrap resume-grid"><div class="copy-wide"><div class="eyebrow" data-i18n="resume.kicker">RESUME</div><h2 class="serif" data-i18n="resume.title">Professional resume available in three languages.</h2><p class="intro" data-i18n="resume.body">Download the English, Portuguese or Spanish ATS version.</p><div class="resume-cards"><div class="resume-card"><span class="resume-flag" aria-hidden="true">🇺🇸</span><div class="resume-meta"><b data-i18n="resume.lang.en">English</b><span data-i18n="resume.type.en">ATS Resume</span></div><a href="assets/resumes/Giovanni_Barcelos_CV_EN.pdf" download data-i18n="resume.download">Download PDF</a></div><div class="resume-card"><span class="resume-flag" aria-hidden="true">🇧🇷</span><div class="resume-meta"><b data-i18n="resume.lang.pt">Portuguese</b><span data-i18n="resume.type.pt">ATS Resume</span></div><a href="assets/resumes/Giovanni_Barcelos_CV_PT.pdf" download data-i18n="resume.download">Download PDF</a></div><div class="resume-card"><span class="resume-flag" aria-hidden="true">🇪🇸</span><div class="resume-meta"><b data-i18n="resume.lang.es">Spanish</b><span data-i18n="resume.type.es">CV</span></div><a href="assets/resumes/Giovanni_Barcelos_CV_ES.pdf" download data-i18n="resume.download">Download PDF</a></div></div></div></section>
+<section id="contact" class="screen navy cta"><div class="wrap"><div class="cta-grid"><div><div class="eyebrow" data-i18n="cta.kicker">OPEN TO INTERNATIONAL REMOTE WORK</div><h2 class="serif" data-i18n="cta.title">Useful across roles. Grounded in how work actually gets done.</h2><p data-i18n="cta.body">Operations, systems, implementation, executive support, customer success, real estate operations, CRM, digital operations and adjacent roles are all relevant when the work benefits from organization, initiative and process improvement.</p></div><div class="cta-visual"><img class="cta-photo" data-i18n-alt="cta.photoAlt" src="assets/optimized/photos/26_professional-photo.webp" loading="lazy" decoding="async" alt="Giovanni Barcelos in a brown blazer with a black coffee mug"></div><div class="contact-box"><div class="big" data-i18n="cta.box">Start a conversation.</div><p data-i18n="cta.note">Based in Brazil · available for remote opportunities.</p><a class="btn gold" href="mailto:giovannibarcelos@gmail.com?subject=Portfolio%20contact" data-i18n="cta.button">Email Giovanni</a></div></div><div class="footerline"><span class="footer-contact">giovannibarcelos@gmail.com</span><div class="social-links" aria-label="Social links"><a href="https://www.linkedin.com/in/giovannibarcelos/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 10.3v7.45M7.25 7.25v.1M11 17.75v-4.15c0-1.65.93-2.75 2.4-2.75s2.4 1.1 2.4 2.75v4.15M11 10.85v6.9"></path><path d="M5.2 19.35h13.6" opacity=".45"></path></svg></a><a href="https://wa.me/5585997405232" target="_blank" rel="noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.25a7.65 7.65 0 0 0-6.57 11.5L4.3 19.7l4.24-1.1A7.65 7.65 0 1 0 12 4.25Z"></path><path d="M8.75 8.7c.25-.3.65-.3.95.03l1.03 1.13c.27.3.27.66.04.95l-.56.72a8.15 8.15 0 0 0 2.84 2.84l.72-.56c.29-.23.66-.23.95.04l1.13 1.03c.33.3.33.7.03.95-.71.59-1.7.76-2.58.43a8.15 8.15 0 0 0-5.26-5.26c-.33-.88-.16-1.87.43-2.58Z"></path></svg></a><a href="mailto:giovannibarcelos@gmail.com" aria-label="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.1 6.7h15.8a1.5 1.5 0 0 1 1.5 1.5v7.6a1.5 1.5 0 0 1-1.5 1.5H4.1a1.5 1.5 0 0 1-1.5-1.5V8.2a1.5 1.5 0 0 1 1.5-1.5Z"></path><path d="m4.4 7.35 7.6 5.8 7.6-5.8"></path></svg></a><span class="footer-lockup"><img class="footer-logo" src="assets/brand/GIOVANNI_BARCELOS_WORDMARK_USER_20260921.png" alt="Giovanni Barcelos"></span></div></div></div></section>
+</div>
+
+  <script>
+    const header = document.querySelector('.site-header');
+    const updateHeader = () => document.body.classList.toggle('scrolled', window.scrollY > 24);
+    addEventListener('scroll', updateHeader, { passive: true });
+    updateHeader();
+  </script>
+  <script src="portfolio-rest.js?v=header2"></script>
+<script>
+const T={en:{},pt:{},es:{}};
+const PM03_EN={
+"nav.capabilities":"Capabilities","nav.work":"Work","nav.journey":"Journey","nav.expansion":"Expansion","nav.moments":"Highlights","nav.about":"About","nav.resume":"Resume","nav.contact":"Contact",
+"hero.kicker":"OPERATIONS · SYSTEMS · AUTOMATION","hero.title":"I turn operational friction into practical systems that make work move.","hero.body":"A multidisciplinary professional connecting business operations, U.S. real estate, CRM, customer journeys, digital workflows and AI-assisted systems — backed by experience across sales, marketing, teaching, hospitality and hands-on execution.","chip.1":"Business operations","chip.2":"Systems & automation","chip.3":"U.S. real estate","chip.4":"CRM & customer journey","chip.5":"EN Fluent C1 · PT Native · ES Intermediate","hero.cta1":"View selected work","hero.cta2":"Contact",
+"cap.kicker":"CAPABILITIES","cap.title":"I learn the operation, find the friction, and improve the flow.","cap.body":"Across business operations, real estate, CRM, digital work and automation, I focus on clearer information, fewer manual steps and more reliable execution.","cap1.t":"Business Operations","cap1.b":"Coordination, documentation, schedules, follow-up and cross-functional execution.","cap2.t":"Systems & Automation","cap2.b":"Custom workflows, CRM logic, operational controls and AI-assisted tools built around real work.","cap3.t":"U.S. Real Estate Operations","cap3.b":"Buyer and seller transaction coordination, MLS Canopy, SkySlope, Zillow Showcase and CMA support.","cap4.t":"Customer Journey & CRM","cap4.b":"Lead intake, pipeline organization, follow-up, marketing triggers and continuity through closing.","cap5.t":"Digital & Web","cap5.b":"WordPress, legacy preservation, SEO content, YouTube workflows and digital production.","cap6.t":"Communication, Sales & Client Support","cap6.b":"English/Portuguese communication, teaching, interpretation, sales prospecting, marketing and client support.",
+"case1.tag":"WORK 01 · REAL ESTATE OPERATIONS","case1.t":"From fragmented tasks to an end-to-end operating workflow.","case1.b":"While supporting a U.S. real estate business, I connected lead intake, CRM data, marketing coordination, buyer and seller transaction coordination, closing records, time tracking and finance support into a tailored operational workflow instead of relying on disconnected manual steps.","case1.p1":"RE/MAX remote operations · 2023–2026","case1.p2":"MLS Canopy · SkySlope · Zillow Showcase","case1.a1":"Lead → CRM","case1.a2":"Structured intake and organized data.","case1.b1":"CRM → Listings & Marketing","case1.b2":"Coordinate listing information, campaign inputs and follow-up across the pipeline.","case1.c1":"Buyer/Seller → Transaction Flow","case1.c2":"Keep buyer and seller handoffs moving from contract through closing.","case1.d1":"Closing → Records & Continuity","case1.d2":"Maintain closing records, time tracking and the next operational handoff.",
+"case2.tag":"WORK 02 · Seller Net Sheet","case2.t":"A Seller Net Sheet became a reusable operational tool.","case2.b":"Instead of repeatedly handling a Seller Net Sheet as a static document, I converted its logic into a lightweight workflow built with HTML and Google tools. I redesigned the process to capture information once, reduce repetitive handling and allow transaction data to feed later operational steps.","case2.p1":"Seller Net Sheet workflow","case2.p2":"Data capture · storage · operational triggers","case2.a1":"Capture once","case2.a2":"Relevant information could be structured instead of repeatedly retyped.","case2.b1":"Automatic handoffs","case2.b2":"Captured data could feed subsequent marketing and transaction work.","case2.c1":"Reusable logic","case2.c2":"A recurring document became part of a repeatable workflow.","case2.d1":"Fewer manual steps","case2.d2":"The required process stayed intact while repetitive handling was reduced.","case2.vk":"OPERATIONAL LOOP","case2.vt":"Capture once. Reuse across the workflow.","case2.vb":"A Seller Net Sheet works best when its information can move forward without being rebuilt at every step.","case2.v1t":"Capture","case2.v1b":"Gather the recurring information in one structured entry.","case2.v2t":"Validate","case2.v2b":"Keep the inputs consistent before the next handoff.","case2.v3t":"Reuse","case2.v3b":"Carry the organized data into later operational steps.",
+"case3.tag":"WORK 03 · WEB + CONTENT CONTINUITY","case3.t":"A new website without losing 16+ years of history.","case3.b":"I rebuilt an outdated WordPress presence on a new platform while preserving the original site on a separate legacy domain as a working archive and reference. The new environment kept years of content, context and SEO value accessible while supporting current publishing needs.","case3.p1":"16+ years of content preserved","case3.p2":"WordPress · SEO · legacy archive","case3.a1":"Preserve","case3.a2":"Historical content remained available and usable.","case3.b1":"Rebuild","case3.b2":"A cleaner environment supported current content and publishing needs.","case3.c1":"Connect","case3.c2":"The legacy environment remained a reference source for the new presence.","case3.d1":"Beyond redesign","case3.d2":"Migration, preservation and continuity were handled as one operational challenge.","case3.vk":"CONTENT CONTINUITY","case3.vt":"Preserve the archive. Publish with context.","case3.vb":"The new presence can move forward while the legacy environment remains available as a working reference.","case3.v1t":"Preserve","case3.v1b":"Keep historical material accessible and usable.","case3.v2t":"Connect","case3.v2b":"Use the archive as context for current content decisions.","case3.v3t":"Publish","case3.v3b":"Support a cleaner, current publishing environment without erasing the past.",
+"proof.kicker":"CAPABILITY EXPANSION","proof.title":"Leadership, communication and remote execution in practice.","proof.intro":"The same operating discipline extends beyond task delivery: creating clarity, making ideas easier to follow and keeping work moving across people, tools and handoffs.","proof1.kicker":"LEADERSHIP & FACILITATION","proof1.title":"Leadership that starts with clarity and execution.","proof1.body":"Teaching, academic coordination, hospitality management and operational coordination taught me to align people, information and next steps around the work at hand.","proof1.alt":"Giovanni Barcelos reviewing an operational planning board","proof2.kicker":"COMMUNICATION & PRESENTATIONS","proof2.title":"Communication that makes complex work easier to follow.","proof2.body":"Interpretation, teaching and client-facing work shaped a practical communication style: clarify the context, make the process visible and keep the next action clear.","proof2.alt":"Giovanni Barcelos presenting practical English communication to an adult group","proof3.kicker":"REMOTE OPS & CROSS-FUNCTIONAL EXECUTION","proof3.title":"Remote work built around ownership, continuity and follow-through.","proof3.body":"In 100% remote U.S. real estate operations, I coordinated calendars, email, listings, transactions and workflow continuity across the people and systems involved.","proof3.alt":"Giovanni Barcelos working remotely with a laptop and headset",
+"journey.kicker":"CAREER JOURNEY","journey.title":"A career built across operations, sales, communication and service.","journey.body":"Real estate, ERP sales, teaching, coordination, marketing, events, hospitality and digital work developed a combination of commercial awareness, communication, process improvement and initiative.","j1.k":"REAL ESTATE","j1.t":"Luxury Real Estate Prospecting","j1.b":"Cold calling, lead generation and direct exposure to the property market in Goiânia.","j2.k":"BUSINESS SYSTEMS","j2.t":"ERP Sales · SIAGRI","j2.b":"Sales prospecting for ERP software based on business needs.","j3.k":"PEOPLE + PROCESS","j3.t":"English Teaching & Academic Coordinator","j3.b":"Teaching, communication, coordination and people and process coordination.","j4.k":"MARKETING","j4.t":"Marketing, Events & Online Business","j4.b":"Campaigns, events, content, digital business and commercial execution.","j5.k":"HOSPITALITY","j5.t":"Management / Concierge","j5.b":"Customer service, coordination and problem-solving in hospitality.","j6.k":"SINCE 2014","j6.t":"Independent Digital Work","j6.b":"Inbound marketing, visual identity, websites, e-commerce, social media and paid traffic.","j7.k":"2023–2026","j7.t":"Remote U.S. Real Estate Operations","j7.b":"Virtual assistance and transaction coordination supporting North and South Carolina.","j8.k":"CURRENT FOCUS","j8.t":"Operations, Systems & Automation","j8.b":"Focused on organizing processes, connecting systems and reducing avoidable manual work.",
+"mom.kicker":"CAREER HIGHLIGHTS","mom.title":"International interpretation, teaching, prospecting and continuous learning.","mom.body":"Experience across different environments strengthened communication, adaptability and confidence under pressure.","m1.k":"INTERPRETATION","m1.t":"Mariah Carey · Barretos 2010","m1.b":"Provided English–Portuguese interpretation for Mariah Carey's team during a specific engagement in Barretos.","m2.k":"INTERPRETATION","m2.t":"New Holland President · Agrishow","m2.b":"Provided professional English–Portuguese interpretation for senior international leadership at Agrishow.","m3.k":"LANGUAGE","m3.t":"English teacher and translator","m3.b":"Teaching experience plus English–Portuguese translation of books and texts.","m4.k":"COMMERCIAL","m4.t":"Sales prospecting in ERP and luxury real estate","m4.b":"Prospecting experience across software and property markets.","m5.k":"LEARNING","m5.t":"60 SEBRAE courses","m5.b":"Continuing education across commerce and marketing.",
+"about.kicker":"ABOUT","about.quote":"“When a task keeps repeating, I tend to ask a different question: why are we still doing this manually?”","about.body":"Initiative is the pattern that shows up most consistently in my work. A request for a list, document or repetitive tracking task often becomes an opportunity to improve the workflow around it. I am comfortable learning unfamiliar tools because I usually start with the problem itself: the bottleneck, the information and the people who depend on the process.","f1.t":"English","f1.b":"Fluent C1","f2.t":"Portuguese","f2.b":"Native","f3.t":"U.S. real estate","f3.b":"3 years · buyer & seller operations","f4.t":"Operational focus","f4.b":"CRM, finance, sales workflows, process improvement and internal tools",
+"resume.kicker":"RESUME","resume.title":"Professional resume available in three languages.","resume.body":"Download the English, Portuguese or Spanish ATS version.","resume.lang.en":"English","resume.lang.pt":"Portuguese","resume.lang.es":"Spanish","resume.type.en":"ATS Resume","resume.type.pt":"ATS Resume","resume.type.es":"CV","resume.download":"Download PDF",
+"cta.kicker":"OPEN TO INTERNATIONAL REMOTE WORK","cta.title":"Ready to contribute where operations, systems and execution meet.","cta.body":"Open to international remote roles across operations, systems, implementation, executive support, customer success, real estate operations, CRM and digital operations — especially where organization, initiative and process improvement matter.","cta.box":"Start a conversation.","cta.note":"Based in Brazil · available for remote opportunities.","cta.button":"Email Giovanni"
+};
+Object.assign(T.en,PM03_EN);
+const PM03_PT={
+"nav.capabilities":"Competências","nav.work":"Atuação","nav.journey":"Trajetória","nav.expansion":"Expansão","nav.moments":"Destaques","nav.about":"Sobre","nav.resume":"Currículo","nav.contact":"Contato",
+"hero.kicker":"OPERAÇÕES · SISTEMAS · AUTOMAÇÃO","hero.title":"Transformo atrito operacional em sistemas práticos que fazem o trabalho andar.","hero.body":"Profissional multidisciplinar que conecta operações, mercado imobiliário dos EUA, CRM, jornada do cliente, fluxos digitais e sistemas com apoio de IA — com experiência construída em vendas, marketing, ensino, hotelaria e execução prática.","chip.1":"Operações","chip.2":"Sistemas e automação","chip.3":"Mercado imobiliário nos EUA","chip.4":"CRM e jornada do cliente","chip.5":"EN Fluente C1 · PT Nativo · ES Intermediário","hero.cta1":"Ver atuação na prática","hero.cta2":"Contato",
+"cap.kicker":"COMPETÊNCIAS","cap.title":"Entendo a operação, identifico gargalos e melhoro o fluxo.","cap.body":"Em operações, mercado imobiliário, CRM, trabalho digital e automação, meu foco é organizar melhor a informação, reduzir etapas manuais e tornar a execução mais confiável.","cap1.t":"Operações Empresariais","cap1.b":"Coordenação, documentação, agendas, acompanhamento e execução entre áreas.","cap2.t":"Sistemas e Automação","cap2.b":"Fluxos personalizados, lógica de CRM, controles operacionais e ferramentas com apoio de IA construídas para o trabalho real.","cap3.t":"Operações Imobiliárias nos EUA","cap3.b":"Coordenação de transações de compradores e vendedores, MLS Canopy, SkySlope, Zillow Showcase e suporte a CMA.","cap4.t":"Jornada do Cliente e CRM","cap4.b":"Entrada de leads, organização do funil, acompanhamento, gatilhos de marketing e continuidade até o fechamento.","cap5.t":"Web e Operações Digitais","cap5.b":"WordPress, preservação de legado, conteúdo para SEO, fluxos de YouTube e produção digital.","cap6.t":"Comunicação, Vendas e Relacionamento","cap6.b":"Comunicação em inglês e português, ensino, interpretação, prospecção, marketing e atendimento ao cliente.",
+"case1.tag":"ATUAÇÃO 01 · OPERAÇÕES IMOBILIÁRIAS","case1.t":"De tarefas fragmentadas a um fluxo operacional de ponta a ponta.","case1.b":"Em uma operação imobiliária nos EUA, conectei entrada de leads, dados de CRM, coordenação com marketing, transações de compradores e vendedores, registros de fechamento, controle de horas e apoio financeiro em um fluxo operacional integrado, em vez de manter essas etapas como processos manuais separados.","case1.p1":"Operação remota RE/MAX · 2023–2026","case1.p2":"MLS Canopy · SkySlope · Zillow Showcase","case1.a1":"Lead → CRM","case1.a2":"Entrada estruturada e dados organizados.","case1.b1":"CRM → Anúncios e marketing","case1.b2":"Coordenação das informações do anúncio, dos insumos da campanha e do acompanhamento do funil.","case1.c1":"Compradores/vendedores → Fluxo da transação","case1.c2":"Continuidade das etapas de compradores e vendedores, do contrato ao fechamento.","case1.d1":"Fechamento → Registros e continuidade","case1.d2":"Registros de fechamento, controle de horas e próxima etapa operacional.",
+"case2.tag":"ATUAÇÃO 02 · Seller Net Sheet","case2.t":"A Seller Net Sheet virou uma ferramenta operacional reutilizável.","case2.b":"Em vez de lidar repetidamente com uma Seller Net Sheet como documento estático, transformei sua lógica em um fluxo leve construído com HTML e ferramentas Google. Redesenhei o processo para capturar a informação uma única vez, reduzir redigitação e permitir que os dados alimentassem etapas posteriores da operação.","case2.p1":"Fluxo recorrente do vendedor","case2.p2":"Captura de dados · armazenamento · gatilhos operacionais","case2.a1":"Capturar uma vez","case2.a2":"As informações relevantes podiam ser estruturadas sem precisar digitá-las novamente a cada etapa.","case2.b1":"Continuidade entre etapas","case2.b2":"Os dados capturados podiam alimentar etapas posteriores de marketing e transação.","case2.c1":"Lógica reutilizável","case2.c2":"Um documento recorrente passou a fazer parte de um fluxo repetível.","case2.d1":"Menos etapas manuais","case2.d2":"O processo necessário foi preservado com menos manipulação repetitiva.","case2.vk":"FLUXO OPERACIONAL","case2.vt":"Capture uma vez. Reutilize no fluxo.","case2.vb":"Uma Seller Net Sheet funciona melhor quando suas informações avançam sem serem reconstruídas a cada etapa.","case2.v1t":"Captura","case2.v1b":"Reúna as informações recorrentes em um único registro estruturado.","case2.v2t":"Validação","case2.v2b":"Mantenha os dados consistentes antes da próxima etapa.","case2.v3t":"Reutilização","case2.v3b":"Leve as informações organizadas para as etapas operacionais seguintes.",
+"case3.tag":"ATUAÇÃO 03 · WEB + PRESERVAÇÃO DE CONTEÚDO","case3.t":"Um site novo sem perder mais de 16 anos de história.","case3.b":"Reconstruí uma presença antiga em WordPress em uma nova plataforma e mantive o site original em um domínio legado como arquivo funcional e referência. O novo ambiente preservou anos de conteúdo, contexto e valor de SEO, ao mesmo tempo em que passou a atender às necessidades atuais de publicação.","case3.p1":"Mais de 16 anos de conteúdo preservado","case3.p2":"WordPress · SEO · arquivo legado","case3.a1":"Preservar","case3.a2":"O conteúdo histórico permaneceu disponível e utilizável.","case3.b1":"Reconstruir","case3.b2":"Um ambiente mais limpo passou a atender às necessidades atuais de conteúdo e publicação.","case3.c1":"Conectar","case3.c2":"O ambiente legado continuou como fonte de referência para o novo site.","case3.d1":"Além do redesign","case3.d2":"Migração, preservação e continuidade foram tratadas como um único desafio operacional.","case3.vk":"CONTINUIDADE DE CONTEÚDO","case3.vt":"Preserve o arquivo. Publique com contexto.","case3.vb":"A nova presença pode avançar enquanto o ambiente legado permanece disponível como referência de trabalho.","case3.v1t":"Preservar","case3.v1b":"Mantenha o material histórico acessível e utilizável.","case3.v2t":"Conectar","case3.v2b":"Use o arquivo como contexto para as decisões de conteúdo atuais.","case3.v3t":"Publicar","case3.v3b":"Sustente um ambiente de publicação mais limpo e atual sem apagar o passado.",
+"proof.kicker":"EXPANSÃO DE CAPACIDADES","proof.title":"Liderança, comunicação e execução remota na prática.","proof.intro":"A mesma disciplina operacional vai além da entrega de tarefas: cria clareza, facilita o acompanhamento das ideias e mantém o trabalho avançando entre pessoas, ferramentas e etapas.","proof1.kicker":"LIDERANÇA E FACILITAÇÃO","proof1.title":"Liderança começa com clareza e execução.","proof1.body":"O ensino, a coordenação acadêmica, a gestão em hotelaria e a coordenação operacional me ensinaram a alinhar pessoas, informações e próximos passos em torno do trabalho.","proof1.alt":"Giovanni Barcelos revisando um quadro de planejamento operacional","proof2.kicker":"COMUNICAÇÃO E APRESENTAÇÕES","proof2.title":"Comunicação que torna o trabalho complexo mais fácil de acompanhar.","proof2.body":"Interpretação, ensino e atendimento ao cliente formaram um estilo de comunicação prático: esclarecer o contexto, tornar o processo visível e manter clara a próxima ação.","proof2.alt":"Giovanni Barcelos apresentando comunicação prática em inglês a um grupo adulto","proof3.kicker":"OPERAÇÕES REMOTAS E EXECUÇÃO ENTRE ÁREAS","proof3.title":"Trabalho remoto baseado em responsabilidade, continuidade e acompanhamento.","proof3.body":"Em operações imobiliárias 100% remotas nos EUA, atuei na coordenação de calendários, e-mails, listagens, transações e continuidade dos fluxos entre as pessoas e os sistemas envolvidos.","proof3.alt":"Giovanni Barcelos trabalhando remotamente com notebook e headset",
+"journey.kicker":"TRAJETÓRIA PROFISSIONAL","journey.title":"Uma trajetória construída entre operações, vendas, comunicação e serviço.","journey.body":"Mercado imobiliário, vendas de ERP, ensino, coordenação, marketing, eventos, hotelaria e trabalho digital desenvolveram uma combinação de visão comercial, comunicação, melhoria de processos e iniciativa.","j1.k":"MERCADO IMOBILIÁRIO","j1.t":"Prospecção de Imóveis de Luxo","j1.b":"Prospecção ativa por telefone, geração de leads e experiência direta no mercado imobiliário de Goiânia.","j2.k":"SISTEMAS DE NEGÓCIO","j2.t":"Vendas de ERP · SIAGRI","j2.b":"Prospecção de vendas de software ERP com base nas necessidades operacionais das empresas.","j3.k":"PESSOAS + PROCESSOS","j3.t":"Ensino de Inglês e Coordenador Acadêmico","j3.b":"Ensino, comunicação e coordenação de pessoas e processos.","j4.k":"MARKETING","j4.t":"Marketing, Eventos e Negócios Digitais","j4.b":"Campanhas, eventos, conteúdo, negócios digitais e execução comercial.","j5.k":"HOTELARIA","j5.t":"Gerência / Concierge","j5.b":"Atendimento ao cliente, coordenação e resolução de problemas em hotelaria.","j6.k":"DESDE 2014","j6.t":"Trabalho Digital Autônomo","j6.b":"Marketing de atração, identidade visual, sites, comércio eletrônico, mídias sociais e tráfego pago.","j7.k":"2023–2026","j7.t":"Operações Imobiliárias Remotas nos EUA","j7.b":"Assistência virtual e coordenação de transações imobiliárias para operações na Carolina do Norte e na Carolina do Sul.","j8.k":"FOCO ATUAL","j8.t":"Operações, Sistemas e Automação","j8.b":"Atuação focada em organizar processos, conectar sistemas e reduzir trabalho manual evitável.",
+"mom.kicker":"DESTAQUES DA TRAJETÓRIA","mom.title":"Interpretação internacional, ensino, prospecção e formação continuada.","mom.body":"Experiências em ambientes distintos reforçaram comunicação, adaptabilidade e segurança sob pressão.","m1.k":"INTERPRETAÇÃO","m1.t":"Mariah Carey · Barretos 2010","m1.b":"Atuei como intérprete inglês–português para a equipe de Mariah Carey durante um compromisso específico em Barretos.","m2.k":"INTERPRETAÇÃO","m2.t":"Presidente da New Holland · Agrishow","m2.b":"Atuei em interpretação profissional para liderança executiva internacional durante a Agrishow.","m3.k":"IDIOMAS","m3.t":"Professor de inglês e tradutor","m3.b":"Experiência em ensino e tradução de livros e textos entre inglês e português.","m4.k":"COMERCIAL","m4.t":"Prospecção de vendas em ERP e imóveis de luxo","m4.b":"Experiência de prospecção nos mercados de software e imóveis.","m5.k":"FORMAÇÃO","m5.t":"60 cursos SEBRAE","m5.b":"Formação continuada em comércio e marketing.",
+"about.kicker":"SOBRE","about.quote":"“Quando uma tarefa fica se repetindo, eu costumo fazer outra pergunta: por que ainda estamos fazendo isso manualmente?”","about.body":"Iniciativa é uma constante na minha trajetória. Um pedido de lista, documento ou controle repetitivo muitas vezes se transforma em oportunidade de melhorar o fluxo de trabalho. Aprendo novas ferramentas com facilidade porque começo pelo problema: o gargalo, a informação e as pessoas que dependem do processo.","f1.t":"Inglês","f1.b":"Fluente C1","f2.t":"Português","f2.b":"Nativo","f3.t":"Mercado imobiliário nos EUA","f3.b":"3 anos · operações de compradores e vendedores","f4.t":"Foco operacional","f4.b":"CRM, finanças, fluxos de vendas, melhoria de processos e ferramentas internas",
+"resume.kicker":"CURRÍCULO","resume.title":"Currículo profissional em três idiomas.","resume.body":"Baixe a versão ATS em inglês, português ou espanhol.","resume.lang.en":"Inglês","resume.lang.pt":"Português","resume.lang.es":"Espanhol","resume.type.en":"Currículo ATS","resume.type.pt":"Currículo ATS","resume.type.es":"CV","resume.download":"Baixar PDF",
+"cta.kicker":"DISPONÍVEL PARA TRABALHO REMOTO INTERNACIONAL","cta.title":"Pronto para contribuir onde operações, sistemas e execução se encontram.","cta.body":"Aberto a oportunidades internacionais remotas em operações, sistemas, implementação, suporte executivo, sucesso do cliente, operações imobiliárias, CRM e operações digitais — especialmente quando o trabalho exige organização, iniciativa e melhoria de processos.","cta.box":"Vamos iniciar uma conversa.","cta.note":"Com base no Brasil · disponível para oportunidades remotas.","cta.button":"Enviar e-mail"
+};
+Object.assign(T.pt,PM03_PT,{"chip.6":"Coordenação de transações","chip.7":"Edição de vídeo","chip.8":"Prospecção de vendas"});
+const PM03_ES={
+"nav.capabilities":"Capacidades","nav.work":"Experiencia","nav.journey":"Trayectoria","nav.expansion":"Expansión","nav.moments":"Hitos","nav.about":"Sobre mí","nav.resume":"CV","nav.contact":"Contacto",
+"hero.kicker":"OPERACIONES · SISTEMAS · AUTOMATIZACIÓN","hero.title":"Transformo la fricción operativa en sistemas prácticos que hacen avanzar el trabajo.","hero.body":"Profesional multidisciplinario que conecta operaciones, sector inmobiliario de EE. UU., CRM, experiencia del cliente, flujos digitales y sistemas con apoyo de IA — con experiencia en ventas, marketing, enseñanza, hotelería y ejecución práctica.","chip.1":"Operaciones","chip.2":"Sistemas y automatización","chip.3":"Sector inmobiliario en EE. UU.","chip.4":"CRM y experiencia del cliente","chip.5":"EN Fluido C1 · PT Nativo · ES Intermedio","hero.cta1":"Ver experiencia aplicada","hero.cta2":"Contacto",
+"cap.kicker":"CAPACIDADES","cap.title":"Entiendo la operación, detecto cuellos de botella y mejoro el flujo.","cap.body":"En operaciones, sector inmobiliario, CRM, trabajo digital y automatización, me enfoco en organizar mejor la información, reducir pasos manuales y hacer la ejecución más confiable.","cap1.t":"Operaciones Empresariales","cap1.b":"Coordinación, documentación, agendas, seguimiento y ejecución entre áreas.","cap2.t":"Sistemas y Automatización","cap2.b":"Flujos personalizados, lógica de CRM, controles operativos y herramientas con IA creadas para el trabajo real.","cap3.t":"Operaciones Inmobiliarias en EE. UU.","cap3.b":"Coordinación de transacciones de compradores y vendedores, MLS Canopy, SkySlope, Zillow Showcase y apoyo en CMA.","cap4.t":"Experiencia del Cliente y CRM","cap4.b":"Entrada de leads, organización del embudo, seguimiento, activadores de marketing y continuidad hasta el cierre.","cap5.t":"Web y Operaciones Digitales","cap5.b":"WordPress, preservación de contenido histórico, contenido SEO, flujos de YouTube y producción digital.","cap6.t":"Comunicación, Ventas y Relación con Clientes","cap6.b":"Comunicación en inglés y portugués, enseñanza, interpretación, prospección, marketing y atención al cliente.",
+"case1.tag":"EXPERIENCIA 01 · OPERACIONES INMOBILIARIAS","case1.t":"De tareas fragmentadas a un flujo operativo de principio a fin.","case1.b":"En una operación inmobiliaria de EE. UU., conecté entrada de leads, datos de CRM, coordinación con marketing, transacciones de compradores y vendedores, registros de cierre, control de horas y apoyo financiero en un flujo operativo integrado, en lugar de mantener pasos manuales desconectados.","case1.p1":"Operación remota RE/MAX · 2023–2026","case1.p2":"MLS Canopy · SkySlope · Zillow Showcase","case1.a1":"Lead → CRM","case1.a2":"Entrada estructurada y datos organizados.","case1.b1":"CRM → Anuncios y marketing","case1.b2":"Coordina la información del anuncio, los insumos de campaña y el seguimiento del embudo.","case1.c1":"Compradores/vendedores → Flujo de la transacción","case1.c2":"Mantén la continuidad de las etapas de compradores y vendedores, del contrato al cierre.","case1.d1":"Cierre → Registros y continuidad","case1.d2":"Mantén los registros de cierre, el control de horas y la siguiente etapa operativa.",
+"case2.tag":"EXPERIENCIA 02 · Seller Net Sheet","case2.t":"Una Seller Net Sheet se convirtió en una herramienta operativa reutilizable.","case2.b":"En lugar de manejar repetidamente una Seller Net Sheet como documento estático, convertí su lógica en un flujo ligero construido con HTML y herramientas de Google. Rediseñé el proceso para capturar la información una sola vez, reducir la repetición manual y permitir que los datos alimentaran etapas posteriores de la operación.","case2.p1":"Flujo recurrente del vendedor","case2.p2":"Captura de datos · almacenamiento · activadores operativos","case2.a1":"Capturar una vez","case2.a2":"La información relevante podía estructurarse sin volver a escribirla en cada etapa.","case2.b1":"Continuidad entre etapas","case2.b2":"Los datos capturados podían alimentar fases posteriores de marketing y transacción.","case2.c1":"Lógica reutilizable","case2.c2":"Un documento recurrente pasó a formar parte de un flujo repetible.","case2.d1":"Menos pasos manuales","case2.d2":"El proceso necesario se mantuvo con menos trabajo repetitivo.","case2.vk":"FLUJO OPERATIVO","case2.vt":"Captura una vez. Reutiliza en el flujo.","case2.vb":"Una Seller Net Sheet funciona mejor cuando su información avanza sin reconstruirse en cada etapa.","case2.v1t":"Captura","case2.v1b":"Reúne la información recurrente en un único registro estructurado.","case2.v2t":"Validación","case2.v2b":"Mantén los datos consistentes antes del siguiente traspaso.","case2.v3t":"Reutilización","case2.v3b":"Lleva la información organizada a las siguientes etapas operativas.",
+"case3.tag":"EXPERIENCIA 03 · WEB + PRESERVACIÓN DE CONTENIDO","case3.t":"Un sitio nuevo sin perder más de 16 años de historia.","case3.b":"Reconstruí una presencia antigua en WordPress sobre una nueva plataforma y mantuve el sitio original en un dominio legado como archivo funcional y referencia. El nuevo entorno preservó años de contenido, contexto y valor SEO mientras pasó a responder a las necesidades actuales de publicación.","case3.p1":"Más de 16 años de contenido preservado","case3.p2":"WordPress · SEO · archivo legado","case3.a1":"Preservar","case3.a2":"El contenido histórico siguió disponible y utilizable.","case3.b1":"Reconstruir","case3.b2":"Un entorno más limpio pasó a responder a las necesidades actuales de contenido y publicación.","case3.c1":"Conectar","case3.c2":"El entorno legado continuó como fuente de referencia para el nuevo sitio.","case3.d1":"Más allá del rediseño","case3.d2":"Migración, preservación y continuidad se trataron como un único desafío operativo.","case3.vk":"CONTINUIDAD DE CONTENIDO","case3.vt":"Preserva el archivo. Publica con contexto.","case3.vb":"La nueva presencia puede avanzar mientras el entorno legado sigue disponible como referencia de trabajo.","case3.v1t":"Preservar","case3.v1b":"Mantén el material histórico accesible y utilizable.","case3.v2t":"Conectar","case3.v2b":"Usa el archivo como contexto para las decisiones actuales de contenido.","case3.v3t":"Publicar","case3.v3b":"Sostén un entorno de publicación más limpio y actual sin borrar el pasado.",
+"proof.kicker":"EXPANSIÓN DE CAPACIDADES","proof.title":"Liderazgo, comunicación y ejecución remota en la práctica.","proof.intro":"La misma disciplina operativa va más allá de entregar tareas: crea claridad, facilita el seguimiento de las ideas y mantiene el trabajo en movimiento entre personas, herramientas y etapas.","proof1.kicker":"LIDERAZGO Y FACILITACIÓN","proof1.title":"El liderazgo comienza con claridad y ejecución.","proof1.body":"La enseñanza, la coordinación académica, la gestión hotelera y la coordinación operativa me enseñaron a alinear personas, información y próximos pasos alrededor del trabajo.","proof1.alt":"Giovanni Barcelos revisando un tablero de planificación operativa","proof2.kicker":"COMUNICACIÓN Y PRESENTACIONES","proof2.title":"Comunicación que hace más fácil seguir el trabajo complejo.","proof2.body":"La interpretación, la enseñanza y la atención al cliente formaron un estilo de comunicación práctico: aclarar el contexto, hacer visible el proceso y mantener clara la próxima acción.","proof2.alt":"Giovanni Barcelos presentando comunicación práctica en inglés a un grupo adulto","proof3.kicker":"OPERACIONES REMOTAS Y EJECUCIÓN ENTRE ÁREAS","proof3.title":"Trabajo remoto basado en responsabilidad, continuidad y seguimiento.","proof3.body":"En operaciones inmobiliarias 100% remotas en EE. UU., coordiné calendarios, correo, listados, transacciones y continuidad de los flujos entre las personas y los sistemas involucrados.","proof3.alt":"Giovanni Barcelos trabajando a distancia con un portátil y auriculares",
+"journey.kicker":"TRAYECTORIA PROFESIONAL","journey.title":"Una trayectoria construida entre operaciones, ventas, comunicación y servicio.","journey.body":"Sector inmobiliario, ventas de ERP, enseñanza, coordinación, marketing, eventos, hotelería y trabajo digital desarrollaron una combinación de visión comercial, comunicación, mejora de procesos e iniciativa.","j1.k":"SECTOR INMOBILIARIO","j1.t":"Prospección de Inmuebles de Lujo","j1.b":"Prospección telefónica, generación de clientes potenciales y experiencia directa en el mercado inmobiliario de Goiânia.","j2.k":"SISTEMAS DE NEGOCIO","j2.t":"Ventas de ERP · SIAGRI","j2.b":"Prospección de ventas de software ERP basada en las necesidades operativas de las empresas.","j3.k":"PERSONAS + PROCESOS","j3.t":"Enseñanza de Inglés y Coordinador Académico","j3.b":"Enseñanza, comunicación y coordinación de personas y procesos.","j4.k":"MARKETING","j4.t":"Marketing, Eventos y Negocios en línea","j4.b":"Campañas, eventos, contenido, negocios digitales y ejecución comercial.","j5.k":"HOTELERÍA","j5.t":"Gerencia / Concierge","j5.b":"Atención al cliente, coordinación y resolución de problemas en hotelería.","j6.k":"DESDE 2014","j6.t":"Trabajo Digital Independiente","j6.b":"Marketing de entrada, identidad visual, sitios web, comercio electrónico, redes sociales y tráfico de pago.","j7.k":"2023–2026","j7.t":"Operaciones Inmobiliarias Remotas en EE. UU.","j7.b":"Asistencia virtual y coordinación de transacciones inmobiliarias para operaciones en Carolina del Norte y Carolina del Sur.","j8.k":"ENFOQUE ACTUAL","j8.t":"Operaciones, Sistemas y Automatización","j8.b":"Enfoque profesional en organizar procesos, conectar sistemas y reducir trabajo manual evitable.",
+"mom.kicker":"HITOS PROFESIONALES","mom.title":"Interpretación internacional, enseñanza, prospección y formación continua.","mom.body":"Experiencias en distintos entornos reforzaron la comunicación, la adaptabilidad y la seguridad bajo presión.","m1.k":"INTERPRETACIÓN","m1.t":"Mariah Carey · Barretos 2010","m1.b":"Trabajé como intérprete inglés–portugués para el equipo de Mariah Carey durante un compromiso específico en Barretos.","m2.k":"INTERPRETACIÓN","m2.t":"Presidente de New Holland · Agrishow","m2.b":"Trabajé en interpretación profesional para liderazgo ejecutivo internacional durante Agrishow.","m3.k":"IDIOMAS","m3.t":"Profesor de inglés y traductor","m3.b":"Experiencia docente y traducción de libros y textos entre inglés y portugués.","m4.k":"COMERCIAL","m4.t":"Prospección de ventas en ERP y sector inmobiliario de lujo","m4.b":"Experiencia de prospección en mercados de software e inmuebles.","m5.k":"FORMACIÓN","m5.t":"60 cursos SEBRAE","m5.b":"Formación continua en comercio y marketing.",
+"about.kicker":"SOBRE MÍ","about.quote":"“Cuando una tarea se repite, suelo hacer otra pregunta: ¿por qué seguimos haciendo esto manualmente?”","about.body":"La iniciativa es una constante en mi trayectoria. Una solicitud de lista, documento o control repetitivo muchas veces se convierte en una oportunidad para mejorar el flujo de trabajo. Aprendo nuevas herramientas con facilidad porque empiezo por el problema: el cuello de botella, la información y las personas que dependen del proceso.","f1.t":"Inglés","f1.b":"Fluido C1","f2.t":"Portugués","f2.b":"Nativo","f3.t":"Sector inmobiliario en EE. UU.","f3.b":"3 años · operaciones de compradores y vendedores","f4.t":"Enfoque operativo","f4.b":"CRM, finanzas, flujos de ventas, mejora de procesos y herramientas internas",
+"resume.kicker":"CV","resume.title":"CV profesional disponible en tres idiomas.","resume.body":"Descarga la versión ATS en inglés, portugués o español.","resume.lang.en":"Inglés","resume.lang.pt":"Portugués","resume.lang.es":"Español","resume.type.en":"CV ATS","resume.type.pt":"CV ATS","resume.type.es":"CV","resume.download":"Descargar PDF",
+"cta.kicker":"DISPONIBLE PARA TRABAJO REMOTO INTERNACIONAL","cta.title":"Listo para aportar donde se encuentran operaciones, sistemas y ejecución.","cta.body":"Abierto a oportunidades internacionales remotas en operaciones, sistemas, implementación, soporte ejecutivo, éxito del cliente, operaciones inmobiliarias, CRM y operaciones digitales — especialmente cuando el trabajo requiere organización, iniciativa y mejora de procesos.","cta.box":"Iniciemos una conversación.","cta.note":"Con base en Brasil · disponible para oportunidades remotas.","cta.button":"Enviar correo"
+};
+Object.assign(T.es,PM03_ES,{"chip.6":"Coordinación de transacciones","chip.7":"Edición de vídeo","chip.8":"Prospección de ventas"});
+Object.assign(T.en,{"chip.1":"Business Operations","chip.2":"Systems & Automation","chip.3":"U.S. Real Estate","chip.4":"CRM & Customer Journey","chip.6":"Transaction Coordination","chip.7":"Video Editing","chip.8":"Sales Prospecting","chip.9":"Self-Directed Learner","chip.10":"Clear Communicator","chip.11":"Reliable Follow-Through","cap1.alt":"Giovanni Barcelos writing on an operational sketch at a desk","cap2.alt":"Giovanni Barcelos reviewing post-it notes on an operational board","proof1.alt":"Giovanni Barcelos presenting to a professional group in a gray blazer","proof2.alt":"Giovanni Barcelos teaching practical English to an adult professional group","proof3.alt":"Giovanni Barcelos working remotely with a headset and computer screens","cta.photoAlt":"Giovanni Barcelos in a brown blazer with a black coffee mug"});
+Object.assign(T.pt,{"chip.1":"Operações","chip.2":"Sistemas E Automação","chip.3":"Mercado Imobiliário Nos EUA","chip.4":"CRM E Jornada Do Cliente","chip.6":"Coordenação De Transações","chip.7":"Edição De Vídeo","chip.8":"Prospecção De Vendas","chip.9":"Aprendo com autonomia","chip.10":"Comunico com clareza","chip.11":"Levo até o fim","cap1.alt":"Giovanni Barcelos escrevendo em um esboço operacional à mesa","cap2.alt":"Giovanni Barcelos analisando post-its em um painel operacional","proof1.alt":"Giovanni Barcelos apresentando a um grupo profissional usando blazer cinza","proof2.alt":"Giovanni Barcelos ensinando inglês prático a um grupo adulto de profissionais","proof3.alt":"Giovanni Barcelos trabalhando remotamente com headset e telas de computador","cta.photoAlt":"Giovanni Barcelos usando blazer marrom e segurando uma xícara preta de café"});
+Object.assign(T.es,{"chip.1":"Operaciones","chip.2":"Sistemas Y Automatización","chip.3":"Sector Inmobiliario En EE. UU.","chip.4":"CRM Y Experiencia Del Cliente","chip.6":"Coordinación De Transacciones","chip.7":"Edición De Vídeo","chip.8":"Prospección De Ventas","chip.9":"Aprendo con autonomía","chip.10":"Comunico con claridad","chip.11":"Llevo las cosas hasta el final","cap1.alt":"Giovanni Barcelos escribiendo en un esquema operativo en su escritorio","cap2.alt":"Giovanni Barcelos revisando notas adhesivas en un panel operativo","proof1.alt":"Giovanni Barcelos presentando ante un grupo profesional con un blazer gris","proof2.alt":"Giovanni Barcelos enseñando inglés práctico a un grupo adulto de profesionales","proof3.alt":"Giovanni Barcelos trabajando a distancia con auriculares y pantallas de ordenador","cta.photoAlt":"Giovanni Barcelos con un blazer marrón y una taza negra de café"});
+ Object.assign(T.en,{
+  "hero.body":"A multidisciplinary professional connecting business operations, U.S. real estate, CRM, customer journeys, digital workflows and AI-assisted systems — with experience across sales, marketing, teaching, hospitality and hands-on execution.",
+  "cap.body":"I work across business operations, real estate, CRM, digital workflows and automation to organize information, reduce manual steps and keep execution moving.",
+  "cap3.b":"Buyer and seller transaction coordination across MLS Canopy, SkySlope and Zillow Showcase, with CMA support.",
+  "cap4.b":"Lead intake, pipeline organization, follow-up, marketing actions and continuity through closing.",
+  "case1.b":"Supporting a U.S. real estate business, I connected lead intake, CRM data, listing and campaign coordination, buyer and seller transactions, closing records, time tracking and finance support in one operational workflow.",
+  "case2.t":"Seller Net Sheet → reusable operational tool.",
+  "case2.b":"I turned the recurring information in a Seller Net Sheet into a lightweight workflow using HTML and Google tools. It captures information once, keeps it consistent and carries it into later transaction work.",
+  "case2.p2":"Data capture · storage · operational actions",
+  "case2.vt":"Capture once. Carry the information forward.",
+  "case2.vb":"One structured entry can support the next operational step without being rebuilt.",
+  "case3.t":"A new site with its history intact.",
+  "case3.b":"I rebuilt an outdated WordPress presence on a new platform while keeping the original site available as a working archive and reference. The new environment supports current publishing while preserving years of content, context and SEO value.",
+  "case3.d1":"Keep the context",
+  "case3.d2":"Migration, preservation and continuity stayed connected throughout the work.",
+  "case3.vb":"A current site can move forward while the legacy environment remains a working reference.",
+  "case3.v2b":"Use the archive to inform current content decisions.",
+  "case3.v3b":"Support current publishing without erasing the past.",
+  "journey.title":"A trajectory across operations, sales, communication and service.",
+  "journey.body":"Real estate, ERP sales, teaching, coordination, marketing, events, hospitality and digital work shaped a practical mix of commercial awareness, communication, process improvement and initiative.",
+  "j3.b":"Teaching, communication and coordination across people and processes.",
+  "j8.b":"Organizing processes, connecting systems and reducing avoidable manual work.",
+  "mom.body":"These experiences sharpened communication, adaptability and steadiness under pressure.",
+  "m4.t":"Sales prospecting across ERP and luxury real estate",
+  "proof.intro":"The work also involves people: creating clarity, making complex ideas easier to follow and keeping handoffs moving.",
+  "proof1.title":"Clarity and facilitation in group settings.",
+  "proof2.title":"Practical communication for complex work.",
+  "proof2.body":"Interpretation, teaching and client-facing work shaped a clear working style: set the context, make the process visible and name the next action.",
+  "proof3.title":"Remote operations with clear ownership and follow-through.",
+  "proof3.body":"In 100% remote U.S. real estate operations, I coordinated calendars, email, listings, transactions and continuity across the people and systems involved.",
+  "about.body":"Initiative is a constant in my work. A request for a list, document or repetitive control often becomes an opportunity to improve the workflow around it. I learn unfamiliar tools by starting with the bottleneck, the information and the people who depend on the process.",
+  "resume.body":"Choose the English, Portuguese or Spanish ATS version.",
+  "cta.body":"Operations, systems, implementation, executive support, client support, real estate operations, CRM and digital operations are relevant when the work benefits from organization, initiative and process improvement."
+ });
+ Object.assign(T.pt,{
+  "hero.body":"Profissional multidisciplinar que conecta operações, mercado imobiliário dos EUA, CRM, jornada do cliente, fluxos digitais e sistemas com apoio de IA — com experiência em vendas, marketing, ensino, hotelaria e execução prática.",
+  "cap.body":"Atuo entre operações, mercado imobiliário, CRM, fluxos digitais e automação para organizar informações, reduzir etapas manuais e manter a execução em movimento.",
+  "cap3.b":"Coordenação de transações de compradores e vendedores em MLS Canopy, SkySlope e Zillow Showcase, com apoio em CMA.",
+  "cap4.b":"Entrada de contatos, organização do funil, acompanhamento, ações de marketing e continuidade até o fechamento.",
+  "case1.b":"Em uma operação imobiliária nos EUA, conectei entrada de contatos, dados de CRM, coordenação de anúncios e campanhas, transações de compradores e vendedores, registros de fechamento, controle de horas e apoio financeiro em um único fluxo operacional.",
+  "case1.a1":"Contato → CRM",
+  "case1.b2":"Coordenação das informações do anúncio, das ações de campanha e do acompanhamento do funil.",
+  "case2.t":"Seller Net Sheet → ferramenta operacional reutilizável.",
+  "case2.b":"Transformei a lógica da Seller Net Sheet em um fluxo leve com HTML e ferramentas Google. O processo captura a informação uma vez, mantém os dados consistentes e os leva para as etapas posteriores da transação.",
+  "case2.p2":"Captura de dados · armazenamento · ações operacionais",
+  "case2.vt":"Capture uma vez. Leve a informação adiante.",
+  "case2.vb":"Um registro estruturado pode alimentar a próxima etapa sem ser reconstruído.",
+  "case3.t":"Um site novo com a história preservada.",
+  "case3.b":"Reconstruí uma presença antiga em WordPress numa nova plataforma e mantive o site original disponível como arquivo funcional e referência. O novo ambiente atende às necessidades atuais de publicação, preservando conteúdo, contexto e valor de SEO.",
+  "case3.d1":"Manter o contexto",
+  "case3.d2":"Migração, preservação e continuidade permaneceram conectadas no trabalho.",
+  "case3.vb":"O site atual avança enquanto o ambiente legado permanece disponível como referência de trabalho.",
+  "case3.v2b":"Use o arquivo como contexto para as decisões atuais de conteúdo.",
+  "case3.v3b":"Sustente a publicação atual sem apagar o passado.",
+  "journey.title":"Uma trajetória entre operações, vendas, comunicação e serviço.",
+  "journey.body":"Mercado imobiliário, vendas de ERP, ensino, coordenação, marketing, eventos, hotelaria e trabalho digital formaram uma combinação prática de visão comercial, comunicação, melhoria de processos e iniciativa.",
+  "j1.b":"Prospecção ativa por telefone, geração de potenciais clientes e experiência direta no mercado imobiliário de Goiânia.",
+  "j8.b":"Organização de processos, conexão entre sistemas e redução de trabalho manual evitável.",
+  "mom.body":"Essas experiências reforçaram comunicação, adaptabilidade e segurança sob pressão.",
+  "proof.intro":"O trabalho também envolve pessoas: criar clareza, tornar ideias complexas mais fáceis de acompanhar e manter as etapas em movimento.",
+  "proof1.title":"Clareza e facilitação em contextos de grupo.",
+  "proof2.title":"Comunicação prática para trabalhos complexos.",
+  "proof2.body":"Interpretação, ensino e atendimento ao cliente formaram um estilo de comunicação claro: definir o contexto, tornar o processo visível e indicar a próxima ação.",
+  "proof3.title":"Operações remotas com responsabilidade e continuidade.",
+  "proof3.body":"Em operações imobiliárias 100% remotas nos EUA, atuei na coordenação de calendários, e-mails, anúncios, transações e continuidade entre as pessoas e os sistemas envolvidos.",
+  "about.body":"Iniciativa é uma constante no meu trabalho. Um pedido de lista, documento ou controle repetitivo muitas vezes se transforma em oportunidade de melhorar o fluxo ao redor dele. Aprendo ferramentas desconhecidas começando pelo gargalo, pela informação e pelas pessoas que dependem do processo.",
+  "resume.body":"Escolha a versão ATS em inglês, português ou espanhol."
+ });
+ Object.assign(T.es,{
+  "hero.body":"Profesional multidisciplinario que conecta operaciones, sector inmobiliario de EE. UU., CRM, experiencia del cliente, flujos digitales y sistemas con apoyo de IA — con experiencia en ventas, marketing, enseñanza, hotelería y ejecución práctica.",
+  "cap.body":"Trabajo entre operaciones, sector inmobiliario, CRM, flujos digitales y automatización para organizar la información, reducir pasos manuales y mantener la ejecución en movimiento.",
+  "cap3.b":"Coordinación de transacciones de compradores y vendedores en MLS Canopy, SkySlope y Zillow Showcase, con apoyo en CMA.",
+  "cap4.b":"Entrada de contactos, organización del embudo, seguimiento, acciones de marketing y continuidad hasta el cierre.",
+  "case1.b":"En una operación inmobiliaria de EE. UU., conecté la entrada de contactos, los datos del CRM, la coordinación de anuncios y campañas, las transacciones de compradores y vendedores, los registros de cierre, el control de horas y el apoyo financiero en un único flujo operativo.",
+  "case1.a1":"Contacto → CRM",
+  "case1.b2":"Coordinación de la información del anuncio, las acciones de campaña y el seguimiento del embudo.",
+  "case2.t":"Seller Net Sheet → herramienta operativa reutilizable.",
+  "case2.b":"Convertí la lógica de la Seller Net Sheet en un flujo ligero con HTML y herramientas de Google. El proceso captura la información una vez, mantiene los datos consistentes y los lleva a las etapas posteriores de la transacción.",
+  "case2.p2":"Captura de datos · almacenamiento · acciones operativas",
+  "case2.vt":"Captura una vez. Lleva la información hacia adelante.",
+  "case2.vb":"Un registro estructurado puede alimentar la siguiente etapa sin reconstruirse.",
+  "case3.t":"Un sitio nuevo con su historia intacta.",
+  "case3.b":"Reconstruí una presencia antigua en WordPress sobre una nueva plataforma y mantuve el sitio original disponible como archivo funcional y referencia. El nuevo entorno responde a las necesidades actuales de publicación y conserva años de contenido, contexto y valor SEO.",
+  "case3.d1":"Mantener el contexto",
+  "case3.d2":"Migración, preservación y continuidad permanecieron conectadas durante el trabajo.",
+  "case3.vb":"El sitio actual puede avanzar mientras el entorno legado permanece como referencia de trabajo.",
+  "case3.v2b":"Usa el archivo para orientar las decisiones actuales de contenido.",
+  "case3.v3b":"Sostén la publicación actual sin borrar el pasado.",
+  "journey.title":"Una trayectoria entre operaciones, ventas, comunicación y servicio.",
+  "journey.body":"Sector inmobiliario, ventas de ERP, enseñanza, coordinación, marketing, eventos, hotelería y trabajo digital formaron una combinación práctica de visión comercial, comunicación, mejora de procesos e iniciativa.",
+  "j1.b":"Prospección telefónica, generación de contactos y experiencia directa en el mercado inmobiliario de Goiânia.",
+  "j8.b":"Organizar procesos, conectar sistemas y reducir el trabajo manual evitable.",
+  "mom.body":"Estas experiencias reforzaron la comunicación, la adaptabilidad y la serenidad bajo presión.",
+  "proof.intro":"El trabajo también involucra personas: crear claridad, hacer más fáciles de seguir las ideas complejas y mantener las etapas en movimiento.",
+  "proof1.title":"Claridad y facilitación en contextos de grupo.",
+  "proof2.title":"Comunicación práctica para trabajos complejos.",
+  "proof2.body":"La interpretación, la enseñanza y la atención al cliente formaron un estilo de comunicación claro: definir el contexto, hacer visible el proceso e indicar la próxima acción.",
+  "proof3.title":"Operaciones remotas con responsabilidad y continuidad.",
+  "proof3.body":"En operaciones inmobiliarias 100% remotas en EE. UU., coordiné calendarios, correo, anuncios, transacciones y continuidad entre las personas y los sistemas involucrados.",
+  "about.body":"La iniciativa es una constante en mi trabajo. Una solicitud de lista, documento o control repetitivo muchas veces se convierte en una oportunidad para mejorar el flujo que lo rodea. Aprendo herramientas desconocidas empezando por el cuello de botella, la información y las personas que dependen del proceso.",
+  "resume.body":"Elige la versión ATS en inglés, portugués o español.",
+  "cta.body":"Operaciones, sistemas, implementación, soporte ejecutivo, atención al cliente, operaciones inmobiliarias, CRM y operaciones digitales son relevantes cuando el trabajo se beneficia de organización, iniciativa y mejora de procesos."
+ });
+Object.assign(T.en,{"nav.remote":"Remote Work","remote.kicker":"REMOTE WORK","remote.title":"Remote work is where my experience and the way I work naturally meet.","remote.body1":"For nearly three years, I supported U.S. real estate operations across North and South Carolina while working fully remotely from Brazil. Transaction coordination, calendars, email, documentation, listings, CRM data and executive/client support all depended on clear communication, organized information and reliable follow-through across distance.","remote.body2":"That experience reinforced a working model that fits how I operate: autonomy, clear communication, organization and accountability. Today, I am especially interested in remote opportunities where I can bring that same consistency to new operations and teams.","remote.e1":"100% remote U.S. real estate operations · Nov 2023–Jul 2026","remote.e2":"North Carolina + South Carolina","remote.e3":"Independent digital work · since 2014","remote.e4":"English Fluent C1 · Portuguese Native · Spanish Intermediate","remote.s1":"Self-Directed Learner","remote.s2":"Clear Communicator","remote.s3":"Reliable Follow-Through","remote.photoAlt":"Giovanni Barcelos working remotely from Brazil while reviewing an operational workflow","cta.kicker":"OPEN TO REMOTE WORK"});
+Object.assign(T.pt,{"nav.remote":"Remoto","remote.kicker":"TRABALHO REMOTO","remote.title":"Trabalho remoto é onde minha experiência e minha forma de trabalhar se encontram naturalmente.","remote.body1":"Por quase três anos, apoiei operações imobiliárias nos Estados Unidos, na Carolina do Norte e na Carolina do Sul, trabalhando 100% remotamente do Brasil. Coordenação de transações, agendas, e-mails, documentação, imóveis/listings, dados de CRM e suporte executivo e a clientes dependiam de comunicação clara, informação organizada e acompanhamento confiável, mesmo à distância.","remote.body2":"Essa experiência consolidou um modelo de trabalho que combina com a forma como opero: autonomia, comunicação clara, organização e responsabilidade. Hoje, tenho especial interesse em oportunidades remotas nas quais eu possa levar essa mesma consistência para novas operações e equipes.","remote.e1":"Operações imobiliárias nos EUA · 100% remoto · nov/2023–jul/2026","remote.e2":"Carolina do Norte + Carolina do Sul","remote.e3":"Trabalho digital independente · desde 2014","remote.e4":"Inglês Fluente C1 · Português Nativo · Espanhol Intermediário","remote.s1":"Aprendo com autonomia","remote.s2":"Comunico com clareza","remote.s3":"Levo até o fim","remote.photoAlt":"Giovanni Barcelos trabalhando remotamente do Brasil enquanto revisa um fluxo operacional","cta.kicker":"DISPONÍVEL PARA TRABALHO REMOTO"});
+Object.assign(T.es,{"nav.remote":"Remoto","remote.kicker":"TRABAJO REMOTO","remote.title":"El trabajo remoto es donde mi experiencia y mi forma de trabajar se encuentran de manera natural.","remote.body1":"Durante casi tres años apoyé operaciones inmobiliarias en Estados Unidos, en Carolina del Norte y Carolina del Sur, trabajando de forma 100 % remota desde Brasil. La coordinación de transacciones, agendas, correo electrónico, documentación, inmuebles/listings, datos de CRM y soporte ejecutivo y a clientes dependían de una comunicación clara, información organizada y seguimiento confiable a distancia.","remote.body2":"Esa experiencia consolidó un modelo de trabajo que encaja con mi forma de operar: autonomía, comunicación clara, organización y responsabilidad. Hoy tengo especial interés en oportunidades remotas donde pueda aportar esa misma consistencia a nuevas operaciones y equipos.","remote.e1":"Operaciones inmobiliarias en EE. UU. · 100 % remoto · nov/2023–jul/2026","remote.e2":"Carolina del Norte + Carolina del Sur","remote.e3":"Trabajo digital independiente · desde 2014","remote.e4":"Inglés Fluido C1 · Portugués Nativo · Español Intermedio","remote.s1":"Aprendo con autonomía","remote.s2":"Comunico con claridad","remote.s3":"Llevo las cosas hasta el final","remote.photoAlt":"Giovanni Barcelos trabajando remotamente desde Brasil mientras revisa un flujo operativo","cta.kicker":"DISPONIBLE PARA TRABAJO REMOTO"});
+Object.assign(T.en,{"remote.kicker":"REMOTE WORK","remote.title":"Remote doesn’t mean distant.","remote.body1":"For nearly three years, I worked 100% remotely supporting U.S. real estate operations across North and South Carolina. Transaction coordination was part of the job, but never the whole of it. I also worked across CRM and listing workflows, marketing coordination, calendars and email, documentation, executive and client support, video editing and publishing, keeping very different parts of the operation moving together.","remote.body2":"Jack of All Trades is probably the shortest way to describe how I work. My independent digital career has kept me hands-on across web design, SEO, blogs, social media, content, video, marketing operations, sales support, CRM, workflows and practical systems. I’m comfortable learning unfamiliar tools, connecting disciplines and moving from strategy to execution without losing sight of the operation as a whole.","remote.body3":"Remote work fits that way of working. It depends less on proximity than on clarity, ownership and follow-through, and it is the environment in which I most want to continue building, supporting and improving operations."});
+Object.assign(T.pt,{"remote.kicker":"TRABALHO REMOTO","remote.title":"Trabalhar remoto não significa estar distante.","remote.body1":"Por quase três anos, trabalhei 100% remotamente apoiando operações imobiliárias nos Estados Unidos, na Carolina do Norte e na Carolina do Sul. A coordenação de transações fazia parte do trabalho, mas nunca foi o trabalho inteiro. Minha atuação também passava por CRM e fluxos de imóveis, coordenação de marketing, agendas e e-mails, documentação, suporte executivo e a clientes, edição e publicação de vídeos, mantendo diferentes partes da operação funcionando em conjunto.","remote.body2":"Pau pra toda obra talvez seja a forma mais curta de descrever como eu trabalho. Minha trajetória digital independente me manteve atuando diretamente com web design, SEO, blogs, redes sociais, conteúdo, vídeo, operações de marketing, apoio comercial, CRM, fluxos de trabalho e sistemas práticos. Tenho facilidade para aprender ferramentas novas, conectar disciplinas e transitar da estratégia à execução sem perder de vista a operação como um todo.","remote.body3":"O trabalho remoto combina com essa forma de atuar. Ele depende menos de proximidade e mais de clareza, responsabilidade e continuidade, e é o ambiente em que mais quero continuar construindo, apoiando e melhorando operações."});
+Object.assign(T.es,{"remote.kicker":"TRABAJO REMOTO","remote.title":"Trabajar en remoto no significa estar lejos.","remote.body1":"Durante casi tres años trabajé de forma 100 % remota apoyando operaciones inmobiliarias en Estados Unidos, en Carolina del Norte y Carolina del Sur. La coordinación de transacciones era parte del trabajo, pero nunca fue todo el trabajo. Mi función también abarcaba CRM y flujos de propiedades, coordinación de marketing, agendas y correo electrónico, documentación, soporte ejecutivo y a clientes, edición y publicación de video, manteniendo distintas partes de la operación funcionando de forma coordinada.","remote.body2":"Ser un todoterreno quizá sea la forma más breve de describir cómo trabajo. Mi trayectoria digital independiente me ha mantenido trabajando directamente con diseño web, SEO, blogs, redes sociales, contenido, video, operaciones de marketing, apoyo comercial, CRM, flujos de trabajo y sistemas prácticos. Me siento cómodo aprendiendo herramientas nuevas, conectando disciplinas y pasando de la estrategia a la ejecución sin perder de vista la operación en su conjunto.","remote.body3":"El trabajo remoto encaja con esa forma de trabajar. Depende menos de la proximidad que de la claridad, la responsabilidad y el seguimiento, y es el entorno en el que más me interesa seguir construyendo, apoyando y mejorando operaciones."});
+Object.assign(T.en,{
+  "remote.kicker":"REMOTE WORK","remote.titleLine1":"Remote doesn’t","remote.titleLine2":"mean distant.",
+  "remote.body1":"Supporting U.S. real estate operations remotely across North and South Carolina with clarity, coordination and follow-through. From CRM management to client support, I help keep operations organized, people informed and results moving — no matter the distance.",
+  "remote.body2":"","remote.body3":"","remote.value1":"AUTONOMY","remote.value2":"CLARITY","remote.value3":"FOLLOW-THROUGH"
+});
+Object.assign(T.pt,{
+  "remote.kicker":"TRABALHO REMOTO","remote.titleLine1":"Trabalho remoto","remote.titleLine2":"não significa distância.",
+  "remote.body1":"Apoio operações imobiliárias nos Estados Unidos, na Carolina do Norte e na Carolina do Sul, trabalhando remotamente com clareza, coordenação e continuidade. Do CRM ao suporte a clientes, ajudo a manter a operação organizada, as pessoas informadas e os resultados em movimento, independentemente da distância.",
+  "remote.body2":"","remote.body3":"","remote.value1":"AUTONOMIA","remote.value2":"CLAREZA","remote.value3":"CONTINUIDADE"
+});
+Object.assign(T.es,{
+  "remote.kicker":"TRABAJO REMOTO","remote.titleLine1":"Trabajar en remoto","remote.titleLine2":"no significa distancia.",
+  "remote.body1":"Apoyo operaciones inmobiliarias en Estados Unidos, en Carolina del Norte y Carolina del Sur, trabajando a distancia con claridad, coordinación y seguimiento. Desde la gestión del CRM hasta la atención al cliente, ayudo a mantener la operación organizada, a las personas informadas y los resultados en movimiento, sin importar la distancia.",
+  "remote.body2":"","remote.body3":"","remote.value1":"AUTONOMÍA","remote.value2":"CLARIDAD","remote.value3":"SEGUIMIENTO"
+});
+window.VIDEO_T={
+en:{nav:"Video",tag:"SELECTED PRACTICE · VIDEO EDITING",title:"From full-length video to platform-ready cuts.",body:"Video editing is a parallel operating track: not only cutting footage, but organizing the message, pacing the sequence and making the publishing process repeatable.",e1:"CapCut Desktop",e2:"YouTube editing",e3:"Full-length video → shorter cuts",e4:"Social adaptation",b1t:"Condense the narrative",b1b:"Keep the message intact while making the material easier to follow.",b2t:"Shape the rhythm",b2b:"Use pacing, continuity and sequence to support the story.",b3t:"Adapt the format",b3b:"Prepare shorter, platform-ready cuts from longer material.",b4t:"Repeat the workflow",b4b:"Connect editing, review, approval and publishing protocols."},
+pt:{nav:"Vídeo",tag:"PRÁTICA SELECIONADA · EDIÇÃO DE VÍDEO",title:"Do vídeo completo a cortes prontos para cada plataforma.",body:"A edição de vídeo é uma frente operacional paralela: não apenas cortar imagens, mas organizar a mensagem, conduzir o ritmo e tornar a publicação repetível.",e1:"CapCut Desktop",e2:"Edição para YouTube",e3:"Vídeo completo → cortes curtos",e4:"Adaptação para redes",b1t:"Condensar a narrativa",b1b:"Preservar a mensagem e tornar o conteúdo mais fácil de acompanhar.",b2t:"Construir o ritmo",b2b:"Usar ritmo, continuidade e sequência para sustentar a história.",b3t:"Adaptar o formato",b3b:"Preparar cortes mais curtos e adequados à plataforma.",b4t:"Repetir o fluxo",b4b:"Conectar edição, revisão, aprovação e protocolos de publicação."},
+es:{nav:"Video",tag:"PRÁCTICA SELECCIONADA · EDICIÓN DE VIDEO",title:"Del video completo a cortes listos para cada plataforma.",body:"La edición de video es una línea operativa paralela: no solo cortar imágenes, sino organizar el mensaje, conducir el ritmo y hacer repetible la publicación.",e1:"CapCut Desktop",e2:"Edición para YouTube",e3:"Video completo → cortes cortos",e4:"Adaptación para redes",b1t:"Condensar la narrativa",b1b:"Mantener el mensaje y hacer que el contenido sea más fácil de seguir.",b2t:"Construir el ritmo",b2b:"Usar ritmo, continuidad y secuencia para sostener la historia.",b3t:"Adaptar el formato",b3b:"Preparar cortes más cortos y adecuados para la plataforma.",b4t:"Repetir el flujo",b4b:"Conectar edición, revisión, aprobación y protocolos de publicación."}
+};
+Object.assign(window.VIDEO_T.en,{photoAlt:"Giovanni Barcelos organizing a video production workflow on a whiteboard"});
+Object.assign(window.VIDEO_T.pt,{photoAlt:"Giovanni Barcelos organizando um fluxo de produção de vídeo em uma lousa"});
+Object.assign(window.VIDEO_T.es,{photoAlt:"Giovanni Barcelos organizando un flujo de producción de video en una pizarra"});
+Object.assign(T.en,{
+  "nav.practiceAreas":"Practice Areas","nav.talk":"LET’S TALK",
+  "hero.kicker":"SYSTEMS FOR A MORE HUMAN TOMORROW","hero.titleLine1":"Operations,","hero.titleLine2":"Systems &","hero.titleLine3":"Automation",
+  "hero.support":"I turn operational friction into practical systems that make work move.","hero.buttonWork":"VIEW MY WORK","hero.buttonTalk":"LET’S TALK","hero.quote":"“Operations create freedom when designed with intention.”",
+  "ticker.label":"TOOLS &<br>TECHNOLOGIES","ticker.1":"CRM & Customer Journey","ticker.2":"Transaction Coordination","ticker.3":"Video Editing","ticker.4":"Sales Prospecting","ticker.5":"Business Operations","ticker.6":"Systems & Automation","ticker.7":"U.S. Real Estate","ticker.signature":"IDEAS TO OPERATIONS",
+  "remote.titleLine1":"Remote doesn’t","remote.titleLine2":"mean distant.","remote.rail":"SAME<br>FOCUS<br>DIFFERENT<br>LOCATION",
+  "remote.e1Label":"REMOTE SINCE 2014","remote.e1Body":"Independent digital work","remote.e2Label":"100% REMOTE · 2023–2026","remote.e2Body":"U.S. real estate operations","remote.e3Label":"NORTH + SOUTH CAROLINA","remote.e3Body":"Cross-state operational support","remote.e4Label":"EN C1 · PT NATIVE · ES INTERMEDIATE","remote.e4Body":"Communication across contexts","remote.signature":"A MORE HUMAN TOMORROW",
+  "remote.body1":"I’ve worked remotely through independent digital projects since 2014, learning to organize my own work, communicate clearly and keep projects moving without depending on proximity.","remote.body2":"From November 2023 to July 2026, I worked 100% remotely supporting U.S. real estate operations across North and South Carolina. The role connected transaction coordination, CRM and listing workflows, marketing, calendars, email, documentation, client support, video and the everyday follow-through that keeps an operation moving.","remote.body3":"That is still how I approach remote work today: understand the operation, make the next step clear, document what matters and take ownership of the follow-through."
+});
+Object.assign(T.pt,{
+  "nav.practiceAreas":"Áreas de atuação","nav.talk":"VAMOS CONVERSAR",
+  "hero.kicker":"SISTEMAS PARA UM AMANHÃ MAIS HUMANO","hero.titleLine1":"Operações,","hero.titleLine2":"Sistemas e","hero.titleLine3":"Automação",
+  "hero.support":"Transformo atrito operacional em sistemas práticos que fazem o trabalho andar.","hero.buttonWork":"VER MINHA ATUAÇÃO","hero.buttonTalk":"VAMOS CONVERSAR","hero.quote":"“Operações criam liberdade quando são desenhadas com intenção.”",
+  "ticker.label":"FERRAMENTAS &<br>TECNOLOGIAS","ticker.1":"CRM e jornada do cliente","ticker.2":"Coordenação de transações","ticker.3":"Edição de vídeo","ticker.4":"Prospecção de vendas","ticker.5":"Operações empresariais","ticker.6":"Sistemas e automação","ticker.7":"Mercado imobiliário nos EUA","ticker.signature":"IDEIAS PARA OPERAÇÕES",
+  "remote.titleLine1":"Trabalhar remoto não","remote.titleLine2":"significa estar distante.","remote.rail":"MESMO<br>FOCO<br>LOCAIS<br>DIFERENTES",
+  "remote.e1Label":"REMOTO DESDE 2014","remote.e1Body":"Trabalho digital independente","remote.e2Label":"100% REMOTO · 2023–2026","remote.e2Body":"Operações imobiliárias nos EUA","remote.e3Label":"NORTE + SUL DA CAROLINA","remote.e3Body":"Suporte operacional entre estados","remote.e4Label":"EN C1 · PT NATIVO · ES INTERMEDIÁRIO","remote.e4Body":"Comunicação entre contextos","remote.signature":"UM AMANHÃ MAIS HUMANO",
+  "proof1.body":"O ensino, a coordenação acadêmica, a gestão em hotelaria e a coordenação operacional me ensinaram a alinhar pessoas, informações e próximos passos em torno do trabalho."
+});
+Object.assign(T.es,{
+  "nav.practiceAreas":"Áreas de actuación","nav.talk":"HABLEMOS",
+  "hero.kicker":"SISTEMAS PARA UN MAÑANA MÁS HUMANO","hero.titleLine1":"Operaciones,","hero.titleLine2":"Sistemas y","hero.titleLine3":"Automatización",
+  "hero.support":"Transformo la fricción operativa en sistemas prácticos que hacen avanzar el trabajo.","hero.buttonWork":"VER MI TRABAJO","hero.buttonTalk":"HABLEMOS","hero.quote":"“Las operaciones crean libertad cuando se diseñan con intención.”",
+  "ticker.label":"HERRAMIENTAS &<br>TECNOLOGÍAS","ticker.1":"CRM y experiencia del cliente","ticker.2":"Coordinación de transacciones","ticker.3":"Edición de vídeo","ticker.4":"Prospección de ventas","ticker.5":"Operaciones empresariales","ticker.6":"Sistemas y automatización","ticker.7":"Sector inmobiliario en EE. UU.","ticker.signature":"IDEAS A OPERACIONES",
+  "remote.titleLine1":"Trabajar en remoto no","remote.titleLine2":"significa estar lejos.","remote.rail":"MISMO<br>FOCO<br>LUGARES<br>DIFERENTES",
+  "remote.e1Label":"REMOTO DESDE 2014","remote.e1Body":"Trabajo digital independiente","remote.e2Label":"100 % REMOTO · 2023–2026","remote.e2Body":"Operaciones inmobiliarias en EE. UU.","remote.e3Label":"CAROLINA DEL NORTE + SUR","remote.e3Body":"Soporte operativo entre estados","remote.e4Label":"EN C1 · PT NATIVO · ES INTERMEDIO","remote.e4Body":"Comunicación entre contextos","remote.signature":"UN MAÑANA MÁS HUMANO",
+  "proof1.body":"La enseñanza, la coordinación académica, la gestión hotelera y la coordinación operativa me enseñaron a alinear personas, información y próximos pasos alrededor del trabajo."
+});
+Object.assign(T.en,{"remote.body1":"For nearly three years, I worked 100% remotely supporting U.S. real estate operations across North and South Carolina. Transaction coordination was part of the job, but never the whole of it. I also worked across CRM and listing workflows, marketing coordination, calendars and email, documentation, executive and client support, video editing and publishing, keeping very different parts of the operation moving together.","remote.body2":"Jack of All Trades is probably the shortest way to describe how I work. My independent digital career has kept me hands-on across web design, SEO, blogs, social media, content, video, marketing operations, sales support, CRM, workflows and practical systems. I’m comfortable learning unfamiliar tools, connecting disciplines and moving from strategy to execution without losing sight of the operation as a whole.","remote.body3":"Remote work fits that way of working. It depends less on proximity than on clarity, ownership and follow-through, and it is the environment in which I most want to continue building, supporting and improving operations.","remote.m1":"REMOTE SINCE 2014","remote.m2":"100% REMOTE · 2023–2026","remote.m3":"BRAZIL ↔ U.S. OPERATIONS"});
+Object.assign(T.pt,{"remote.body1":"Por quase três anos, trabalhei 100% remotamente apoiando operações imobiliárias nos Estados Unidos, na Carolina do Norte e na Carolina do Sul. A coordenação de transações fazia parte do trabalho, mas nunca foi o trabalho inteiro. Minha atuação também passava por CRM e fluxos de imóveis, coordenação de marketing, agendas e e-mails, documentação, suporte executivo e a clientes, edição e publicação de vídeos, mantendo diferentes partes da operação funcionando em conjunto.","remote.body2":"Pau pra toda obra talvez seja a forma mais curta de descrever como eu trabalho. Minha trajetória digital independente me manteve atuando diretamente com web design, SEO, blogs, redes sociais, conteúdo, vídeo, operações de marketing, apoio comercial, CRM, fluxos de trabalho e sistemas práticos. Tenho facilidade para aprender ferramentas novas, conectar disciplinas e transitar da estratégia à execução sem perder de vista a operação como um todo.","remote.body3":"O trabalho remoto combina com essa forma de atuar. Ele depende menos de proximidade e mais de clareza, responsabilidade e continuidade, e é o ambiente em que mais quero continuar construindo, apoiando e melhorando operações.","remote.m1":"REMOTO DESDE 2014","remote.m2":"100% REMOTO · 2023–2026","remote.m3":"BRASIL ↔ OPERAÇÕES NOS EUA"});
+Object.assign(T.es,{"remote.body1":"Durante casi tres años trabajé de forma 100 % remota apoyando operaciones inmobiliarias en Estados Unidos, en Carolina del Norte y Carolina del Sur. La coordinación de transacciones era parte del trabajo, pero nunca fue todo el trabajo. Mi función también abarcaba CRM y flujos de propiedades, coordinación de marketing, agendas y correo electrónico, documentación, soporte ejecutivo y a clientes, edición y publicación de video, manteniendo distintas partes de la operación funcionando de forma coordinada.","remote.body2":"Ser un todoterreno quizá sea la forma más breve de describir cómo trabajo. Mi trayectoria digital independiente me ha mantenido trabajando directamente con diseño web, SEO, blogs, redes sociales, contenido, video, operaciones de marketing, apoyo comercial, CRM, flujos de trabajo y sistemas prácticos. Me siento cómodo aprendiendo herramientas nuevas, conectando disciplinas y pasando de la estrategia a la ejecución sin perder de vista la operación en su conjunto.","remote.body3":"El trabajo remoto encaja con esa forma de trabajar. Depende menos de la proximidad que de la claridad, la responsabilidad y el seguimiento, y es el entorno en el que más me interesa seguir construyendo, apoyando y mejorando operaciones.","remote.m1":"REMOTO DESDE 2014","remote.m2":"100 % REMOTO · 2023–2026","remote.m3":"BRASIL ↔ OPERACIONES EN EE. UU."});
+  Object.assign(T.en,{"j8.b":"Focused on organizing processes, connecting systems and reducing avoidable manual work."});
+
+  // Preserve the published copy map before the Remote forensic override below.
+  // The Preview runtime may use this map for every non-Hero section while the
+  // approved Hero and ticker remain explicitly frozen.
+  window.__PUBLISHED_COPY = {
+    en: { ...T.en },
+    pt: { ...T.pt },
+    es: { ...T.es }
+  };
+
+  /* FINAL REMOTE FORENSIC COPY AUTHORITY — 2026-09-18 */
+Object.assign(T.en,{
+  "remote.kicker":"REMOTE WORK","remote.titleLine1":"Remote doesn’t","remote.titleLine2":"mean distant.",
+  "remote.body1":"Supporting U.S. real estate operations remotely across North and South Carolina with clarity, coordination and follow-through. From CRM management to client support, I help keep operations organized, people informed and results moving — no matter the distance.",
+  "remote.body2":"","remote.body3":"","remote.value1":"AUTONOMY","remote.value2":"CLARITY","remote.value3":"FOLLOW-THROUGH"
+});
+Object.assign(T.pt,{
+  "remote.kicker":"TRABALHO REMOTO","remote.titleLine1":"Trabalho remoto","remote.titleLine2":"não significa distância.",
+  "remote.body1":"Apoio operações imobiliárias nos Estados Unidos, na Carolina do Norte e na Carolina do Sul, trabalhando remotamente com clareza, coordenação e continuidade. Do CRM ao suporte a clientes, ajudo a manter a operação organizada, as pessoas informadas e os resultados em movimento, independentemente da distância.",
+  "remote.body2":"","remote.body3":"","remote.value1":"AUTONOMIA","remote.value2":"CLAREZA","remote.value3":"CONTINUIDADE"
+});
+Object.assign(T.es,{
+  "remote.kicker":"TRABAJO REMOTO","remote.titleLine1":"Trabajar en remoto","remote.titleLine2":"no significa distancia.",
+  "remote.body1":"Apoyo operaciones inmobiliarias en Estados Unidos, en Carolina del Norte y Carolina del Sur, trabajando a distancia con claridad, coordinación y seguimiento. Desde la gestión del CRM hasta la atención al cliente, ayudo a mantener la operación organizada, a las personas informadas y los resultados en movimiento, sin importar la distancia.",
+  "remote.body2":"","remote.body3":"","remote.value1":"AUTONOMÍA","remote.value2":"CLARIDAD","remote.value3":"SEGUIMIENTO"
+});
+const languageHtmlKeys=new Set(["ticker.label","remote.rail"]);
+function setLang(lang){
+  const safe=T[lang]?lang:"en";
+  document.documentElement.lang=safe;
+  document.querySelectorAll("[data-setlang]").forEach(button=>{
+    const active=button.dataset.setlang===safe;
+    button.classList.toggle("current",active);
+    button.classList.toggle("active",active);
+    if(active)button.setAttribute("aria-current","page");else button.removeAttribute("aria-current");
+  });
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key=el.dataset.i18n;
+    const value=T[safe]&&T[safe][key];
+    if(value===undefined)return;
+    if(languageHtmlKeys.has(key))el.innerHTML=value;else el.textContent=value;
+  });
+  document.querySelectorAll("[data-i18n-alt]").forEach(el=>{
+    const value=T[safe]&&T[safe][el.dataset.i18nAlt];
+    if(value!==undefined)el.alt=value;
+  });
+  if(window.VIDEO_T){
+    const video=window.VIDEO_T[safe]||window.VIDEO_T.en;
+    document.querySelectorAll("[data-video-i18n]").forEach(el=>{
+      const value=video[el.dataset.videoI18n];
+      if(value!==undefined)el.textContent=value;
+    });
+    const image=document.querySelector(".video-photo");
+    if(image&&video.photoAlt)image.alt=video.photoAlt;
+  }
+  try{localStorage.setItem("gb-lang",safe)}catch(_){}
+}
+document.querySelectorAll("[data-setlang]").forEach(button=>button.addEventListener("click",event=>{
+  event.preventDefault();
+  setLang(button.dataset.setlang);
+}));
+let initialLang="en";
+try{initialLang=localStorage.getItem("gb-lang")||"en"}catch(_){}
+setLang(initialLang);
+</script>
+<script src="portfolio-final.js?v=final8"></script>
+<script src="remote-v4.js?v=1"></script>
+</body>
+</html>

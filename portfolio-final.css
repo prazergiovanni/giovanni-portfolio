@@ -1,0 +1,616 @@
+/* Final consolidation layer: a responsive system built on the supplied scene and brand assets. */
+:root {
+  --gb-petroleum: #0d1b2a;
+  --gb-petroleum-2: #132b40;
+  --gb-ivory: #f4efe6;
+  --gb-graphite: #1d2430;
+  --gb-gold-shadow: #7b6240;
+  --gb-gold: #cda46c;
+  --gb-gold-principal: #e9c38a;
+  --gb-gold-light: #fbe3ab;
+}
+
+html { overflow-x: hidden; }
+body { min-width: 320px; overflow-x: hidden; background: var(--gb-petroleum); }
+
+/* Hero is a fixed aspect composition. The source canvas remains intact; only its scene scale changes. */
+.hero {
+  min-height: 720px;
+  height: max(100svh, 56.28vw);
+  background: var(--gb-petroleum);
+}
+.hero .stage { z-index: 0; overflow: hidden; }
+.hero .layer-background { z-index: 1; }
+.hero .layer-rear { z-index: 2; }
+.hero .layer-path { z-index: 3; }
+.hero .layer-subject {
+  z-index: 4;
+  transform: translateY(-1%) scale(.80);
+  transform-origin: 67% 100%;
+}
+.hero .layer-foreground { z-index: 5; }
+.hero .layer-front-panels { z-index: 6; }
+.hero .layer-subject .subject,
+.hero .layer-foreground .foreground,
+.hero .layer-background .background { width: 100%; height: 100%; }
+.hero .layer-subject .subject,
+.hero .layer-foreground .foreground,
+.hero .layer-background .background { object-fit: cover; object-position: center; }
+.hero .layer-background .background { object-position: 50% 50%; }
+.hero .layer-path .light-path { left: 31.5%; top: 7.8%; width: 53.2%; }
+.hero .light-path-endpoint { left: 83.7%; top: 13.6%; }
+.hero .panel { filter: drop-shadow(0 18px 28px rgba(0,0,0,.24)); }
+
+/* The header has one stable box. Scroll changes its treatment and logo, never its layout footprint. */
+.site-header {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 104px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto minmax(220px, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 8px 5.2% 0;
+  border-bottom: 1px solid transparent;
+  background: linear-gradient(180deg, rgba(4,13,24,.34), transparent);
+  transition: min-height .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.site-header > a {
+  grid-column: 1;
+  justify-self: start;
+  margin-left: 0;
+  line-height: 0;
+}
+.site-header .brand-full {
+  display: block;
+  width: clamp(190px, 15vw, 238px);
+  height: auto;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.site-header .brand-monogram {
+  display: none;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+.site-nav {
+  grid-column: 2;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 1.55vw, 28px);
+  font-size: clamp(11px, .82vw, 14px);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.site-nav > a {
+  position: relative;
+  color: rgba(255,253,247,.93);
+  text-decoration: none;
+}
+.site-nav > a:hover,
+.site-nav > a:focus-visible,
+.site-nav .nav-practice-link:hover,
+.site-nav .nav-practice-link:focus-visible { color: var(--gb-gold-light); }
+.site-nav .active::after {
+  bottom: -12px;
+  background: var(--gb-gold-principal);
+  box-shadow: 0 0 12px rgba(233,195,138,.5);
+}
+.site-nav .action { display: none !important; }
+.site-nav .languages { display: flex; align-items: center; gap: 10px; margin-left: 6px; }
+.site-nav .language { color: rgba(255,253,247,.72); font-size: 10px; }
+.site-nav .language.current { color: var(--gb-gold-light); }
+.nav-practice-wrap { position: relative; display: inline-flex; align-items: center; gap: 4px; }
+.nav-practice-link { white-space: nowrap; }
+.nav-submenu-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--gb-gold-principal);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+.nav-submenu-toggle:focus-visible,
+.mobile-nav-toggle:focus-visible,
+.site-nav a:focus-visible { outline: 2px solid var(--gb-gold-light); outline-offset: 5px; }
+.nav-submenu {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: 50%;
+  display: grid;
+  min-width: 260px;
+  padding: 10px;
+  border: 1px solid rgba(233,195,138,.38);
+  background: rgba(13,27,42,.96);
+  box-shadow: 0 20px 45px rgba(0,0,0,.34);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -5px);
+  transition: opacity .18s ease, transform .18s ease;
+}
+.nav-submenu.is-open,
+.nav-practice-wrap:focus-within .nav-submenu { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+.nav-submenu a {
+  padding: 10px 12px;
+  color: rgba(255,253,247,.84);
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: .02em;
+}
+.nav-submenu a:hover,
+.nav-submenu a:focus-visible { color: var(--gb-gold-light); background: rgba(233,195,138,.10); outline: none; }
+body.scrolled .site-header {
+  min-height: 82px;
+  padding-top: 0;
+  border-bottom-color: rgba(233,195,138,.20);
+  background: rgba(13,27,42,.88);
+  box-shadow: 0 8px 28px rgba(0,0,0,.24);
+  backdrop-filter: blur(12px);
+}
+body.scrolled .site-header .brand-full { display: none; }
+body.scrolled .site-header .brand-monogram { display: block; }
+body.scrolled .hero { z-index: 0; overflow: hidden; }
+
+/* Hero copy is allowed to breathe after the CTAs and quote leave this scene. */
+.hero-copy { top: 20.6%; left: 5.48%; width: min(36%, 590px); }
+.hero-copy .eyebrow { margin-bottom: 25px; color: var(--gb-gold-light); }
+.hero-copy h1 { font-size: clamp(56px, 5.68vw, 95px); line-height: .95; }
+.hero-copy .support { max-width: 520px; margin: 28px 0 0; }
+.hero .buttons,
+.hero > .quote { display: none !important; }
+
+/* Two equal groups make the ticker's transform periodic at exactly one group width. */
+.ticker { z-index: 35; background: rgba(4,13,24,.70); border-top-color: rgba(233,195,138,.26); }
+.ticker-track { animation: gb-ticker-loop 36s linear infinite; }
+.ticker-group { display: inline-flex; align-items: center; }
+.ticker-track span::after { background: var(--gb-gold-light); }
+.signature { color: var(--gb-gold-light); }
+.signature::before { background: var(--gb-gold-principal); }
+@keyframes gb-ticker-loop { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+/* Remote Work stays a distinct, lighter human counterpoint to the Hero. */
+.remote-work {
+  min-height: 760px;
+  background: radial-gradient(circle at 86% 44%, rgba(42,91,113,.30), transparent 38%), linear-gradient(90deg, #0d2639 0%, #102f46 52%, #0d2133 100%);
+}
+.remote-grid { grid-template-columns: 46% 54%; }
+.remote-media { padding: clamp(38px, 5vw, 70px) clamp(34px, 4.2vw, 62px); background: linear-gradient(145deg, #c6bdad 0%, #aa9d8b 100%); }
+.remote-photo { width: 100%; height: 100%; border: 1px solid rgba(255,255,255,.24); box-shadow: 0 24px 60px rgba(3,11,20,.24); }
+.remote-copy { padding: 88px 4.4vw 38px 4.1vw; }
+.remote-title { font-size: clamp(48px, 4.15vw, 72px); }
+.remote-body { max-width: 690px; }
+.remote-evidence { margin-top: 12px; }
+
+/* Light/dark rhythm for the actual content system. */
+.portfolio-rest { --pr-navy: var(--gb-petroleum); --pr-navy2: var(--gb-petroleum-2); --pr-ivory: var(--gb-ivory); --pr-paper: #fffdf8; --pr-sand: #eadfce; --pr-gold: var(--gb-gold); --pr-gold2: var(--gb-gold-principal); --pr-ink: var(--gb-graphite); --pr-muted: #5f7080; --pr-line: rgba(29,36,48,.15); }
+.portfolio-rest .screen { scroll-margin-top: 98px; }
+.portfolio-rest .screen:not(.navy) { background: linear-gradient(120deg, var(--gb-ivory) 0%, #fffdf8 100%); }
+.portfolio-rest .screen.navy { background: linear-gradient(112deg, var(--gb-petroleum) 0%, #15334a 58%, #0b2235 100%); }
+.portfolio-rest .wrap { width: min(1180px, calc(100% - 72px)); }
+.portfolio-rest .screen { padding: clamp(82px, 8vw, 126px) 0; }
+.portfolio-rest .screen:not(.navy) > .wrap { position: relative; z-index: 1; }
+.portfolio-rest .screen:not(.navy)::before { left: clamp(28px, 5vw, 90px); right: clamp(28px, 5vw, 90px); background: linear-gradient(90deg, transparent, rgba(205,164,108,.38) 22%, rgba(205,164,108,.08) 78%, transparent); }
+.portfolio-rest .eyebrow,
+.portfolio-rest .case-label { color: #9f773d; }
+.portfolio-rest .section-head { display: block; }
+.portfolio-rest .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  margin: 0 0 14px;
+  text-align: left;
+}
+.site-header { border-bottom: 0; }
+body.scrolled .site-header { border-bottom-color: transparent; }
+.nav-practice-wrap { gap: 2px; }
+.nav-submenu-toggle { width: 16px; }
+
+/* Keep the Practice Areas toggle visible without making the Journey gap look
+   wider than every other desktop navigation interval. The arrow remains a
+   full hit target, but no longer consumes a second flex slot. */
+@media (min-width: 921px) {
+  .nav-practice-wrap { gap: 0; }
+  .nav-practice-wrap .nav-submenu-toggle {
+    position: absolute;
+    left: calc(100% + 4px);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.portfolio-rest .eyebrow::after {
+  content: "";
+  display: block;
+  flex: 0 1 150px;
+  min-width: 64px;
+  height: 1px;
+  background: rgba(159,119,61,.72);
+}
+.portfolio-rest .section-head h2,
+.portfolio-rest .case-copy h2,
+.portfolio-rest .work04-copy h2,
+.portfolio-rest .video-copy h2,
+.portfolio-rest .journey-copy h2,
+.portfolio-rest #highlights h2,
+.portfolio-rest .about-copy .quote,
+.portfolio-rest .resume-grid h2,
+.portfolio-rest .cta h2 { color: var(--gb-graphite); }
+.portfolio-rest .screen.navy .eyebrow,
+.portfolio-rest .screen.navy h2 { color: var(--gb-ivory); }
+.portfolio-rest .capability-feature { grid-template-columns: .90fr 1.10fr; gap: 64px; }
+.portfolio-rest .capability-feature-media { border-color: rgba(29,36,48,.18); box-shadow: 16px 18px 0 rgba(205,164,108,.14); }
+.portfolio-rest .cap-grid { gap: 1px; background: rgba(29,36,48,.16); }
+.portfolio-rest .card { min-height: 202px; background: rgba(255,253,248,.95); box-shadow: inset 0 2px 0 rgba(205,164,108,.34); }
+.portfolio-rest .card h3 { color: var(--gb-graphite); }
+.portfolio-rest .practice-sequence { position: relative; overflow: hidden; }
+.portfolio-rest .practice-sequence::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: linear-gradient(transparent, rgba(205,164,108,.34) 12%, rgba(205,164,108,.10) 88%, transparent); pointer-events: none; }
+.portfolio-rest .practice-sequence > .screen { position: relative; }
+.portfolio-rest .practice-area { isolation: isolate; }
+.portfolio-rest #practice-area-01 { background: linear-gradient(120deg, #fffdf8, #f2ecdf); }
+.portfolio-rest #practice-area-02 { background: linear-gradient(120deg, #e9decd, #f5eee5); }
+.portfolio-rest #practice-area-03 { background: linear-gradient(120deg, #f4efe6, #fffdf8); }
+.portfolio-rest #practice-area-04 { background: linear-gradient(120deg, #fffdf8, #f2eadf); }
+.portfolio-rest #practice-area-05 { background: linear-gradient(120deg, #e9decd, #f5eee5); }
+.portfolio-rest .practice-overview { padding-bottom: 82px; }
+.portfolio-rest .practice-overview h2 { max-width: 780px; }
+.portfolio-rest .practice-intro { max-width: 720px; margin: 17px 0 0; color: #5f7080; font-size: 16px; line-height: 1.55; }
+.portfolio-rest .practice-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; margin-top: 38px; background: rgba(29,36,48,.16); border: 1px solid rgba(29,36,48,.16); }
+.portfolio-rest .practice-tile { min-height: 166px; padding: 22px 18px; background: rgba(255,253,248,.92); color: var(--gb-graphite); text-decoration: none; box-shadow: inset 0 2px 0 rgba(205,164,108,.34); transition: background .18s ease, transform .18s ease; }
+.portfolio-rest .practice-tile:hover,
+.portfolio-rest .practice-tile:focus-visible { background: #fff; transform: translateY(-3px); outline: none; }
+.portfolio-rest .practice-tile .num { display: block; color: #9f773d; font-size: 11px; font-weight: 850; letter-spacing: .18em; }
+.portfolio-rest .practice-tile strong { display: block; margin-top: 26px; font-size: 15px; line-height: 1.12; }
+.portfolio-rest .practice-tile span { display: block; margin-top: 9px; color: #687686; font-size: 11px; line-height: 1.4; }
+.portfolio-rest .practice-area .case-label,
+.portfolio-rest .practice-area .artifact-kicker,
+.portfolio-rest .practice-area .map-label { color: #9f773d; }
+.portfolio-rest .case-artifact,
+.portfolio-rest .work04-map { background: rgba(255,253,248,.75); border-color: rgba(29,36,48,.16); box-shadow: 18px 18px 0 rgba(205,164,108,.12); }
+.portfolio-rest .case-artifact::after,
+.portfolio-rest .work04-map::after { background: var(--gb-gold-principal); }
+.portfolio-rest #practice-area-03 .video-visual { background: #e9decd; box-shadow: 18px 18px 0 rgba(205,164,108,.14); }
+
+/* One chapter, two screens: no background reset between human proof and highlights. */
+.human-proof-chapter { position: relative; overflow: hidden; background: linear-gradient(120deg, #f4efe6 0%, #fffdf8 100%); }
+.human-proof-chapter::after { content: ""; position: absolute; right: 9%; top: 8%; width: 28vw; height: 28vw; border: 1px solid rgba(205,164,108,.18); border-radius: 50%; pointer-events: none; }
+.human-proof-chapter > .screen { background: transparent !important; border-top: 0; }
+.human-proof-chapter #capability-expansion { padding-bottom: 56px; }
+.human-proof-chapter #highlights { padding-top: 48px; }
+.portfolio-rest .proof-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: none; }
+.portfolio-rest .proof-card { background: rgba(255,255,255,.88); border-color: rgba(29,36,48,.16); }
+.portfolio-rest .proof-card img { aspect-ratio: 16 / 10; }
+.portfolio-rest .proof-card h3 { color: var(--gb-graphite); }
+.portfolio-rest .proof-index { display: none !important; }
+.portfolio-rest .moment-list { grid-template-columns: repeat(3, 1fr); background: rgba(29,36,48,.14); border-color: rgba(29,36,48,.14); }
+.portfolio-rest .moment { background: rgba(255,253,248,.92); }
+.portfolio-rest .moment .k { color: #9f773d; }
+.portfolio-rest .moment h3 { color: var(--gb-graphite); }
+.portfolio-rest #highlights .moment:last-child:nth-child(odd) { width: auto; grid-column: auto; }
+.portfolio-rest .closing-quote { position: relative; z-index: 1; max-width: 690px; margin: 42px 0 0; padding-left: 20px; border-left: 2px solid var(--gb-gold-principal); color: rgba(244,239,230,.86); font-size: clamp(22px, 2.2vw, 34px); line-height: 1.08; letter-spacing: -.035em; }
+.portfolio-rest .closing-quote small { display: block; margin-top: 12px; color: rgba(244,239,230,.52); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; }
+
+.portfolio-rest #about { background: linear-gradient(120deg, #fffdf8, #f4efe6); }
+.portfolio-rest .about-photo { box-shadow: 18px 18px 0 rgba(205,164,108,.16); }
+.portfolio-rest #resume { background: linear-gradient(120deg, #e9decd, #f5eee5); }
+.portfolio-rest .resume-card { background: rgba(255,255,255,.85); }
+.portfolio-rest #contact { background: linear-gradient(112deg, #0d1b2a, #15334a 58%, #0b2235); }
+.portfolio-rest .cta h2 { color: var(--gb-ivory); }
+.portfolio-rest .cta-photo { box-shadow: 18px 18px 0 rgba(205,164,108,.16); }
+.portfolio-rest .btn.gold { background: linear-gradient(105deg, var(--gb-gold-light), var(--gb-gold-principal)); }
+.portfolio-rest .footerline { align-items: center; }
+.portfolio-rest .footer-lockup { display: inline-flex; align-items: center; margin-left: 12px; }
+.portfolio-rest .footer-logo { width: 148px; }
+
+@media (max-width: 1220px) {
+  .site-header { grid-template-columns: minmax(190px, 1fr) auto minmax(160px, 1fr); padding-inline: 4%; }
+  .site-nav { gap: 14px; }
+  .site-header .brand-full { width: 200px; }
+  .hero-copy { width: 40%; }
+  .portfolio-rest .practice-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 980px) {
+  .site-header { display: flex; min-height: 82px; padding: 7px 6% 0; }
+  .site-header > a { margin: 0; }
+  .site-header .brand-full { width: 188px; }
+  .site-header .brand-monogram { width: 40px; height: 40px; }
+  .mobile-nav-toggle { display: block; order: 3; margin-left: auto; }
+  .site-nav { position: absolute; top: 100%; left: 0; right: 0; display: none !important; flex-direction: column; align-items: stretch; gap: 0; padding: 14px 7% 20px; background: rgba(13,27,42,.98); border-top: 1px solid rgba(233,195,138,.12); border-bottom: 1px solid rgba(233,195,138,.22); box-shadow: 0 18px 30px rgba(0,0,0,.30); white-space: normal; }
+  .site-nav.mobile-open { display: flex !important; }
+  .site-nav > a,
+  .nav-practice-wrap { width: 100%; min-height: 42px; }
+  .site-nav > a { display: flex !important; align-items: center; padding: 10px 0; }
+  .site-nav .languages { display: flex !important; gap: 18px; margin: 8px 0 0; padding-top: 13px; border-top: 1px solid rgba(255,255,255,.13); }
+  .nav-practice-wrap { display: grid; grid-template-columns: 1fr 42px; gap: 0; align-items: center; }
+  .nav-practice-wrap .nav-practice-link { width: auto; }
+  .nav-submenu-toggle { width: 42px; height: 42px; justify-self: end; }
+  .nav-submenu { position: static; grid-column: 1 / -1; min-width: 0; margin: 0 0 8px; padding: 4px 0 4px 14px; border: 0; border-left: 1px solid rgba(233,195,138,.38); box-shadow: none; opacity: 1; pointer-events: none; transform: none; display: none; background: transparent; }
+  .nav-submenu.is-open { display: grid; pointer-events: auto; }
+  .nav-submenu a { padding: 9px 10px; }
+  body.scrolled .site-header { min-height: 74px; }
+  .hero-copy { top: 18%; width: 52%; }
+  .hero-copy h1 { font-size: clamp(50px, 5.9vw, 76px); }
+  .portfolio-rest .wrap { width: min(100% - 44px, 1180px); }
+  .portfolio-rest .practice-grid { grid-template-columns: repeat(2, 1fr); }
+  .portfolio-rest .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* The supplied subject is a full transparent canvas. On a narrow viewport it
+     must be contained as a canvas, otherwise object-fit:cover magnifies the
+     transparent margins and clips Giovanni/chair. */
+  .hero .layer-subject { transform: none; }
+  .hero .layer-subject .subject {
+    position: absolute;
+    inset: auto clamp(0px, 13vw, 100px) 16px auto;
+    width: clamp(620px, 117vw, 900px);
+    height: auto;
+    max-width: none;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero { min-height: 760px; height: max(100svh, 760px); }
+  .hero .layer-background .background { object-position: 66% center; }
+  .hero .layer-subject { transform: none; }
+  .hero .layer-subject .subject {
+    inset: auto 0 32px auto;
+    width: clamp(620px, 159vw, 700px);
+  }
+  .hero .layer-foreground { transform: translateY(4%); }
+  .hero .layer-path,
+  .hero .layer-rear,
+  .hero .layer-front-panels,
+  .hero .light-path-endpoint { display: none; }
+  .site-header { min-height: 74px; padding-inline: 7%; }
+  .site-header .brand-full { width: 154px; }
+  .site-header .brand-monogram { width: 36px; height: 36px; }
+  .hero-copy { top: 17%; left: 7%; width: 74%; }
+  .hero-copy .eyebrow { margin-bottom: 18px; font-size: 9px; letter-spacing: .22em; white-space: nowrap; }
+  .hero-copy h1 { font-size: clamp(46px, 12.3vw, 58px); line-height: .94; letter-spacing: -.07em; }
+  .hero-copy .support { max-width: 100%; margin-top: 24px; font-size: 15px; line-height: 1.45; }
+  .ticker { height: 62px; min-height: 62px; }
+  .ticker-label, .signature { display: none; }
+  .ticker-track { font-size: 10px; }
+  .remote-work { min-height: 0; }
+  .remote-grid { grid-template-columns: 1fr; position: relative; }
+  .remote-media { min-height: 420px; height: 58svh; padding: 22px 7vw; }
+  .remote-photo { object-position: 50% 29%; }
+  .remote-copy { padding: 60px 7% 52px; }
+  .remote-title { font-size: clamp(42px, 11vw, 56px); }
+  .remote-evidence { grid-template-columns: 1fr; }
+  .remote-evidence-item + .remote-evidence-item { padding-left: 0; border-left: 0; border-top: 1px solid rgba(248,245,239,.14); }
+  .portfolio-rest .wrap { width: min(100% - 28px, 1180px); }
+  .portfolio-rest .screen { padding: 62px 0; }
+  .portfolio-rest .practice-sequence::before { left: 16px; }
+  .portfolio-rest .practice-grid,
+  .portfolio-rest .proof-grid,
+  .portfolio-rest .moment-list { grid-template-columns: 1fr; }
+  .portfolio-rest .practice-tile { min-height: 132px; }
+  .human-proof-chapter::after { right: -18%; top: 6%; width: 62vw; height: 62vw; }
+  .portfolio-rest .closing-quote { margin-top: 30px; font-size: 24px; }
+  .portfolio-rest .footerline { align-items: flex-start; flex-direction: column; }
+  .portfolio-rest .footer-lockup { margin: 10px 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .ticker-track { transform: none !important; }
+}
+
+/* The approved ticker closes the Hero viewport on desktop/tablet. */
+@media (min-width: 681px) {
+  .hero {
+    height: 100svh;
+    min-height: 100svh;
+    max-height: none;
+  }
+}
+
+/* Hero-only Cumbuco balance: keep Giovanni fixed, bring the connected panels
+   back into the legacy Hero relationship, and leave Remote's cream transition
+   out of this section. */
+@media (min-width: 921px) {
+  /* Keep the desktop Hero tied to the source canvas aspect ratio. The
+     viewport height must not pull the subject and desk toward the camera. */
+  .hero {
+    height: max(720px, 56.28vw);
+    min-height: 720px;
+  }
+
+  .hero .panel-from {
+    /* Re-align to the approved legacy Hero balance around the subject. */
+    top: 20%;
+    left: 39.05%;
+    width: 17.35%;
+  }
+  .hero .panel-to {
+    top: 4.7%;
+    /* Lift the visible glass edge to the tagged upper anchor while preserving the trajectory. */
+    right: 10.9%;
+    width: 17.2%;
+  }
+}
+
+@media (min-width: 681px) and (max-width: 920px) {
+  .hero .panel-from { left: 38%; width: 19%; }
+  .hero .panel-to { right: 0.8%; width: 19%; }
+}
+
+.hero .stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  /* Hero uses the navy left-to-right treatment only; the cream fade belongs to Remote. */
+  background:
+    radial-gradient(ellipse 38% 34% at 56% 28%, rgba(255,226,170,.12), transparent 72%),
+    linear-gradient(90deg, rgba(5,18,33,.60) 0%, rgba(5,18,33,.36) 38%, rgba(5,18,33,.12) 70%, transparent 100%);
+}
+
+/* Keep the approved endpoint readable at the upper-left edge of To Progress,
+   without placing the bloom over the panel title. */
+@media (min-width: 921px) {
+  .hero .stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    background: radial-gradient(
+      circle at 74.8% 20.8%,
+      rgba(255, 246, 194, .96) 0,
+      rgba(255, 211, 104, .62) .9%,
+      rgba(255, 186, 72, .18) 2.8%,
+      transparent 6%
+    );
+  }
+}
+
+/* Keep the Cumbuco sky, sun and kites readable beneath the copy. */
+.hero .layer-background .atmosphere {
+  background:
+    radial-gradient(ellipse 53% 82% at 12% 43%, rgba(2,14,29,.58) 0%, rgba(2,14,29,.25) 48%, transparent 100%),
+    linear-gradient(90deg, rgba(2,11,24,.46) 0%, rgba(2,13,26,.22) 36%, rgba(2,10,19,.06) 68%, transparent 100%),
+    linear-gradient(180deg, rgba(1,7,15,.10), transparent 24%, rgba(1,7,12,.08) 100%);
+}
+
+/* Hero typography/header pass: preserve the subject and make the copy breathe. */
+@media (min-width: 921px) {
+  .hero-copy {
+    left: 6.6%;
+    width: min(38%, 640px);
+  }
+  .hero-copy h1 {
+    font-size: clamp(58px, 6vw, 100px);
+    font-weight: 350;
+    letter-spacing: -.07em;
+  }
+  .hero-copy .support {
+    max-width: 640px;
+    height: auto;
+    margin-top: 26px;
+    color: rgba(249,247,242,.92);
+    font-size: clamp(15px, .9vw, 17px);
+    line-height: 1.4;
+    background: none;
+    box-shadow: none;
+  }
+  .site-nav .languages {
+    position: absolute;
+    top: 50%;
+    right: 5.2%;
+    margin: 0;
+    transform: translateY(-50%);
+  }
+  body.scrolled .site-header {
+    min-height: 104px;
+    padding-top: 8px;
+    border-bottom-color: transparent;
+    background: linear-gradient(180deg, rgba(4,13,24,.48), transparent);
+    box-shadow: none;
+  }
+}
+
+/* Make the existing trajectory read as one rising connection: Automation -> From -> To. */
+@media (min-width: 921px) {
+  .hero .layer-path .light-path {
+    left: 33%;
+    top: 0%;
+    width: 45.2%;
+    height: auto;
+    object-fit: contain;
+    transform: scaleY(1.25);
+    transform-origin: left top;
+  }
+  .hero .light-path-endpoint {
+    left: 74.8%;
+    top: 20.8%;
+    width: clamp(90px, 9vw, 170px);
+  }
+}
+
+@media (min-width: 681px) and (max-width: 920px) {
+}
+
+.ticker {
+  /* The ticker is a translucent navy/grey glass strip; the Hero scene must remain visible through it. */
+  background: rgba(49,62,76,.10);
+  border-top-color: rgba(244,239,230,.14);
+  backdrop-filter: blur(8px) saturate(104%);
+  -webkit-backdrop-filter: blur(8px) saturate(104%);
+}
+
+/* The user-supplied desk is a wide transparent strip, already composed for
+   the viewport. Anchor it to the bottom without stretching its perspective. */
+.hero .layer-foreground { transform: none !important; }
+.hero .layer-foreground .foreground {
+  inset: auto 0 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  max-width: none !important;
+  object-fit: contain !important;
+  object-position: center bottom !important;
+}
+
+@media (min-width: 681px) {
+  /* Keep the supplied work objects above the ticker. */
+  .hero .layer-foreground .foreground { object-position: center bottom; }
+
+  /* Soften the unrelated lower-left planter in the supplied balcony photo;
+     this is a feathered veil, not a hard block, so the navy scene still reads
+     continuously behind the copy. */
+  .hero .layer-background::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 18% 44% at 0% 100%, rgba(7, 21, 36, .98) 0%, rgba(7, 21, 36, .72) 42%, transparent 78%);
+  }
+
+  /* The generated clean workstation is already plant-free and spans the full
+     canvas; keep it intact so the desk reads edge to edge. */
+  .hero .layer-foreground .foreground { clip-path: none; z-index: 1; }
+}
+
+@media (max-width: 680px) {
+  .hero-copy .support {
+    height: auto;
+    background: none;
+    box-shadow: none;
+  }
+}
+
+/* Universal rhythm pass: keep chapter transitions compact while preserving
+   enough room for the content to breathe. */
+.portfolio-rest .screen {
+  padding-block: clamp(48px, 4vw, 64px);
+}
+.portfolio-rest .practice-overview { padding-bottom: 48px; }
+.human-proof-chapter #capability-expansion { padding-bottom: 44px; }
+.human-proof-chapter #highlights { padding-top: 40px; }
+
+@media (max-width: 1050px) {
+  .portfolio-rest .screen { padding-block: 52px; }
+  .portfolio-rest .practice-overview { padding-bottom: 42px; }
+}
+
+@media (max-width: 720px) {
+  .portfolio-rest .screen { padding-block: 38px; }
+  .portfolio-rest .practice-overview { padding-bottom: 34px; }
+  .human-proof-chapter #capability-expansion { padding-bottom: 32px; }
+  .human-proof-chapter #highlights { padding-top: 30px; }
+}
