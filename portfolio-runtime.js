@@ -336,7 +336,7 @@
   function removeSceneCTAs() {
     $$('.site-header .action, .hero .buttons, .hero > .quote').forEach(element => element.remove());
     const footerLogo = $('.footer-logo');
-    if (footerLogo) footerLogo.src = 'assets/brand/GIOVANNI_BARCELOS_WORDMARK_USER_20260921.png';
+    if (footerLogo) footerLogo.src = 'assets/brand/GIOVANNI_BARCELOS_WORDMARK_ACTIVATED_20260922.png';
   }
 
   function setupSubmenu() {
