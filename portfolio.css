@@ -95,6 +95,11 @@ body { min-width: 320px; overflow-x: hidden; background: var(--gb-petroleum); }
 .hero .layer-foreground .foreground,
 .hero .layer-background .background { object-fit: cover; object-position: center; }
 .hero .layer-background .background { object-position: 50% 50%; }
+.hero .layer-background .background-table-plant-cleanup {
+  /* Reveal only the edited coffee-table area; the canonical veranda background remains underneath. */
+  -webkit-mask-image: radial-gradient(ellipse 12% 12% at 75.5% 66%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 12% 12% at 75.5% 66%, #000 60%, transparent 100%);
+}
 .hero .layer-path .light-path { left: 31.5%; top: 7.8%; width: 53.2%; }
 .hero .light-path-endpoint { left: 83.7%; top: 13.6%; }
 .hero .panel { filter: drop-shadow(0 18px 28px rgba(0,0,0,.24)); }
@@ -480,11 +485,21 @@ body.scrolled .site-header { border-bottom-color: transparent; }
    back into the legacy Hero relationship, and leave Remote's cream transition
    out of this section. */
 @media (min-width: 921px) {
-  /* Keep the desktop Hero tied to the source canvas aspect ratio. The
-     viewport height must not pull the subject and desk toward the camera. */
+  /* The ticker is the Hero's fold: the section ends exactly at the viewport,
+     regardless of a wide/short window ratio. */
   .hero {
-    height: max(720px, 56.28vw);
-    min-height: 720px;
+    height: 100svh;
+    min-height: 100svh;
+    max-height: 100svh;
+  }
+
+  /* Keep Giovanni on the same width-scaled scene canvas as the desk. The
+     viewport may crop the scene boundary, but must not rescale the subject
+     independently of the foreground table. Both planes stay bottom-anchored. */
+  .hero .layer-subject {
+    top: auto;
+    bottom: 0;
+    height: 56.28vw;
   }
 
   .hero .panel-from {
