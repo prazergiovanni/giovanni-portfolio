@@ -1740,3 +1740,9 @@ body.scrolled .site-header {
   justify-self: center;
   transform: translateX(clamp(10px, 2vw, 30px));
 }
+
+@media (min-width: 981px) {
+  .site-header > a {
+    transform: translateX(-2.76vw);
+  }
+}
