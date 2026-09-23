@@ -205,7 +205,7 @@
   function applyPanels(lang) {
     const sources = panelSources[lang] || panelSources.en;
     const alts = panelAlt[lang] || panelAlt.en;
-    $$('.panel[data-panel-key]').forEach(panel => {
+    $$('[data-panel-key]').forEach(panel => {
       const key = panel.dataset.panelKey;
       panel.src = sources[key] || panel.src;
       panel.alt = alts[key] || panel.alt;
@@ -376,7 +376,51 @@
   }
 
   function setupLanguageControls() {
-    $$('[data-setlang]').forEach(button => button.addEventListener('click', () => requestAnimationFrame(() => applyLocale(button.dataset.setlang))));
+    let pendingSwitch = 0;
+    $$('[data-setlang]').forEach(button => button.addEventListener('click', async event => {
+      event.preventDefault();
+      const target = button.dataset.setlang;
+      if (!langs.includes(target) || target === currentLanguage()) return;
+
+      const switchId = ++pendingSwitch;
+      const localeSources = panelSources[target] || panelSources.en;
+      const visiblePanels = $$('[data-panel-key]')
+        .map(panel => localeSources[panel.dataset.panelKey])
+        .filter(Boolean);
+      preloadPanels(target);
+      await Promise.allSettled(visiblePanels.map(async src => {
+        const image = new Image();
+        image.src = src;
+        if (typeof image.decode === 'function') await image.decode();
+        else if (!image.complete) await new Promise(resolve => {
+          image.onload = resolve;
+          image.onerror = resolve;
+        });
+      }));
+      if (switchId !== pendingSwitch) return;
+
+      const marker = window.innerHeight * .34;
+      const sections = $$('main section[id]');
+      const anchor = sections.find(section => {
+        const rect = section.getBoundingClientRect();
+        return rect.top <= marker && rect.bottom > marker;
+      }) || sections.reduce((nearest, section) => {
+        if (!nearest) return section;
+        const top = Math.abs(section.getBoundingClientRect().top - marker);
+        const nearestTop = Math.abs(nearest.getBoundingClientRect().top - marker);
+        return top < nearestTop ? section : nearest;
+      }, null);
+      const anchorTop = anchor?.getBoundingClientRect().top;
+
+      applyLocale(target);
+      requestAnimationFrame(() => {
+        if (!anchor?.isConnected || anchorTop === undefined) return;
+        const correction = anchor.getBoundingClientRect().top - anchorTop;
+        if (Math.abs(correction) > 1) {
+          window.scrollTo({ top: Math.max(0, window.scrollY + correction), behavior: 'instant' });
+        }
+      });
+    }));
   }
 
   function setupMobileMenuClose() {
