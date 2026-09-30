@@ -202,6 +202,40 @@
     else element.textContent = value;
   }
 
+  function syncHeroWordmarkIllumination({ animate = false } = {}) {
+    const automation = $('.hero-copy #hero-title > .gold');
+    if (!automation) return;
+
+    const wordmarkText = automation.textContent || '';
+    let light = automation.querySelector('.hero-wordmark-light');
+    if (!light) {
+      light = document.createElement('span');
+      light.className = 'hero-wordmark-light';
+      light.setAttribute('aria-hidden', 'true');
+      automation.appendChild(light);
+    }
+    light.textContent = wordmarkText;
+    automation.classList.remove('hero-wordmark-illumination', 'hero-wordmark-illumination-complete');
+    if (animate) {
+      void automation.offsetWidth;
+      automation.classList.add('hero-wordmark-illumination');
+    } else {
+      automation.classList.add('hero-wordmark-illumination-complete');
+    }
+  }
+
+  function replayHeroWordmarkSweep() {
+    const eyebrow = $('.hero-copy .eyebrow[data-i18n="hero.kicker"]');
+
+    if (eyebrow) {
+      eyebrow.classList.remove('hero-eyebrow-reflection');
+      void eyebrow.offsetWidth;
+      eyebrow.classList.add('hero-eyebrow-reflection');
+    }
+
+    syncHeroWordmarkIllumination({ animate: true });
+  }
+
   function applyPanels(lang) {
     const sources = panelSources[lang] || panelSources.en;
     const alts = panelAlt[lang] || panelAlt.en;
@@ -222,7 +256,7 @@
     if (image) image.alt = lang === 'pt' ? 'Giovanni Barcelos organizando um fluxo de produção de vídeo em uma lousa' : lang === 'es' ? 'Giovanni Barcelos organizando un flujo de producción de video en una pizarra' : 'Giovanni Barcelos organizing a video production workflow on a whiteboard';
   }
 
-  function applyLocale(lang) {
+  function applyLocale(lang, options = {}) {
     const safe = langs.includes(lang) ? lang : 'en';
     const values = text[safe] || text.en;
     document.documentElement.lang = safe === 'pt' ? 'pt-BR' : safe;
@@ -239,18 +273,340 @@
     $$('[data-final-alt]').forEach(element => { const value = values[element.dataset.finalAlt]; if (value !== undefined) element.alt = value; });
     applyVideo(safe);
     applyPanels(safe);
+    if (options.animateHero !== false) replayHeroWordmarkSweep();
+    else syncHeroWordmarkIllumination();
     try { localStorage.setItem('gb-lang', safe); } catch (_) {}
     window.GIOVANNI_FINAL_LANGUAGE = safe;
   }
 
-  function preloadPanels(lang = currentLanguage()) {
+  function ensureImagePreload(href, priority = 'low') {
+    if (!href || $(`link[rel="preload"][as="image"][href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'image';
+    link.href = href;
+    link.setAttribute('fetchpriority', priority);
+    document.head.appendChild(link);
+  }
+
+  function preloadPanels(lang = currentLanguage(), priority = 'high') {
     const locale = panelSources[lang] || panelSources.en;
-    Object.values(locale).forEach(href => {
-      if ($(`link[rel="preload"][href="${href}"]`)) return;
-      const link = document.createElement('link');
-      link.rel = 'preload'; link.as = 'image'; link.href = href;
-      document.head.appendChild(link);
+    Object.values(locale).forEach(href => ensureImagePreload(href, priority));
+  }
+
+  function preloadAllPanels() {
+    const active = currentLanguage();
+    Object.entries(panelSources).forEach(([lang, locale]) => {
+      const priority = lang === active ? 'high' : 'low';
+      Object.values(locale).forEach(href => ensureImagePreload(href, priority));
     });
+  }
+
+  function waitForImage(image) {
+    if (!image) return Promise.resolve();
+    return new Promise(resolve => {
+      let settled = false;
+      const finish = () => {
+        if (settled) return;
+        settled = true;
+        if (typeof image.decode === 'function') image.decode().catch(() => {}).finally(resolve);
+        else resolve();
+      };
+      if (image.complete) finish();
+      else {
+        image.addEventListener('load', finish, { once: true });
+        image.addEventListener('error', finish, { once: true });
+      }
+    });
+  }
+
+  function nextPaint() {
+    return new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  }
+
+  function revealHeroWhenReady() {
+    const hero = $('.hero');
+    if (!hero) return;
+    const criticalImages = $$('.layer-background img, .layer-rear img, .layer-path img, .layer-chair img, .layer-subject img, .layer-subject-occlusion img, .layer-foreground img, .layer-better-panel img');
+    const decoded = Promise.all(criticalImages.map(waitForImage));
+    const safety = new Promise(resolve => setTimeout(resolve, 1800));
+    Promise.race([decoded, safety]).then(() => {
+      requestAnimationFrame(() => {
+        hero.classList.remove('hero-assets-pending');
+        hero.classList.add('hero-assets-ready');
+      });
+    });
+  }
+
+  function setupHeroLightPathMesh() {
+    const stage = $('.hero .stage');
+    const source = $('.hero .layer-path > .light-path:not(.light-path-optical)');
+    const canvas = $('.hero .light-path-mesh-reflowed');
+    if (!stage || !source || !canvas || !window.CanvasRenderingContext2D) return;
+
+    const segments = [
+      [[11.23, 55.54], [20.1, 55.1], [27.7, 54.45], [32.69, 53.62]],
+      [[32.69, 53.62], [34.55, 51.1], [36.55, 46.2], [38, 44]],
+      [[38, 44], [45.1, 42.45], [53.2, 42.5], [60.88, 42.53]],
+      [[60.88, 42.53], [65.1, 40.4], [68.25, 34.2], [70.13, 30.09]],
+      [[70.13, 30.09], [75.2, 24.4], [80.05, 16.45], [84.21, 11.76]]
+    ];
+    const cubic = (a, b, c, d, t) => {
+      const mt = 1 - t;
+      return [
+        mt * mt * mt * a[0] + 3 * mt * mt * t * b[0] + 3 * mt * t * t * c[0] + t * t * t * d[0],
+        mt * mt * mt * a[1] + 3 * mt * mt * t * b[1] + 3 * mt * t * t * c[1] + t * t * t * d[1]
+      ];
+    };
+    const samples = [];
+    segments.forEach(segment => {
+      for (let i = 0; i < 64; i += 1) samples.push(cubic(...segment, i / 64));
+    });
+    samples.push(segments.at(-1)[3]);
+    const lengths = [0];
+    for (let i = 1; i < samples.length; i += 1) {
+      lengths[i] = lengths[i - 1] + Math.hypot(samples[i][0] - samples[i - 1][0], samples[i][1] - samples[i - 1][1]);
+    }
+    const totalLength = lengths.at(-1);
+    const pointAt = progress => {
+      const target = Math.max(0, Math.min(1, progress)) * totalLength;
+      let hi = 1;
+      while (hi < lengths.length && lengths[hi] < target) hi += 1;
+      const lo = Math.max(0, hi - 1);
+      const span = lengths[hi] - lengths[lo] || 1;
+      const mix = (target - lengths[lo]) / span;
+      const a = samples[lo];
+      const b = samples[Math.min(hi, samples.length - 1)];
+      return [a[0] + (b[0] - a[0]) * mix, a[1] + (b[1] - a[1]) * mix];
+    };
+
+    const drawTriangle = (ctx, image, sourceTriangle, destinationTriangle, dpr) => {
+      const [s0, s1, s2] = sourceTriangle;
+      const [d0, d1, d2] = destinationTriangle;
+      const determinant = (s1[0] - s0[0]) * (s2[1] - s0[1]) - (s2[0] - s0[0]) * (s1[1] - s0[1]);
+      if (Math.abs(determinant) < 0.001) return;
+      const a = ((d1[0] - d0[0]) * (s2[1] - s0[1]) - (d2[0] - d0[0]) * (s1[1] - s0[1])) / determinant;
+      const c = ((s1[0] - s0[0]) * (d2[0] - d0[0]) - (s2[0] - s0[0]) * (d1[0] - d0[0])) / determinant;
+      const b = ((d1[1] - d0[1]) * (s2[1] - s0[1]) - (d2[1] - d0[1]) * (s1[1] - s0[1])) / determinant;
+      const d = ((d2[1] - d0[1]) * (s1[0] - s0[0]) - (d1[1] - d0[1]) * (s2[0] - s0[0])) / determinant;
+      const e = d0[0] - a * s0[0] - c * s0[1];
+      const f = d0[1] - b * s0[0] - d * s0[1];
+      const minX = Math.floor(Math.min(s0[0], s1[0], s2[0]));
+      const minY = Math.floor(Math.min(s0[1], s1[1], s2[1]));
+      const maxX = Math.ceil(Math.max(s0[0], s1[0], s2[0]));
+      const maxY = Math.ceil(Math.max(s0[1], s1[1], s2[1]));
+      const width = Math.max(1, maxX - minX);
+      const height = Math.max(1, maxY - minY);
+      ctx.save();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.beginPath();
+      ctx.moveTo(d0[0], d0[1]);
+      ctx.lineTo(d1[0], d1[1]);
+      ctx.lineTo(d2[0], d2[1]);
+      ctx.closePath();
+      ctx.clip();
+      ctx.setTransform(dpr * a, dpr * b, dpr * c, dpr * d, dpr * e, dpr * f);
+      ctx.drawImage(image, minX, minY, width, height, minX, minY, width, height);
+      ctx.restore();
+    };
+
+    const draw = () => {
+      if (!source.complete || !source.naturalWidth || !source.naturalHeight || !stage.clientWidth || !stage.clientHeight) return;
+      const width = stage.clientWidth;
+      const height = stage.clientHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = String(width) + 'px';
+      canvas.style.height = String(height) + 'px';
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.globalCompositeOperation = 'source-over';
+
+      const sourceWidth = source.naturalWidth;
+      const sourceHeight = source.naturalHeight;
+      const sourceSpan = sourceWidth * .99;
+      let screenLength = 0;
+      for (let i = 1; i < samples.length; i += 1) {
+        screenLength += Math.hypot(
+          (samples[i][0] - samples[i - 1][0]) * width / 100,
+          (samples[i][1] - samples[i - 1][1]) * height / 100
+        );
+      }
+      const normalScale = screenLength / sourceSpan * 1.1;
+      const offsetY = height * .05;
+      const centerlineY = progress => sourceHeight * (.8 - .48 * Math.pow(progress, 1.35));
+      const vertex = (progress, vertical) => {
+        const point = pointAt(progress);
+        const before = pointAt(Math.max(0, progress - .002));
+        const after = pointAt(Math.min(1, progress + .002));
+        const tangentX = (after[0] - before[0]) * width / 100;
+        const tangentY = (after[1] - before[1]) * height / 100;
+        const tangentLength = Math.hypot(tangentX, tangentY) || 1;
+        const normalX = -tangentY / tangentLength;
+        const normalY = tangentX / tangentLength;
+        const sourceY = vertical * sourceHeight;
+        const relativeY = (sourceY - centerlineY(progress)) * normalScale;
+        return [
+          point[0] * width / 100 + normalX * relativeY,
+          point[1] * height / 100 + offsetY + normalY * relativeY
+        ];
+      };
+
+      const columns = 52;
+      const rows = 18;
+      for (let x = 0; x < columns; x += 1) {
+        const u0 = x / columns;
+        const u1 = (x + 1) / columns;
+        const sx0 = u0 * sourceSpan;
+        const sx1 = u1 * sourceSpan;
+        for (let y = 0; y < rows; y += 1) {
+          const v0 = y / rows;
+          const v1 = (y + 1) / rows;
+          const sy0 = v0 * sourceHeight;
+          const sy1 = v1 * sourceHeight;
+          const d00 = vertex(u0, v0);
+          const d10 = vertex(u1, v0);
+          const d01 = vertex(u0, v1);
+          const d11 = vertex(u1, v1);
+          drawTriangle(ctx, source, [[sx0, sy0], [sx1, sy0], [sx0, sy1]], [d00, d10, d01], dpr);
+          drawTriangle(ctx, source, [[sx1, sy0], [sx1, sy1], [sx0, sy1]], [d10, d11, d01], dpr);
+        }
+      }
+    };
+
+    if (source.complete && source.naturalWidth) draw();
+    else source.addEventListener('load', draw, { once: true });
+    window.addEventListener('resize', draw, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(draw).observe(stage);
+  }
+
+  function setupHeroLightPathRasterReflow() {
+    const source = $('.hero .layer-path > .light-path:not(.light-path-optical)');
+    const svg = $('.hero .light-path-raster-reflowed');
+    if (!source || !svg) return;
+
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const segments = [
+      [[11.23, 55.54], [20.1, 55.1], [27.7, 54.45], [32.69, 53.62]],
+      [[32.69, 53.62], [34.55, 51.1], [36.55, 46.2], [38, 44]],
+      [[38, 44], [45.1, 42.45], [53.2, 42.5], [60.88, 42.53]],
+      [[60.88, 42.53], [65.1, 40.4], [68.25, 34.2], [70.13, 30.09]],
+      [[70.13, 30.09], [75.2, 24.4], [80.05, 16.45], [84.21, 11.76]]
+    ];
+    const cubic = (a, b, c, d, t) => {
+      const mt = 1 - t;
+      return [
+        mt * mt * mt * a[0] + 3 * mt * mt * t * b[0] + 3 * mt * t * t * c[0] + t * t * t * d[0],
+        mt * mt * mt * a[1] + 3 * mt * mt * t * b[1] + 3 * mt * t * t * c[1] + t * t * t * d[1]
+      ];
+    };
+    const samples = [];
+    segments.forEach(segment => {
+      for (let i = 0; i < 52; i += 1) samples.push(cubic(...segment, i / 52));
+    });
+    samples.push(segments.at(-1)[3]);
+    const lengths = [0];
+    for (let i = 1; i < samples.length; i += 1) {
+      lengths[i] = lengths[i - 1] + Math.hypot(samples[i][0] - samples[i - 1][0], samples[i][1] - samples[i - 1][1]);
+    }
+    const totalLength = lengths.at(-1);
+    const pointAt = progress => {
+      const target = Math.max(0, Math.min(1, progress)) * totalLength;
+      let hi = 1;
+      while (hi < lengths.length && lengths[hi] < target) hi += 1;
+      const lo = Math.max(0, hi - 1);
+      const span = lengths[hi] - lengths[lo] || 1;
+      const mix = (target - lengths[lo]) / span;
+      const a = samples[lo];
+      const b = samples[Math.min(hi, samples.length - 1)];
+      return [a[0] + (b[0] - a[0]) * mix, a[1] + (b[1] - a[1]) * mix];
+    };
+
+    const build = () => {
+      if (!source.naturalWidth || !source.naturalHeight) return;
+      const width = source.naturalWidth;
+      const height = source.naturalHeight;
+      const href = source.currentSrc || source.src;
+      const sourceSpan = width * .98;
+      const sliceCount = 24;
+      const sourceStep = sourceSpan / sliceCount;
+      const scale = totalLength / sourceSpan;
+      svg.replaceChildren();
+
+      const defs = document.createElementNS(SVG_NS, 'defs');
+      const gradient = document.createElementNS(SVG_NS, 'linearGradient');
+      gradient.setAttribute('id', 'hero-light-path-raster-feather-gradient');
+      gradient.setAttribute('x1', '0');
+      gradient.setAttribute('x2', '1');
+      gradient.setAttribute('y1', '0');
+      gradient.setAttribute('y2', '0');
+      [['0', '0'], ['.16', '1'], ['.84', '1'], ['1', '0']].forEach(([offset, opacity]) => {
+        const stop = document.createElementNS(SVG_NS, 'stop');
+        stop.setAttribute('offset', offset);
+        stop.setAttribute('stop-color', '#fff');
+        stop.setAttribute('stop-opacity', opacity);
+        gradient.appendChild(stop);
+      });
+      const mask = document.createElementNS(SVG_NS, 'mask');
+      mask.setAttribute('id', 'hero-light-path-raster-feather');
+      mask.setAttribute('maskUnits', 'objectBoundingBox');
+      mask.setAttribute('maskContentUnits', 'objectBoundingBox');
+      const maskRect = document.createElementNS(SVG_NS, 'rect');
+      maskRect.setAttribute('x', '0');
+      maskRect.setAttribute('y', '0');
+      maskRect.setAttribute('width', '1');
+      maskRect.setAttribute('height', '1');
+      maskRect.setAttribute('fill', 'url(#hero-light-path-raster-feather-gradient)');
+      mask.appendChild(maskRect);
+      defs.appendChild(gradient);
+      defs.appendChild(mask);
+      svg.appendChild(defs);
+
+      for (let i = 0; i < sliceCount; i += 1) {
+        const sx = i * sourceStep;
+        const sw = Math.min(sourceStep * 1.86, width - sx);
+        const progress = Math.min(1, (sx + sw * .5) / sourceSpan);
+        const point = pointAt(progress);
+        const before = pointAt(Math.max(0, progress - .003));
+        const after = pointAt(Math.min(1, progress + .003));
+        const angle = Math.atan2(after[1] - before[1], after[0] - before[0]) * 180 / Math.PI;
+        const centerY = height * (.8 - .48 * Math.pow(progress, 1.35));
+        const cropRatio = progress > .84 ? .18 + ((progress - .84) / .16) * .16 : .18;
+        const cropHeight = height * cropRatio;
+        const cropTop = Math.max(0, Math.min(height - cropHeight, centerY - cropHeight * .5));
+        const targetWidth = sw * scale * 1.18;
+        const targetHeight = cropHeight * scale;
+        const slice = document.createElementNS(SVG_NS, 'svg');
+        slice.setAttribute('x', String(point[0] - targetWidth * .5));
+        slice.setAttribute('y', String(point[1] - targetHeight * .5 + 5));
+        slice.setAttribute('width', String(targetWidth));
+        slice.setAttribute('height', String(targetHeight));
+        slice.setAttribute('viewBox', `${sx} ${cropTop} ${sw} ${cropHeight}`);
+        slice.setAttribute('preserveAspectRatio', 'none');
+        slice.setAttribute('overflow', 'hidden');
+        slice.setAttribute('transform', `rotate(${angle} ${point[0]} ${point[1] + 5})`);
+
+        const image = document.createElementNS(SVG_NS, 'image');
+        image.setAttribute('href', href);
+        image.setAttribute('x', '0');
+        image.setAttribute('y', '0');
+        image.setAttribute('width', String(width));
+        image.setAttribute('height', String(height));
+        image.setAttribute('preserveAspectRatio', 'none');
+        image.setAttribute('mask', 'url(#hero-light-path-raster-feather)');
+        image.setAttribute('opacity', '.84');
+        slice.appendChild(image);
+        svg.appendChild(slice);
+      }
+    };
+
+    if (source.complete && source.naturalWidth) build();
+    else source.addEventListener('load', build, { once: true });
   }
 
   function setupTicker() {
@@ -336,7 +692,7 @@
   function removeSceneCTAs() {
     $$('.site-header .action, .hero .buttons, .hero > .quote').forEach(element => element.remove());
     const footerLogo = $('.footer-logo');
-    if (footerLogo) footerLogo.src = 'assets/brand/GIOVANNI_BARCELOS_WORDMARK_ACTIVATED_20260922.png';
+    if (footerLogo) footerLogo.src = 'assets/optimized/brand/GIOVANNI_BARCELOS_WORDMARK_ACTIVATED_20260922.webp';
   }
 
   function setupSubmenu() {
@@ -387,7 +743,7 @@
       const visiblePanels = $$('[data-panel-key]')
         .map(panel => localeSources[panel.dataset.panelKey])
         .filter(Boolean);
-      preloadPanels(target);
+      preloadPanels(target, 'high');
       await Promise.allSettled(visiblePanels.map(async src => {
         const image = new Image();
         image.src = src;
@@ -412,7 +768,14 @@
       }, null);
       const anchorTop = anchor?.getBoundingClientRect().top;
 
-      applyLocale(target);
+      // Keep the current composition visible while the decoded locale is
+      // committed. CSS supplies a brief opacity easing instead of hiding the
+      // H1 and panels, which previously produced a visible blink.
+      document.documentElement.classList.add('language-switching');
+      applyLocale(target, { animateHero: false });
+      await nextPaint();
+      if (switchId !== pendingSwitch) return;
+      document.documentElement.classList.remove('language-switching');
       requestAnimationFrame(() => {
         if (!anchor?.isConnected || anchorTop === undefined) return;
         const correction = anchor.getBoundingClientRect().top - anchorTop;
@@ -440,14 +803,16 @@
     setupActiveNavigation();
     setupLanguageControls();
     setupMobileMenuClose();
-    preloadPanels();
-    const subject = $('.layer-subject .subject');
-    if (subject) subject.src = 'assets/optimized/layers/HERO_GIOVANNI_CHAIR_LOCKED.webp';
+    // Load only the active locale at startup. Other panel variants are
+    // decoded on demand before a language switch, keeping the first view
+    // lighter without reintroducing a visual swap.
+    preloadPanels(currentLanguage(), 'high');
     applyLocale(currentLanguage());
+    revealHeroWhenReady();
     window.GIOVANNI_FINAL_READY = true;
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot, { once: true });
+  if (document.readyState === 'loading' && !$('.hero')) document.addEventListener('DOMContentLoaded', boot, { once: true });
   else boot();
 })();
 

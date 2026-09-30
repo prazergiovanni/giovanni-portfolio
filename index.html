@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Giovanni Barcelos — systems, operations and automation." />
-  <title>Giovanni Barcelos — Operations, Systems &amp; Automation</title>
+  <meta name="description" content="I turn operational bottlenecks into practical systems, workflows and scalable processes." />
+  <title>Giovanni Barcelos | Operations, Systems &amp; Automation</title>
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://giovanni.sejasagaz.com/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Giovanni Barcelos — Operations, Systems &amp; Automation" />
-  <meta property="og:description" content="Giovanni Barcelos — systems, operations and automation." />
+  <meta property="og:title" content="Giovanni Barcelos | Operations, Systems &amp; Automation" />
+  <meta property="og:description" content="I turn operational bottlenecks into practical systems, workflows and scalable processes." />
   <meta property="og:url" content="https://giovanni.sejasagaz.com/" />
-  <meta property="og:image" content="https://giovanni.sejasagaz.com/assets/social/giovanni-barcelos-og.79ecc382a6.jpg" />
+  <meta property="og:image" content="https://giovanni.sejasagaz.com/assets/social/portfolio.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Giovanni Barcelos — Operations, Systems &amp; Automation" />
-  <meta name="twitter:description" content="Giovanni Barcelos — systems, operations and automation." />
-  <meta name="twitter:image" content="https://giovanni.sejasagaz.com/assets/social/giovanni-barcelos-og.79ecc382a6.jpg" />
+  <meta name="twitter:title" content="Giovanni Barcelos | Operations, Systems &amp; Automation" />
+  <meta name="twitter:description" content="I turn operational bottlenecks into practical systems, workflows and scalable processes." />
+  <meta name="twitter:image" content="https://giovanni.sejasagaz.com/assets/social/portfolio.png" />
 
   <style>
     :root {
@@ -70,16 +70,18 @@
     /* The stage is a physical scene: each group owns one depth plane. */
     .layer-background { z-index: 1; }
     .layer-rear { z-index: 2; }
-    .layer-path { z-index: 3; }
+    .layer-from-panel { z-index: 9; }
+    .layer-path { z-index: 9; }
     .layer-subject {
-      z-index: 4;
+      z-index: 10;
       transform: scale(.84);
       transform-origin: 66% 100%;
     }
     .layer-foreground { z-index: 5; }
     .layer-front-panels { z-index: 6; }
+    .layer-atmosphere { z-index: 8; }
 
-    .layer-background .atmosphere {
+    .layer-atmosphere .atmosphere {
       position: absolute;
       inset: 0;
       background:
@@ -451,7 +453,7 @@
       .hero { min-height: 860px; height: 178vw; max-height: 1000px; }
       .stage { height: 100%; }
       .background, .subject, .foreground { object-position: 63% center; }
-      .layer-background .atmosphere {
+      .layer-atmosphere .atmosphere {
         background:
           linear-gradient(180deg, rgba(2, 12, 25, .88) 0%, rgba(2, 12, 25, .55) 39%, rgba(2, 9, 17, .18) 74%),
           radial-gradient(ellipse 100% 46% at 18% 20%, rgba(2, 14, 29, .72), transparent 100%);
@@ -465,7 +467,7 @@
       .support { max-width: 360px; margin: 25px 0 28px; font-size: 16px; }
       .buttons { flex-direction: column; width: 220px; gap: 11px; }
       .button { min-width: 220px; min-height: 52px; }
-      .layer-path, .layer-rear, .layer-front-panels, .quote { display: none; }
+      .layer-path, .layer-rear, .layer-from-panel, .layer-subject-occlusion, .layer-front-panels, .quote { display: none; }
       .ticker { min-height: 62px; height: 8%; }
       .ticker-label, .signature { display: none; }
       .ticker-track { font-size: 11px; }
@@ -497,51 +499,129 @@ body.scrolled .hero{overflow:visible;z-index:100}
 @media(max-width:620px){.remote-copy{padding:58px 7% 44px}.remote-title{font-size:clamp(43px,13vw,60px)}.remote-body{font-size:15px}.remote-evidence{grid-template-columns:1fr}.remote-evidence-item+.remote-evidence-item{padding-left:0;border-left:0;border-top:1px solid rgba(248,245,239,.10)}.remote-signature i{display:none}.remote-signature{gap:10px 18px}}
 
 </style>
-  <link rel="stylesheet" href="portfolio.css?v=visual-20260922-final-polish" />
-  <link rel="preload" as="image" href="assets/optimized/layers/HERO_BACKGROUND_OWNER_CHAIR_20260922.png" fetchpriority="high" />
+  <link rel="stylesheet" href="portfolio.css?v=remote-panel-art-system-20260928-v67" />
+  <link rel="preload" as="image" href="assets/optimized/remote/REMOTE_MASTER_FOREGROUND_RIGHT_SHOULDER_20260928.webp" type="image/webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/optimized/layers/HERO_BACKGROUND_OWNER_CHAIR_20260922.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/optimized/layers/HERO_BACKGROUND_OWNER_CHAIR_TABLE_PLANT_REMOVED_20260922.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/layers/HERO_FOREGROUND_DESK_GPT_TABLE_COMPLETE_20260926.png" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/layers/HERO_GIOVANNI_OWNER_NO_CHAIR_20260925.png" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/layers/HERO_CHAIR_OWNER_BLUE_SEPARATE_20260925.png" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/optimized/effects/alternates/HERO_LIGHT_PATH_ORIGINAL_CLEAN.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/optimized/brand/GIOVANNI_BARCELOS_WORDMARK_ACTIVATED_20260922.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/optimized/brand/GIOVANNI_BARCELOS_MONOGRAM_ACTIVATED_20260922.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/optimized/panels/PANEL_FROM_COMPLEXITY_EN_GLASS.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/optimized/panels/PANEL_TO_PROGRESS_EN_GLASS.webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/optimized/panels/PANEL_BETTER_SYSTEMS_EN_GLASS.webp" fetchpriority="high" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <main id="main-content">
-  <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="stage" aria-hidden="true">
-      <div class="scene-layer layer-background" data-layer="background-office">
-        <img class="canvas-layer background" src="assets/optimized/layers/HERO_BACKGROUND_OWNER_CHAIR_20260922.png" alt="" fetchpriority="high" decoding="async" />
-        <img class="canvas-layer background background-table-plant-cleanup" src="assets/optimized/layers/HERO_BACKGROUND_OWNER_CHAIR_TABLE_PLANT_REMOVED_20260922.png" alt="" decoding="async" />
-        <div class="canvas-layer atmosphere"></div>
+  <section class="hero hero-assets-pending" id="top" aria-labelledby="hero-title">
+    <div class="stage">
+      <div class="scene-layer layer-background" data-layer="background-office" aria-hidden="true">
+        <img class="canvas-layer background" src="assets/optimized/layers/HERO_BACKGROUND_OWNER_CHAIR_20260922.webp" alt="" fetchpriority="high" decoding="async" />
+        <img class="canvas-layer background background-table-plant-cleanup" src="assets/optimized/layers/HERO_BACKGROUND_OWNER_CHAIR_TABLE_PLANT_REMOVED_20260922.webp" alt="" fetchpriority="high" decoding="async" />
       </div>
 
-      <div class="scene-layer layer-rear" data-layer="rear-panels">
-        <img class="panel panel-from" data-panel-key="from" src="assets/optimized/panels/PANEL_FROM_COMPLEXITY_EN_GLASS.webp" alt="From Complexity: Processes, People, Tools, Silos, Manual work" decoding="async" />
-        <img class="panel panel-to" data-panel-key="to" src="assets/optimized/panels/PANEL_TO_PROGRESS_EN_GLASS.webp" alt="To Progress: Clarity, Automation, Efficiency, Scalability, Freedom" decoding="async" />
+      <div class="scene-layer layer-rear" data-layer="rear-panels" aria-hidden="true">
+        <img class="panel panel-to" data-panel-key="to" src="assets/optimized/panels/PANEL_TO_PROGRESS_EN_GLASS.webp" alt="To Progress: Clarity, Automation, Efficiency, Scalability, Freedom" fetchpriority="high" decoding="async" />
       </div>
 
-      <div class="scene-layer layer-path" data-layer="gold-light-path">
-        <img class="light-path" src="assets/optimized/effects/alternates/HERO_LIGHT_PATH_ORIGINAL_CLEAN.webp" alt="" decoding="async" />
+      <div class="scene-layer layer-from-panel" data-layer="from-complexity-panel" aria-hidden="true">
+        <img class="panel panel-from" data-panel-key="from" src="assets/optimized/panels/PANEL_FROM_COMPLEXITY_EN_GLASS.webp" alt="From Complexity: Processes, People, Tools, Silos, Manual work" fetchpriority="high" decoding="async" />
+      </div>
+
+      <div class="scene-layer layer-path" data-layer="gold-light-path" aria-hidden="true">
+        <img class="light-path" src="assets/optimized/effects/alternates/HERO_LIGHT_PATH_ORIGINAL_CLEAN.webp" alt="" fetchpriority="high" decoding="async" />
+        <img class="light-path light-path-optical light-path-optical-a" src="assets/optimized/effects/alternates/HERO_LIGHT_PATH_ORIGINAL_CLEAN.webp" alt="" aria-hidden="true" decoding="async" />
+        <img class="light-path light-path-optical light-path-optical-b" src="assets/optimized/effects/alternates/HERO_LIGHT_PATH_ORIGINAL_CLEAN.webp" alt="" aria-hidden="true" decoding="async" />
+        <img class="light-path-restored" src="assets/optimized/effects/alternates/HERO_LIGHT_PATH_RESTORED_BELOW_AUTOMATION_20260926.png" alt="" aria-hidden="true" decoding="async" />
+        <canvas class="light-path-mesh-reflowed" aria-hidden="true"></canvas>
+        <svg class="light-path-raster-reflowed" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <svg class="light-path-annotation-effect" style="display:none !important;visibility:hidden !important" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <filter id="hero-light-path-annotation-blur" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation=".55" />
+            </filter>
+            <filter id="hero-light-path-annotation-body" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation=".08" />
+            </filter>
+            <linearGradient id="hero-light-path-annotation-gradient" x1="11.23" y1="55.54" x2="84.21" y2="11.76" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#ffd47a" />
+              <stop offset=".52" stop-color="#f0a83e" />
+              <stop offset="1" stop-color="#fff0ad" />
+            </linearGradient>
+            <linearGradient id="hero-light-path-annotation-ribbon" x1="11.23" y1="55.54" x2="84.21" y2="11.76" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#fff9d8" stop-opacity=".42" />
+              <stop offset=".16" stop-color="#ffd16d" stop-opacity=".96" />
+              <stop offset=".68" stop-color="#ffcf69" stop-opacity=".9" />
+              <stop offset="1" stop-color="#fff0ad" stop-opacity="1" />
+            </linearGradient>
+            <filter id="hero-light-path-annotation-organic" x="-18%" y="-45%" width="136%" height="190%" color-interpolation-filters="sRGB">
+              <feTurbulence type="fractalNoise" baseFrequency=".02 .12" numOctaves="2" seed="62" result="organic-noise" />
+              <feDisplacementMap in="SourceGraphic" in2="organic-noise" scale="1.25" xChannelSelector="R" yChannelSelector="G" />
+              <feGaussianBlur stdDeviation=".18" />
+            </filter>
+            <filter id="hero-light-path-annotation-ribbon-glow" x="-20%" y="-55%" width="140%" height="210%" color-interpolation-filters="sRGB">
+              <feGaussianBlur stdDeviation="1.8" />
+            </filter>
+            <filter id="hero-light-path-annotation-ribbon-body" x="-18%" y="-45%" width="136%" height="190%" color-interpolation-filters="sRGB">
+              <feGaussianBlur stdDeviation=".22" />
+            </filter>
+            <radialGradient id="hero-light-path-annotation-flare">
+              <stop offset="0" stop-color="#fffbe2" stop-opacity=".98" />
+              <stop offset=".22" stop-color="#ffe18a" stop-opacity=".76" />
+              <stop offset=".62" stop-color="#ffbc4e" stop-opacity=".24" />
+              <stop offset="1" stop-color="#ffbc4e" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <path class="light-path-annotation-mass" d="M 11.23 55.54 C 18.5 55.6 26.2 54.7 32.69 51.8 C 34.9 48.8 36.1 45.2 38 41.4 C 45.1 39.5 53.2 39.6 60.88 39.8 C 64.5 36.8 67.8 30.5 70.13 26.4 C 75.2 20 80.3 13.4 84.21 7.9 C 81 15.2 77.4 24.1 71 33.8 C 68.1 38.4 65 44.6 60.88 45.5 C 53.2 45.8 45.2 45.5 38.2 47.6 C 36.4 50.9 34.9 55.3 32.7 57.2 C 26.5 59.3 18.3 58.9 11.23 55.54 Z" />
+          <path class="light-path-annotation-ribbon" d="M 11.23 55.54 C 20.1 55.1 27.7 54.45 32.69 53.62 C 34.55 51.1 36.55 46.2 38 44 C 45.1 42.45 53.2 42.5 60.88 42.53 C 65.1 40.4 68.25 34.2 70.13 30.09 C 75.2 24.4 80.05 16.45 84.21 11.76" />
+          <path class="light-path-annotation-glow" d="M 11.23 55.54 C 20.1 55.1 27.7 54.45 32.69 53.62 C 34.55 51.1 36.55 46.2 38 44 C 45.1 42.45 53.2 42.5 60.88 42.53 C 65.1 40.4 68.25 34.2 70.13 30.09 C 75.2 24.4 80.05 16.45 84.21 11.76" />
+          <path class="light-path-annotation-body" d="M 11.23 55.54 C 20.1 55.1 27.7 54.45 32.69 53.62 C 34.55 51.1 36.55 46.2 38 44 C 45.1 42.45 53.2 42.5 60.88 42.53 C 65.1 40.4 68.25 34.2 70.13 30.09 C 75.2 24.4 80.05 16.45 84.21 11.76" />
+          <path class="light-path-annotation-core" d="M 11.23 55.54 C 20.1 55.1 27.7 54.45 32.69 53.62 C 34.55 51.1 36.55 46.2 38 44 C 45.1 42.45 53.2 42.5 60.88 42.53 C 65.1 40.4 68.25 34.2 70.13 30.09 C 75.2 24.4 80.05 16.45 84.21 11.76" />
+          <circle class="light-path-annotation-flare" cx="84.21" cy="11.76" r="1.75" />
+          <circle class="light-path-annotation-flare-core" cx="84.21" cy="11.76" r="1.12" />
+        </svg>
         <span class="light-path-endpoint" aria-hidden="true"></span>
       </div>
 
-      <div class="scene-layer layer-subject" data-layer="giovanni-subject">
-        <img class="canvas-layer subject" src="assets/optimized/layers/HERO_GIOVANNI_CHAIR_LOCKED.webp" alt="" decoding="async" />
+      <div class="scene-layer layer-chair" data-layer="owner-chair" aria-hidden="true">
+        <img class="chair" src="assets/layers/HERO_CHAIR_OWNER_BLUE_SEPARATE_20260925.png" alt="" fetchpriority="high" decoding="async" />
       </div>
 
-      <div class="scene-layer layer-foreground" data-layer="desk-and-objects">
-        <img class="canvas-layer foreground" src="assets/layers/HERO_FOREGROUND_CUMBUCO_DESK_USER_COMPOSITE_2172x724.png" alt="" decoding="async" />
+      <div class="scene-layer layer-subject" data-layer="giovanni-subject" aria-hidden="true">
+        <img class="canvas-layer subject" src="assets/layers/HERO_GIOVANNI_OWNER_NO_CHAIR_20260925.png" alt="" fetchpriority="high" decoding="async" />
       </div>
 
-      <div class="scene-layer layer-front-panels" data-layer="front-panels">
+      <div class="scene-layer layer-subject-occlusion" data-layer="giovanni-depth-occlusion" aria-hidden="true">
+        <img class="canvas-layer subject-occlusion" src="assets/layers/HERO_GIOVANNI_OWNER_NO_CHAIR_20260925.png" alt="" decoding="async" />
       </div>
 
-      <div class="scene-layer layer-better-panel" data-layer="better-systems-panel">
-        <img class="remote-better-panel" data-panel-key="better" src="assets/optimized/panels/PANEL_BETTER_SYSTEMS_EN_GLASS.webp" alt="Better Systems — Bigger Possibilities" decoding="async" />
+      <div class="scene-layer layer-foreground" data-layer="desk-and-objects" aria-hidden="true">
+        <img class="canvas-layer foreground" src="assets/layers/HERO_FOREGROUND_DESK_GPT_TABLE_COMPLETE_20260926.png" alt="" fetchpriority="high" decoding="async" />
       </div>
 
-    </div>
+      <div class="scene-layer layer-notebook" data-layer="hero-notebook" aria-hidden="true">
+        <img class="notebook" alt="" decoding="async" />
+      </div>
 
-    <div class="hero-copy" data-layer="hero-ui">
-      <p class="eyebrow" data-i18n="hero.kicker">SYSTEMS FOR A MORE HUMAN TOMORROW</p>
-      <h1 id="hero-title"><span data-i18n="hero.titleLine1">Operations,</span><span data-i18n="hero.titleLine2">Systems &amp;</span><span class="gold" data-i18n="hero.titleLine3">Automation</span></h1>
-      <p class="support" data-i18n="hero.support">I turn operational friction into practical systems that make work move.</p>
+      <div class="scene-layer layer-front-panels" data-layer="front-panels" aria-hidden="true">
+      </div>
+
+      <div class="scene-layer layer-better-panel" data-layer="better-systems-panel" aria-hidden="true">
+        <img class="remote-better-panel" data-panel-key="better" src="assets/optimized/panels/PANEL_BETTER_SYSTEMS_EN_GLASS.webp" alt="Better Systems — Bigger Possibilities" fetchpriority="high" decoding="async" />
+      </div>
+
+      <div class="scene-layer layer-atmosphere" data-layer="hero-atmosphere" aria-hidden="true">
+        <div class="canvas-layer atmosphere"></div>
+      </div>
+
+      <div class="hero-copy" data-layer="hero-ui">
+        <p class="eyebrow" data-i18n="hero.kicker">SYSTEMS FOR A MORE HUMAN TOMORROW</p>
+        <h1 id="hero-title"><span data-i18n="hero.titleLine1">Operations,</span><span data-i18n="hero.titleLine2">Systems &amp;</span><span class="gold" data-i18n="hero.titleLine3">Automation</span></h1>
+        <p class="support" data-i18n="hero.support">I turn operational friction into practical systems that make work move.</p>
+      </div>
     </div>
 
     <div class="ticker" data-layer="ticker-interface" aria-label="Tools and technologies">
@@ -557,8 +637,8 @@ body.scrolled .hero{overflow:visible;z-index:100}
   </section>
   <header class="site-header" data-layer="header-interface">
     <a href="#top" aria-label="Giovanni Barcelos home">
-      <img class="brand brand-full" src="assets/brand/GIOVANNI_BARCELOS_WORDMARK_ACTIVATED_20260922.png" alt="Giovanni Barcelos" />
-      <img class="brand-monogram" src="assets/brand/GIOVANNI_BARCELOS_MONOGRAM_ACTIVATED_20260922.png" alt="" aria-hidden="true" />
+      <img class="brand brand-full" src="assets/optimized/brand/GIOVANNI_BARCELOS_WORDMARK_ACTIVATED_20260922.webp" alt="Giovanni Barcelos" />
+      <img class="brand-monogram" src="assets/optimized/brand/GIOVANNI_BARCELOS_MONOGRAM_ACTIVATED_20260922.webp" alt="" aria-hidden="true" />
     </a>
     <nav class="site-nav" aria-label="Primary navigation">
       <a class="active" href="#remote-work" data-i18n="nav.remote">Remote Work</a>
@@ -579,11 +659,12 @@ body.scrolled .hero{overflow:visible;z-index:100}
   <section class="remote-work remote-v4" id="remote-work" aria-labelledby="remote-title">
   <figure class="remote-v4-media">
     <picture>
-      <source srcset="assets/optimized/remote/REMOTE_WORK_MASTER_LOCKED_20260919.webp" type="image/webp" />
-      <img class="remote-v4-master" src="assets/remote/REMOTE_WORK_MASTER_LOCKED_20260919.png" alt="Giovanni Barcelos seated outdoors at a café with the U.S. operations visual composition" fetchpriority="high" decoding="async" />
+      <source srcset="assets/optimized/remote/REMOTE_WORK_MASTER_FORENSIC_PANEL_REMOVED_20260928.webp" type="image/webp" />
+      <img class="remote-v4-master remote-master-base" src="assets/remote/REMOTE_WORK_MASTER_FORENSIC_PANEL_REMOVED_20260928.png" alt="Giovanni Barcelos seated outdoors at a café with the U.S. operations visual composition" loading="eager" fetchpriority="high" decoding="async" />
     </picture>
+    <img class="remote-panel-original" src="assets/remote/REMOTE_PANEL_ORIGINAL_20260918.png" alt="" aria-hidden="true" loading="eager" fetchpriority="high" decoding="async" />
+    <img class="remote-master-foreground-repair" src="assets/optimized/remote/REMOTE_MASTER_FOREGROUND_RIGHT_SHOULDER_20260928.webp" alt="" aria-hidden="true" loading="eager" fetchpriority="high" decoding="sync" />
   </figure>
-  <div class="remote-v4-left-shade" aria-hidden="true"></div>
   <div class="remote-v4-copy">
     <p class="remote-kicker" data-i18n="remote.kicker">REMOTE WORK</p>
     <h2 class="remote-title" id="remote-title"><span data-i18n="remote.titleLine1">Remote doesn’t</span><span data-i18n="remote.titleLine2">mean distant.</span></h2>
@@ -624,7 +705,7 @@ body.scrolled .hero{overflow:visible;z-index:100}
 
 
 <div class="portfolio-rest">
-<section id="capabilities" class="screen ivory"><div class="wrap"><div class="capability-feature"><div class="section-head"><div class="eyebrow" data-i18n="cap.kicker">CAPABILITIES</div><div><h2 class="serif" data-i18n="cap.title">Different environments. One recurring way of working.</h2><p class="intro" data-i18n="cap.body">Learn the operation, identify friction, connect information and reduce avoidable manual work. The tools change; the operating logic is consistent.</p></div></div><figure class="capability-feature-media"><img src="assets/optimized/photos/13_professional-photo.webp" loading="lazy" decoding="async" data-i18n-alt="cap2.alt" alt="Giovanni Barcelos reviewing post-it notes on an operational board"></figure></div><div class="cap-grid"><div class="card"><div class="num">01</div><h3 data-i18n="cap1.t">Business Operations</h3><p data-i18n="cap1.b">Coordination, documentation, schedules, follow-up, handoffs and cross-functional execution.</p></div><div class="card"><div class="num">02</div><h3 data-i18n="cap2.t">Systems &amp; Automation</h3><p data-i18n="cap2.b">Custom workflows, CRM logic, operational controls and AI-assisted tools built around real work.</p></div><div class="card"><div class="num">03</div><h3 data-i18n="cap3.t">U.S. Real Estate Operations</h3><p data-i18n="cap3.b">Buyer and seller transaction coordination, MLS Canopy, SkySlope, Zillow Showcase and CMA support.</p></div><div class="card"><div class="num">04</div><h3 data-i18n="cap4.t">Customer Journey &amp; CRM</h3><p data-i18n="cap4.b">Lead intake, pipeline organization, follow-up, marketing triggers and continuity through closing.</p></div><div class="card"><div class="num">05</div><h3 data-i18n="cap5.t">Digital &amp; Web</h3><p data-i18n="cap5.b">WordPress, legacy preservation, SEO content, YouTube workflows and digital production.</p></div><div class="card"><div class="num">06</div><h3 data-i18n="cap6.t">Communication, Sales &amp; Client Support</h3><p data-i18n="cap6.b">English/Portuguese communication, teaching, interpretation, sales prospecting, marketing and client support.</p></div></div></div></section>
+<section id="capabilities" class="screen ivory"><div class="wrap"><div class="capability-feature"><div class="section-head"><div class="eyebrow" data-i18n="cap.kicker">CAPABILITIES</div><div><h2 class="serif" data-i18n="cap.title">Different environments. One recurring way of working.</h2><p class="intro" data-i18n="cap.body">Learn the operation, identify friction, connect information and reduce avoidable manual work. The tools change; the operating logic is consistent.</p></div></div><figure class="capability-feature-media"><img src="assets/optimized/photos/13_professional-photo.webp" loading="eager" fetchpriority="high" decoding="async" data-i18n-alt="cap2.alt" alt="Giovanni Barcelos reviewing post-it notes on an operational board"></figure></div><div class="cap-grid"><div class="card"><div class="num">01</div><h3 data-i18n="cap1.t">Business Operations</h3><p data-i18n="cap1.b">Coordination, documentation, schedules, follow-up, handoffs and cross-functional execution.</p></div><div class="card"><div class="num">02</div><h3 data-i18n="cap2.t">Systems &amp; Automation</h3><p data-i18n="cap2.b">Custom workflows, CRM logic, operational controls and AI-assisted tools built around real work.</p></div><div class="card"><div class="num">03</div><h3 data-i18n="cap3.t">U.S. Real Estate Operations</h3><p data-i18n="cap3.b">Buyer and seller transaction coordination, MLS Canopy, SkySlope, Zillow Showcase and CMA support.</p></div><div class="card"><div class="num">04</div><h3 data-i18n="cap4.t">Customer Journey &amp; CRM</h3><p data-i18n="cap4.b">Lead intake, pipeline organization, follow-up, marketing triggers and continuity through closing.</p></div><div class="card"><div class="num">05</div><h3 data-i18n="cap5.t">Digital &amp; Web</h3><p data-i18n="cap5.b">WordPress, legacy preservation, SEO content, YouTube workflows and digital production.</p></div><div class="card"><div class="num">06</div><h3 data-i18n="cap6.t">Communication, Sales &amp; Client Support</h3><p data-i18n="cap6.b">English/Portuguese communication, teaching, interpretation, sales prospecting, marketing and client support.</p></div></div></div></section>
 <!-- Canonical runtime labels: Remote doesn't mean distant; Operational Systems & Workflow Design; Content Operations. -->
 <div id="practice-areas" class="practice-anchor" aria-hidden="true" data-canonical-areas="Operational Systems &amp; Workflow Design; Content Operations"></div>
 <section id="work" class="screen paper"><div class="wrap"><div class="work-index"><a href="#work" data-i18n="workIndex.1">WORK 01 · REAL ESTATE OPERATIONS</a><a href="#work02" data-i18n="workIndex.2">WORK 02 · SELLER NET SHEET</a><a href="#work03" data-i18n="workIndex.3">WORK 03 · WEB + CONTENT CONTINUITY</a><a href="#work04" data-i18n="workIndex.4">WORK 04 · PROFESSIONAL POSITIONING SYSTEM</a></div></div><div class="wrap case-grid case-workflow"><div><img class="case-photo top" src="assets/optimized/photos/22_professional-photo.webp" loading="lazy" decoding="async" data-i18n-alt="cap1.alt" alt="Giovanni Barcelos structuring an operational workflow at a desk"></div><div class="case-copy"><div class="case-label" data-i18n="case1.tag">WORK 01 · REAL ESTATE OPERATIONS</div><h2 class="serif" data-i18n="case1.t">From fragmented tasks to an end-to-end operating workflow.</h2><p data-i18n="case1.b">While supporting a U.S. real estate business, I connected lead intake, CRM data, marketing coordination, buyer and seller transaction coordination, closing records, time tracking and finance support into a tailored operational workflow instead of relying on disconnected manual steps.</p><div class="evidence"><span data-i18n="case1.p1">RE/MAX remote operations · 2023–2026</span><span data-i18n="case1.p2">MLS Canopy · SkySlope · Zillow Showcase</span></div></div><div class="flow"><div class="node"><b data-i18n="case1.a1">Lead → CRM</b><span data-i18n="case1.a2">Structured intake and organized data.</span></div><div class="node"><b data-i18n="case1.b1">CRM → Listings &amp; Marketing</b><span data-i18n="case1.b2">Coordinate listing information, campaign inputs and follow-up across the pipeline.</span></div><div class="node"><b data-i18n="case1.c1">Buyer/Seller → Transaction Flow</b><span data-i18n="case1.c2">Keep buyer and seller handoffs moving from contract through closing.</span></div><div class="node"><b data-i18n="case1.d1">Closing → Records &amp; Continuity</b><span data-i18n="case1.d2">Maintain closing records, time tracking and the next operational handoff.</span></div></div></div></section>
@@ -637,7 +718,7 @@ body.scrolled .hero{overflow:visible;z-index:100}
 <section id="highlights" class="screen paper"><span id="moments" class="anchor-alias" aria-hidden="true"></span><div class="wrap moments-grid"><div class="copy-wide"><div class="eyebrow" data-i18n="mom.kicker">CAREER HIGHLIGHTS</div><h2 class="serif" style="font-size:clamp(2.2rem,3.8vw,3.75rem);line-height:1.02;letter-spacing:-.03em;margin:7px 0 9px;text-wrap:balance" data-i18n="mom.title">International interpretation, teaching, prospecting and continuous learning.</h2><p class="intro" data-i18n="mom.body">Experience across different environments strengthened communication, adaptability and confidence under pressure.</p><div class="moment-list"><div class="moment"><div class="k" data-i18n="m1.k">INTERPRETATION</div><h3 data-i18n="m1.t">Mariah Carey · Barretos 2010</h3><p data-i18n="m1.b">Provided English–Portuguese interpretation for Mariah Carey's team during a specific engagement in Barretos.</p></div><div class="moment"><div class="k" data-i18n="m2.k">INTERPRETATION</div><h3 data-i18n="m2.t">New Holland President · Agrishow</h3><p data-i18n="m2.b">Provided professional English–Portuguese interpretation for senior international leadership at Agrishow.</p></div><div class="moment"><div class="k" data-i18n="m3.k">LANGUAGE</div><h3 data-i18n="m3.t">English teacher and translator</h3><p data-i18n="m3.b">Teaching experience plus English–Portuguese translation of books and texts.</p></div><div class="moment"><div class="k" data-i18n="m4.k">COMMERCIAL</div><h3 data-i18n="m4.t">Sales prospecting in ERP and luxury real estate</h3><p data-i18n="m4.b">Prospecting experience across software and property markets.</p></div><div class="moment"><div class="k" data-i18n="m5.k">LEARNING</div><h3 data-i18n="m5.t">~60 SEBRAE courses</h3><p data-i18n="m5.b">Continuing education across commerce and marketing.</p></div></div></div></div></section>
 <section id="about" class="screen paper"><div class="wrap about-grid"><div class="about-copy"><div class="eyebrow" data-i18n="about.kicker">ABOUT</div><div class="quote" data-i18n="about.quote">“When a task keeps repeating, I tend to ask a different question: why are we still doing this manually?”</div><p data-i18n="about.body">My strongest pattern is initiative. A request for a list, document or repetitive control often became an opportunity to design a better workflow around the work. I am comfortable learning unfamiliar tools because the starting point is usually not the software itself; it is understanding the bottleneck, the information and the people who depend on the process.</p><div class="fact-grid"><div class="fact"><b data-i18n="f1.t">English</b><span data-i18n="f1.b">Fluent C1</span></div><div class="fact"><b data-i18n="f2.t">Portuguese</b><span data-i18n="f2.b">Native</span></div><div class="fact"><b data-i18n="f3.t">U.S. real estate</b><span data-i18n="f3.b">Nearly 3 years · buyer &amp; seller operations</span></div><div class="fact"><b data-i18n="f4.t">Operational focus</b><span data-i18n="f4.b">CRM, finance, sales workflows, process improvement and internal tools</span></div></div></div><div class="about-visual"><img class="about-photo" src="assets/optimized/photos/03_authorial_red_glasses.webp" loading="lazy" decoding="async" alt="Giovanni authorial systems portrait"></div></div></section>
 <section id="resume" class="screen sand"><div class="wrap resume-grid"><div class="copy-wide"><div class="eyebrow" data-i18n="resume.kicker">RESUME</div><h2 class="serif" data-i18n="resume.title">Professional resume available in three languages.</h2><p class="intro" data-i18n="resume.body">Download the English, Portuguese or Spanish ATS version.</p><div class="resume-cards"><div class="resume-card"><span class="resume-flag" aria-hidden="true">🇺🇸</span><div class="resume-meta"><b data-i18n="resume.lang.en">English</b><span data-i18n="resume.type.en">ATS Resume</span></div><a href="assets/resumes/Giovanni_Barcelos_CV_EN.pdf" download data-i18n="resume.download">Download PDF</a></div><div class="resume-card"><span class="resume-flag" aria-hidden="true">🇧🇷</span><div class="resume-meta"><b data-i18n="resume.lang.pt">Portuguese</b><span data-i18n="resume.type.pt">ATS Resume</span></div><a href="assets/resumes/Giovanni_Barcelos_CV_PT.pdf" download data-i18n="resume.download">Download PDF</a></div><div class="resume-card"><span class="resume-flag" aria-hidden="true">🇪🇸</span><div class="resume-meta"><b data-i18n="resume.lang.es">Spanish</b><span data-i18n="resume.type.es">CV</span></div><a href="assets/resumes/Giovanni_Barcelos_CV_ES.pdf" download data-i18n="resume.download">Download PDF</a></div></div></div></section>
-<footer id="contact" class="screen navy cta"><div class="wrap"><div class="cta-grid"><div><div class="eyebrow" data-i18n="cta.kicker">OPEN TO INTERNATIONAL REMOTE WORK</div><h2 class="serif" data-i18n="cta.title">Useful across roles. Grounded in how work actually gets done.</h2><p data-i18n="cta.body">Operations, systems, implementation, executive support, customer success, real estate operations, CRM, digital operations and adjacent roles are all relevant when the work benefits from organization, initiative and process improvement.</p></div><div class="cta-visual"><img class="cta-photo" data-i18n-alt="cta.photoAlt" src="assets/optimized/photos/26_professional-photo.webp" loading="lazy" decoding="async" alt="Giovanni Barcelos in a brown blazer with a black coffee mug"></div><div class="contact-box"><div class="big" data-i18n="cta.box">Start a conversation.</div><p data-i18n="cta.note">Based in Brazil · available for remote opportunities.</p><a class="btn gold" href="mailto:giovannibarcelos@gmail.com?subject=Portfolio%20contact" data-i18n="cta.button">Email Giovanni</a></div></div><div class="footerline"><span class="footer-contact">giovannibarcelos@gmail.com</span><div class="social-links" aria-label="Social links"><a href="https://www.linkedin.com/in/giovannibarcelos/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 10.3v7.45M7.25 7.25v.1M11 17.75v-4.15c0-1.65.93-2.75 2.4-2.75s2.4 1.1 2.4 2.75v4.15M11 10.85v6.9"></path><path d="M5.2 19.35h13.6" opacity=".45"></path></svg></a><a href="https://wa.me/5585997405232" target="_blank" rel="noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.25a7.65 7.65 0 0 0-6.57 11.5L4.3 19.7l4.24-1.1A7.65 7.65 0 1 0 12 4.25Z"></path><path d="M8.75 8.7c.25-.3.65-.3.95.03l1.03 1.13c.27.3.27.66.04.95l-.56.72a8.15 8.15 0 0 0 2.84 2.84l.72-.56c.29-.23.66-.23.95.04l1.13 1.03c.33.3.33.7.03.95-.71.59-1.7.76-2.58.43a8.15 8.15 0 0 0-5.26-5.26c-.33-.88-.16-1.87.43-2.58Z"></path></svg></a><a href="mailto:giovannibarcelos@gmail.com" aria-label="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.1 6.7h15.8a1.5 1.5 0 0 1 1.5 1.5v7.6a1.5 1.5 0 0 1-1.5 1.5H4.1a1.5 1.5 0 0 1-1.5-1.5V8.2a1.5 1.5 0 0 1 1.5-1.5Z"></path><path d="m4.4 7.35 7.6 5.8 7.6-5.8"></path></svg></a><span class="footer-lockup"><img class="footer-logo" src="assets/brand/GIOVANNI_BARCELOS_WORDMARK_ACTIVATED_20260922.png" alt="Giovanni Barcelos"></span></div></div></div></footer>
+<footer id="contact" class="screen navy cta"><div class="wrap"><div class="cta-grid"><div><div class="eyebrow" data-i18n="cta.kicker">OPEN TO INTERNATIONAL REMOTE WORK</div><h2 class="serif" data-i18n="cta.title">Useful across roles. Grounded in how work actually gets done.</h2><p data-i18n="cta.body">Operations, systems, implementation, executive support, customer success, real estate operations, CRM, digital operations and adjacent roles are all relevant when the work benefits from organization, initiative and process improvement.</p></div><div class="cta-visual"><img class="cta-photo" data-i18n-alt="cta.photoAlt" src="assets/optimized/photos/26_professional-photo.webp" loading="lazy" decoding="async" alt="Giovanni Barcelos in a brown blazer with a black coffee mug"></div><div class="contact-box"><div class="big" data-i18n="cta.box">Start a conversation.</div><p data-i18n="cta.note">Based in Brazil · available for remote opportunities.</p><a class="btn gold" href="mailto:giovannibarcelos@gmail.com?subject=Portfolio%20contact" data-i18n="cta.button">Email Giovanni</a></div></div><div class="footerline"><span class="footer-contact">giovannibarcelos@gmail.com</span><div class="social-links" aria-label="Social links"><a href="https://www.linkedin.com/in/giovannibarcelos/" target="_blank" rel="noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.25 10.3v7.45M7.25 7.25v.1M11 17.75v-4.15c0-1.65.93-2.75 2.4-2.75s2.4 1.1 2.4 2.75v4.15M11 10.85v6.9"></path><path d="M5.2 19.35h13.6" opacity=".45"></path></svg></a><a href="https://wa.me/5585997405232" target="_blank" rel="noreferrer" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.25a7.65 7.65 0 0 0-6.57 11.5L4.3 19.7l4.24-1.1A7.65 7.65 0 1 0 12 4.25Z"></path><path d="M8.75 8.7c.25-.3.65-.3.95.03l1.03 1.13c.27.3.27.66.04.95l-.56.72a8.15 8.15 0 0 0 2.84 2.84l.72-.56c.29-.23.66-.23.95.04l1.13 1.03c.33.3.33.7.03.95-.71.59-1.7.76-2.58.43a8.15 8.15 0 0 0-5.26-5.26c-.33-.88-.16-1.87.43-2.58Z"></path></svg></a><a href="mailto:giovannibarcelos@gmail.com" aria-label="Gmail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.1 6.7h15.8a1.5 1.5 0 0 1 1.5 1.5v7.6a1.5 1.5 0 0 1-1.5 1.5H4.1a1.5 1.5 0 0 1-1.5-1.5V8.2a1.5 1.5 0 0 1 1.5-1.5Z"></path><path d="m4.4 7.35 7.6 5.8 7.6-5.8"></path></svg></a><span class="footer-lockup"><img class="footer-logo" src="assets/optimized/brand/GIOVANNI_BARCELOS_WORDMARK_ACTIVATED_20260922.webp" alt="Giovanni Barcelos"></span></div></div></div></footer>
 </div>
 
   </main>
@@ -923,6 +1004,6 @@ Object.assign(T.es,{
 });
 // Language runtime consolidated in portfolio-runtime.js
 </script>
-  <script src="portfolio-runtime.js?v=brand-assets-20260922"></script>
+  <script src="portfolio-runtime.js?v=remote-panel-art-system-20260928-v1"></script>
 </body>
 </html>
