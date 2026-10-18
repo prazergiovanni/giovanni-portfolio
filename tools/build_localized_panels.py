@@ -90,14 +90,21 @@ def tracked_width(draw, text, font, tracking):
     return sum(draw.textlength(char, font=font) for char in text) + max(0, len(text) - 1) * tracking
 
 
-def draw_tracked(draw, xy, text, font, fill, tracking):
+def draw_tracked(draw, xy, text, font, fill, tracking, stroke_width=0, stroke_fill=None):
     x, y = xy
     for char in text:
-        draw.text((x, y), char, font=font, fill=fill)
+        draw.text(
+            (x, y),
+            char,
+            font=font,
+            fill=fill,
+            stroke_width=stroke_width,
+            stroke_fill=stroke_fill,
+        )
         x += draw.textlength(char, font=font) + tracking
 
 
-def render_text(text, font, fill, tracking, glow, glow_radius):
+def render_text(text, font, fill, tracking, glow, glow_radius, stroke_width=0, stroke_fill=None):
     probe = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
     width = int(tracked_width(probe, text, font, tracking)) + 80
     bbox = probe.textbbox((0, 0), text, font=font)
@@ -108,7 +115,16 @@ def render_text(text, font, fill, tracking, glow, glow_radius):
     glow_layer = Image.new("RGBA", layer.size, (0, 0, 0, 0))
     draw_tracked(ImageDraw.Draw(glow_layer), (x, y), text, font, glow, tracking)
     layer = Image.alpha_composite(layer, glow_layer.filter(ImageFilter.GaussianBlur(glow_radius)))
-    draw_tracked(ImageDraw.Draw(layer), (x, y), text, font, fill, tracking)
+    draw_tracked(
+        ImageDraw.Draw(layer),
+        (x, y),
+        text,
+        font,
+        fill,
+        tracking,
+        stroke_width,
+        stroke_fill,
+    )
     bbox = layer.getbbox()
     return layer.crop(bbox) if bbox else layer
 
@@ -123,8 +139,20 @@ def composite_center(base, layer, center):
     base.alpha_composite(layer, (round(center[0] - layer.width / 2), round(center[1] - layer.height / 2)))
 
 
-def add_rotated(base, text, font, fill, tracking, glow, glow_radius, center, max_width=None):
-    layer = render_text(text, font, fill, tracking, glow, glow_radius)
+def add_rotated(
+    base,
+    text,
+    font,
+    fill,
+    tracking,
+    glow,
+    glow_radius,
+    center,
+    max_width=None,
+    stroke_width=0,
+    stroke_fill=None,
+):
+    layer = render_text(text, font, fill, tracking, glow, glow_radius, stroke_width, stroke_fill)
     if max_width:
         layer = fit_width(layer, max_width)
     composite_center(base, layer.rotate(ANGLE, resample=Image.Resampling.BICUBIC, expand=True), center)
@@ -147,7 +175,19 @@ def build(code, title, region, items):
     white = (247, 249, 250, 255)
 
     # Same angle, centers, hierarchy and panel bounds as the frozen EN frame.
-    add_rotated(image, title, title_font, gold, 6, (255, 204, 72, 180), 11, (780, 207), 1080)
+    title_probe = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+    title_base_width = sum(title_probe.textlength(char, font=title_font) for char in title)
+    title_tracking = (1050 - title_base_width) / max(1, len(title) - 1)
+    add_rotated(
+        image,
+        title,
+        title_font,
+        gold,
+        title_tracking,
+        (255, 190, 64, 220),
+        12,
+        (780, 207),
+    )
     add_rotated(image, region, region_font, white, 7, (160, 218, 255, 100), 5, (780, 293), 760)
     for y, item in zip((397, 487, 577, 667, 757, 847), items):
         add_rotated_left(image, item, item_font, white, 2, (155, 211, 245, 75), 3, 1180, y, 250)
