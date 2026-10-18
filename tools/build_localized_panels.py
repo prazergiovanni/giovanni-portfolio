@@ -1,25 +1,94 @@
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-asset_dir = ROOT / "assets" / "remote"
-source = Image.open(asset_dir / "REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png").convert("RGBA")
-font_path = r"C:\Windows\Fonts\consolab.ttf"
-font_title = ImageFont.truetype(font_path, 96)
-font_region = ImageFont.truetype(font_path, 36)
-font_item = ImageFont.truetype(font_path, 25)
+import cv2
+import numpy as np
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-def fit_title_font(draw, text, max_width=1050):
-    size = 96
-    while size > 64:
-        font = ImageFont.truetype(font_path, size)
-        if tracked_width(draw, text, font, 6) <= max_width:
-            return font
-        size -= 1
-    return ImageFont.truetype(font_path, 64)
+ROOT = Path(__file__).resolve().parents[1]
+ASSET_DIR = ROOT / "assets" / "remote"
+SOURCE = Image.open(ASSET_DIR / "REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png").convert("RGBA")
+WIDTH, HEIGHT = SOURCE.size
+FONT_PATH = r"C:\Windows\Fonts\consolab.ttf"
+ANGLE = 3.7
+
+
+def add_component_text_mask(mask, rect, predicate, component_filter, dilation=7):
+    x0, y0, x1, y1 = rect
+    rgba = np.asarray(SOURCE)
+    rgb = rgba[:, :, :3]
+    alpha = rgba[:, :, 3]
+    crop = rgb[y0:y1, x0:x1]
+    local = (np.fromiter(
+        (255 if predicate(tuple(int(v) for v in pixel)) else 0 for pixel in crop.reshape(-1, 3)),
+        dtype=np.uint8,
+        count=crop.shape[0] * crop.shape[1],
+    ).reshape(crop.shape[:2]))
+    local[alpha[y0:y1, x0:x1] < 40] = 0
+    components, labels, stats, _ = cv2.connectedComponentsWithStats(local, 8)
+    selected = np.zeros_like(local)
+    for component in range(1, components):
+        x, y, width, height, area = stats[component]
+        if component_filter(int(x), int(y), int(width), int(height), int(area)):
+            selected[labels == component] = 255
+    if dilation:
+        size = dilation * 2 + 1
+        selected = cv2.dilate(selected, np.ones((size, size), np.uint8), iterations=1)
+    mask[y0:y1, x0:x1] = np.maximum(mask[y0:y1, x0:x1], selected)
+
+
+def restore_glass_without_glyphs():
+    rgba = np.asarray(SOURCE).copy()
+    rgb = rgba[:, :, :3]
+    mask = np.zeros((HEIGHT, WIDTH), dtype=np.uint8)
+
+    # Remove only connected glyph components. This avoids repainting the
+    # transparent outside of the tilted panel or erasing its decorative lines.
+    add_component_text_mask(
+        mask,
+        (190, 100, 1370, 300),
+        lambda p: p[0] > 175 and p[1] > 140 and p[2] > 75 and p[0] - p[2] > 25,
+        lambda x, y, w, h, area: (
+            area > 300 and 8 <= w <= 95 and 35 <= h <= 105
+        ),
+        dilation=18,
+    )
+    add_component_text_mask(
+        mask,
+        (190, 100, 1370, 300),
+        lambda p: p[0] > 150 and p[1] > 125 and p[2] > 70 and p[0] - p[2] > 18,
+        lambda x, y, w, h, area: (
+            area > 25 and 2 <= w <= 34 and 8 <= h <= 34
+            and abs((y + 100 + h / 2) - (275 - 0.13 * ((x + 190 + w / 2) - 70))) < 58
+        ),
+        dilation=10,
+    )
+    add_component_text_mask(
+        mask,
+        (350, 220, 1160, 345),
+        lambda p: min(p) > 120 and max(p) - min(p) < 95,
+        lambda x, y, w, h, area: (
+            area > 18 and 3 <= w <= 35 and 7 <= h <= 38
+        ),
+        dilation=12,
+    )
+    for y0, y1 in ((355, 420), (445, 510), (535, 600), (625, 690), (715, 780), (805, 870)):
+        add_component_text_mask(
+            mask,
+            (1165, y0, 1455, y1),
+            lambda p: min(p) > 100 and max(p) - min(p) < 100,
+            lambda x, y, w, h, area: area > 12 and 2 <= w <= 36 and 7 <= h <= 32,
+            dilation=4,
+        )
+
+    bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+    repaired = cv2.inpaint(bgr, mask, 7, cv2.INPAINT_TELEA)
+    rgba[:, :, :3] = cv2.cvtColor(repaired, cv2.COLOR_BGR2RGB)
+    return Image.fromarray(rgba, "RGBA")
+
 
 def tracked_width(draw, text, font, tracking):
     return sum(draw.textlength(char, font=font) for char in text) + max(0, len(text) - 1) * tracking
+
 
 def draw_tracked(draw, xy, text, font, fill, tracking):
     x, y = xy
@@ -27,70 +96,64 @@ def draw_tracked(draw, xy, text, font, fill, tracking):
         draw.text((x, y), char, font=font, fill=fill)
         x += draw.textlength(char, font=font) + tracking
 
-def centered(draw, box, text, font, fill, tracking=0):
-    x0, y0, x1, y1 = box
-    bbox = draw.textbbox((0, 0), text, font=font, stroke_width=0)
-    width = tracked_width(draw, text, font, tracking)
-    x = x0 + ((x1 - x0) - width) / 2
-    y = y0 + ((y1 - y0) - (bbox[3] - bbox[1])) / 2 - bbox[1]
-    draw_tracked(draw, (x, y), text, font, fill, tracking)
 
-def apply_feathered_patch(image, rect, patch, feather=24):
-    x0, y0, x1, y1 = rect
-    width, height = patch.size
-    mask = Image.new("L", (width, height), 0)
-    mp = mask.load()
-    for y in range(height):
-        for x in range(width):
-            edge = min(x, y, width - 1 - x, height - 1 - y)
-            mp[x, y] = min(255, round(edge * 255 / feather))
-    image.paste(patch, (x0, y0), mask)
+def render_text(text, font, fill, tracking, glow, glow_radius):
+    probe = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+    width = int(tracked_width(probe, text, font, tracking)) + 80
+    bbox = probe.textbbox((0, 0), text, font=font)
+    height = max(80, bbox[3] - bbox[1] + 80)
+    layer = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    x = 40
+    y = 40 - bbox[1]
+    glow_layer = Image.new("RGBA", layer.size, (0, 0, 0, 0))
+    draw_tracked(ImageDraw.Draw(glow_layer), (x, y), text, font, glow, tracking)
+    layer = Image.alpha_composite(layer, glow_layer.filter(ImageFilter.GaussianBlur(glow_radius)))
+    draw_tracked(ImageDraw.Draw(layer), (x, y), text, font, fill, tracking)
+    bbox = layer.getbbox()
+    return layer.crop(bbox) if bbox else layer
 
-def replace_with_soft_glass(image, rect, radius):
-    """Erase baked glyphs while retaining a feathered version of the glass."""
-    x0, y0, x1, y1 = rect
-    patch = source.crop((x0, y0, x1 + 1, y1 + 1)).filter(ImageFilter.GaussianBlur(radius))
-    apply_feathered_patch(image, rect, patch, feather=28)
 
-def replace_list_glass(image, rect):
-    """Use the clean left edge of the list glass as its local background."""
-    x0, y0, x1, y1 = rect
-    patch = Image.new("RGBA", (x1 - x0 + 1, y1 - y0 + 1))
-    source_px = source.load()
-    patch_px = patch.load()
-    for y in range(y0, y1 + 1):
-        color = source_px[1155, y]
-        for x in range(x0, x1 + 1):
-            patch_px[x - x0, y - y0] = color
-    apply_feathered_patch(image, rect, patch, feather=22)
+def fit_width(layer, max_width):
+    if layer.width <= max_width:
+        return layer
+    return layer.resize((max_width, round(layer.height * max_width / layer.width)), Image.Resampling.LANCZOS)
+
+
+def composite_center(base, layer, center):
+    base.alpha_composite(layer, (round(center[0] - layer.width / 2), round(center[1] - layer.height / 2)))
+
+
+def add_rotated(base, text, font, fill, tracking, glow, glow_radius, center, max_width=None):
+    layer = render_text(text, font, fill, tracking, glow, glow_radius)
+    if max_width:
+        layer = fit_width(layer, max_width)
+    composite_center(base, layer.rotate(ANGLE, resample=Image.Resampling.BICUBIC, expand=True), center)
+
+
+def add_rotated_left(base, text, font, fill, tracking, glow, glow_radius, left, center_y, max_width=None):
+    layer = render_text(text, font, fill, tracking, glow, glow_radius)
+    if max_width:
+        layer = fit_width(layer, max_width)
+    rotated = layer.rotate(ANGLE, resample=Image.Resampling.BICUBIC, expand=True)
+    composite_center(base, rotated, (left + rotated.width / 2, center_y))
+
 
 def build(code, title, region, items):
-    image = source.copy()
-    # The source is the frozen EN composite. Only the title/list text zones
-    # are rebuilt from untouched glass samples; map, glows and borders survive.
-    replace_with_soft_glass(image, (185, 92, 1375, 355), 32)
-    replace_list_glass(image, (1155, 346, 1470, 888))
-
-    overlay = Image.new("RGBA", image.size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(overlay)
+    image = restore_glass_without_glyphs()
+    title_font = ImageFont.truetype(FONT_PATH, 96)
+    region_font = ImageFont.truetype(FONT_PATH, 36)
+    item_font = ImageFont.truetype(FONT_PATH, 25)
     gold = (255, 230, 166, 255)
     white = (247, 249, 250, 255)
-    localized_title_font = fit_title_font(draw, title)
 
-    # Match the EN tracking and luminous hierarchy.
-    centered(draw, (230, 120, 1345, 235), title, localized_title_font, gold, tracking=6)
-    centered(draw, (360, 246, 1210, 316), region, font_region, white, tracking=7)
-    draw.line((135, 330, 380, 318), fill=(255, 205, 85, 255), width=3)
-    draw.line((1170, 263, 1420, 247), fill=(255, 205, 85, 255), width=3)
+    # Same angle, centers, hierarchy and panel bounds as the frozen EN frame.
+    add_rotated(image, title, title_font, gold, 6, (255, 204, 72, 180), 11, (780, 207), 1080)
+    add_rotated(image, region, region_font, white, 7, (160, 218, 255, 100), 5, (780, 293), 760)
+    for y, item in zip((397, 487, 577, 667, 757, 847), items):
+        add_rotated_left(image, item, item_font, white, 2, (155, 211, 245, 75), 3, 1180, y, 250)
 
-    # Replace list text only; icons, glows and panel lines remain from EN.
-    y_positions = [385, 475, 565, 655, 745, 835]
-    for y, item in zip(y_positions, items):
-        draw_tracked(draw, (1180, y), item, font_item, white, tracking=2)
-        draw.line((1180, y + 43, 1460, y + 43), fill=(190, 214, 226, 210), width=1)
+    image.save(ASSET_DIR / f"REMOTE_PANEL_REFERENCE_COMPOSITE_{code}_20261018.png", optimize=True)
 
-    image = Image.alpha_composite(image, overlay)
-    image.save(asset_dir / f"REMOTE_PANEL_REFERENCE_COMPOSITE_{code}_20261018.png", optimize=True)
 
 build("PT", "OPERAÇÕES NOS EUA", "CAROLINA DO NORTE + SUL", [
     "MERCADO IMOBILIÁRIO", "OPERAÇÕES", "CRM", "SUPORTE A CLIENTES", "MARKETING", "COORDENAÇÃO"
