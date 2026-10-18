@@ -2717,6 +2717,49 @@ body.scrolled .site-header {
   display: none !important;
 }
 
+/* Frozen panel geometry: move the complete artwork as one unit so its
+   corners, map and cards cannot separate or be cropped during positioning. */
+@media (min-width: 1024px) {
+  .remote-panel-reference {
+    transform: translate(1.2%, -1.5%) !important;
+    transform-origin: center center !important;
+  }
+
+  .remote-panel-reference-composite {
+    opacity: .93 !important;
+  }
+
+  .remote-panel-reference-localized .remote-panel-reference-base,
+  .remote-panel-reference-localized .remote-panel-reference-map {
+    opacity: .93 !important;
+  }
+
+  /* Controlled locator glows: NC, SC, CA, NY, TX and DC. They sit above the
+     map artwork but remain below the HTML labels in the localized variants. */
+  .remote-panel-reference::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 6 !important;
+    pointer-events: none !important;
+    background:
+      radial-gradient(circle at 39% 66%, rgba(255, 214, 104, .24) 0 1.1%, rgba(255, 214, 104, .08) 2.2%, transparent 4.5%),
+      radial-gradient(circle at 23% 58%, rgba(255, 214, 104, .18) 0 1%, rgba(255, 214, 104, .06) 2%, transparent 4%),
+      radial-gradient(circle at 55% 53%, rgba(255, 214, 104, .18) 0 1%, rgba(255, 214, 104, .06) 2%, transparent 4%),
+      radial-gradient(circle at 60% 48%, rgba(255, 214, 104, .20) 0 1%, rgba(255, 214, 104, .07) 2%, transparent 4%),
+      radial-gradient(circle at 61% 39%, rgba(255, 214, 104, .18) 0 1%, rgba(255, 214, 104, .06) 2%, transparent 4%),
+      radial-gradient(circle at 58% 55%, rgba(255, 214, 104, .20) 0 1%, rgba(255, 214, 104, .07) 2%, transparent 4%) !important;
+    mix-blend-mode: screen !important;
+    opacity: .82 !important;
+  }
+
+  html[lang^="pt"] .remote-ops-panel,
+  html[lang^="es"] .remote-ops-panel {
+    transform: translate(1.2%, -1.5%) !important;
+    transform-origin: center center !important;
+  }
+}
+
 @media (max-width: 1023px) {
   .remote-panel-original {
     display: block !important;
