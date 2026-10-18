@@ -2915,8 +2915,7 @@ body.scrolled .site-header {
     pointer-events: none !important;
   }
 
-  .remote-v4-copy,
-  .remote-values {
+  .remote-v4-copy {
     z-index: 4 !important;
   }
 
@@ -3624,6 +3623,44 @@ html[lang^="es"] .remote-panel-reference-localized {
   mask-image: none !important;
   -webkit-mask: none !important;
   mask: none !important;
+}
+
+/* Remote readability correction: keep the approved composition intact while
+   placing a restrained petroleum-blue reading field behind the copy only. */
+@media (min-width: 1024px) {
+  .remote-v4-copy {
+    isolation: isolate;
+  }
+
+  .remote-v4-copy::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: -18px;
+    top: -28px;
+    bottom: -26px;
+    width: min(35vw, 440px);
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(8, 29, 46, .76) 0%,
+      rgba(8, 29, 46, .58) 52%,
+      rgba(8, 29, 46, .18) 82%,
+      rgba(8, 29, 46, 0) 100%
+    );
+  }
+
+  .remote-v4-copy > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .remote-v4 .remote-body,
+  .remote-v4 .remote-body p {
+    font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
+  }
 }
 
 /* Final localized raster composites: same approved frame, translated labels only. */
