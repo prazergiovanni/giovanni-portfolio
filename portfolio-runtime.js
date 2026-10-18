@@ -188,6 +188,37 @@
     });
   }
 
+  // CONTENT CLARITY PASS — 2026-10-18
+  function applyContentClarityOverrides() {
+  Object.assign(text.en, {
+    'hero.support': 'I streamline operations by building practical systems and workflows.',
+    'about.body': 'I build practical digital operations by connecting people, information and tools. I start with the bottleneck, then design the workflow, document the handoff and make the next action clear.',
+    'cta.title': 'Ready to streamline operations with a practical systems mindset.',
+    'cta.body': 'I help remote teams organize operations, improve workflows and keep execution moving across systems, people and handoffs.',
+    'cta.box': 'Ready to optimize your operations?',
+    'cta.note': 'Reach out to discuss remote opportunities.',
+    'cta.button': 'Contact Me'
+  });
+  Object.assign(text.pt, {
+    'hero.support': 'Simplifico operações criando sistemas e fluxos de trabalho práticos.',
+    'about.body': 'Construo operações digitais práticas conectando pessoas, informações e ferramentas. Começo pelo gargalo, desenho o fluxo, documento a passagem e deixo clara a próxima ação.',
+    'cta.title': 'Pronto para otimizar operações com uma mentalidade prática de sistemas.',
+    'cta.body': 'Ajudo equipes remotas a organizar operações, melhorar fluxos e manter a execução avançando entre sistemas, pessoas e transições.',
+    'cta.box': 'Pronto para otimizar suas operações?',
+    'cta.note': 'Fale comigo sobre oportunidades remotas.',
+    'cta.button': 'Fale comigo'
+  });
+  Object.assign(text.es, {
+    'hero.support': 'Optimizo operaciones creando sistemas y flujos de trabajo prácticos.',
+    'about.body': 'Construyo operaciones digitales prácticas conectando personas, información y herramientas. Empiezo por el cuello de botella, diseño el flujo, documento la transición y dejo clara la próxima acción.',
+    'cta.title': '¿Listo para optimizar operaciones con una mentalidad práctica de sistemas?',
+    'cta.body': 'Ayudo a equipos remotos a organizar operaciones, mejorar flujos y mantener la ejecución entre sistemas, personas y etapas.',
+    'cta.box': '¿Listo para optimizar tus operaciones?',
+    'cta.note': 'Escríbeme para hablar de oportunidades remotas.',
+    'cta.button': 'Contáctame'
+  });
+  }
+
   function currentLanguage() {
     let stored = '';
     try { stored = localStorage.getItem('gb-lang') || ''; } catch (_) {}
@@ -273,6 +304,13 @@
     $$('[data-final-alt]').forEach(element => { const value = values[element.dataset.finalAlt]; if (value !== undefined) element.alt = value; });
     applyVideo(safe);
     applyPanels(safe);
+    // Final authority for the approved editorial clarity pass.
+    const clarityKeys = ['hero.support', 'about.body', 'cta.title', 'cta.body', 'cta.box', 'cta.note', 'cta.button'];
+    clarityKeys.forEach(key => {
+      const value = values[key];
+      if (value === undefined) return;
+      $$(`[data-i18n="${key}"]`).forEach(element => setValue(element, value, key));
+    });
     if (options.animateHero !== false) replayHeroWordmarkSweep();
     else syncHeroWordmarkIllumination();
     try { localStorage.setItem('gb-lang', safe); } catch (_) {}
@@ -795,6 +833,7 @@
 
   function boot() {
     applyPublishedCopy();
+    applyContentClarityOverrides();
     removeSceneCTAs();
     setupTicker();
     setupPracticeAreas();
