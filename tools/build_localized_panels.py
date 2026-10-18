@@ -9,9 +9,10 @@ ASSET_DIR = ROOT / "assets" / "remote"
 SOURCE = Image.open(ASSET_DIR / "REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png").convert("RGBA")
 WIDTH, HEIGHT = SOURCE.size
 FONT_PATH = r"C:\Windows\Fonts\consolab.ttf"
-# The frozen EN panel keeps its internal labels level; the glass frame carries
-# the perspective. Localized labels must follow that same baseline.
-ANGLE = 0.0
+# Match the frozen EN title/region angle, but keep the lower list labels level;
+# those are the words that must not look individually crooked.
+TITLE_ANGLE = 3.7
+ITEM_ANGLE = 0.0
 
 
 def add_component_text_mask(mask, rect, predicate, component_filter, dilation=7):
@@ -157,14 +158,14 @@ def add_rotated(
     layer = render_text(text, font, fill, tracking, glow, glow_radius, stroke_width, stroke_fill)
     if max_width:
         layer = fit_width(layer, max_width)
-    composite_center(base, layer.rotate(ANGLE, resample=Image.Resampling.BICUBIC, expand=True), center)
+    composite_center(base, layer.rotate(TITLE_ANGLE, resample=Image.Resampling.BICUBIC, expand=True), center)
 
 
 def add_rotated_left(base, text, font, fill, tracking, glow, glow_radius, left, center_y, max_width=None):
     layer = render_text(text, font, fill, tracking, glow, glow_radius)
     if max_width:
         layer = fit_width(layer, max_width)
-    rotated = layer.rotate(ANGLE, resample=Image.Resampling.BICUBIC, expand=True)
+    rotated = layer.rotate(ITEM_ANGLE, resample=Image.Resampling.BICUBIC, expand=True)
     composite_center(base, rotated, (left + rotated.width / 2, center_y))
 
 
