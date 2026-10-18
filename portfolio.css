@@ -3560,3 +3560,19 @@ html[lang^="es"] .remote-panel-reference-localized {
 .traits-groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:32px}.trait-group{padding:22px 18px 16px;background:rgba(5,27,40,.6);border:1px solid rgba(224,185,94,.25);backdrop-filter:blur(8px)}.trait-group h3{margin:0 0 22px;color:#e5bd68;font:700 .7rem/1.2 var(--sans,Arial),sans-serif;letter-spacing:.16em;text-transform:uppercase}.trait-axis{display:grid;grid-template-columns:minmax(74px,.8fr) minmax(110px,1.5fr) minmax(74px,.8fr);align-items:center;gap:10px;margin:17px 0;color:rgba(237,245,241,.74);font-size:.66rem;line-height:1.15}.trait-axis>span:last-child{text-align:right}.axis-line{position:relative;height:1px;background:linear-gradient(90deg,rgba(229,189,104,.2),rgba(229,189,104,.78),rgba(229,189,104,.2))}.axis-line:before{content:"";position:absolute;inset:-4px 0;background:linear-gradient(90deg,transparent 0 24%,rgba(255,246,211,.26) 25% 25.5%,transparent 26% 49%,rgba(255,246,211,.26) 50% 50.5%,transparent 51% 74%,rgba(255,246,211,.26) 75% 75.5%,transparent 76%);pointer-events:none}.axis-line i{position:absolute;left:var(--position);top:50%;width:11px;height:11px;border:2px solid #f8e4ab;border-radius:50%;background:#0b7384;box-shadow:0 0 0 3px rgba(210,167,75,.16),0 0 18px rgba(223,184,91,.9);transform:translate(-50%,-50%);transition:transform .2s ease,background .2s ease,box-shadow .2s ease}.trait-axis:hover .axis-line i,.trait-axis:focus-visible .axis-line i{background:#e0ad4b;box-shadow:0 0 0 5px rgba(224,173,75,.15),0 0 28px rgba(224,173,75,1);transform:translate(-50%,-50%) scale(1.28)}.trait-axis:focus-visible{outline:1px solid rgba(224,173,75,.8);outline-offset:6px}
 @media(max-width:900px){.traits-groups{grid-template-columns:1fr}.trait-group{padding:20px 16px 12px}}
 @media(max-width:620px){.traits-visualization{margin-top:58px;padding:24px 16px}.traits-heading h2{font-size:2rem}.trait-axis{grid-template-columns:minmax(64px,.8fr) minmax(90px,1.4fr) minmax(64px,.8fr);gap:7px;font-size:.59rem}}
+
+/* The approved panel must remain a continuous asset. Do not crop it with the
+   old foreground restoration mask. */
+.remote-master-foreground-restore {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
+
+.remote-v4-left-shade {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  -webkit-mask: none !important;
+  mask: none !important;
+}
