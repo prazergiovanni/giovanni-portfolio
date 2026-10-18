@@ -1773,6 +1773,22 @@ body.scrolled .site-header {
   }
 }
 
+/* Final localized raster composites: same approved frame, translated labels only. */
+@media (min-width: 1024px) {
+  html[lang^="pt"] .remote-panel-reference-localized .remote-panel-reference-pt,
+  html[lang^="es"] .remote-panel-reference-localized .remote-panel-reference-es {
+    display: block !important;
+  }
+  html[lang^="pt"] .remote-panel-reference-localized .remote-panel-reference-es,
+  html[lang^="es"] .remote-panel-reference-localized .remote-panel-reference-pt {
+    display: none !important;
+  }
+  html[lang^="pt"] .remote-ops-panel,
+  html[lang^="es"] .remote-ops-panel {
+    display: none !important;
+  }
+}
+
 @media (min-width: 621px) and (max-width: 1023px) {
   .remote-v4 .remote-values {
     top: 62% !important;
@@ -3608,4 +3624,14 @@ html[lang^="es"] .remote-panel-reference-localized {
   mask-image: none !important;
   -webkit-mask: none !important;
   mask: none !important;
+}
+
+/* Final localized raster composites: same approved frame, translated labels only. */
+@media (min-width: 1024px) {
+  html[lang^="pt"] .remote-panel-reference-localized .remote-panel-reference-pt,
+  html[lang^="es"] .remote-panel-reference-localized .remote-panel-reference-es { display: block !important; }
+  html[lang^="pt"] .remote-panel-reference-localized .remote-panel-reference-es,
+  html[lang^="es"] .remote-panel-reference-localized .remote-panel-reference-pt { display: none !important; }
+  html[lang^="pt"] .remote-ops-panel,
+  html[lang^="es"] .remote-ops-panel { display: none !important; }
 }
