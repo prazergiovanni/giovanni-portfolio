@@ -2726,12 +2726,12 @@ body.scrolled .site-header {
   }
 
   .remote-panel-reference-composite {
-    opacity: .93 !important;
+    opacity: .84 !important;
   }
 
   .remote-panel-reference-localized .remote-panel-reference-base,
   .remote-panel-reference-localized .remote-panel-reference-map {
-    opacity: .93 !important;
+    opacity: .84 !important;
   }
 
   /* Controlled locator glows: NC, SC, CA, NY, TX and DC. They sit above the
@@ -2743,14 +2743,14 @@ body.scrolled .site-header {
     z-index: 6 !important;
     pointer-events: none !important;
     background:
-      radial-gradient(circle at 39% 66%, rgba(255, 214, 104, .24) 0 1.1%, rgba(255, 214, 104, .08) 2.2%, transparent 4.5%),
-      radial-gradient(circle at 23% 58%, rgba(255, 214, 104, .18) 0 1%, rgba(255, 214, 104, .06) 2%, transparent 4%),
-      radial-gradient(circle at 55% 53%, rgba(255, 214, 104, .18) 0 1%, rgba(255, 214, 104, .06) 2%, transparent 4%),
-      radial-gradient(circle at 60% 48%, rgba(255, 214, 104, .20) 0 1%, rgba(255, 214, 104, .07) 2%, transparent 4%),
-      radial-gradient(circle at 61% 39%, rgba(255, 214, 104, .18) 0 1%, rgba(255, 214, 104, .06) 2%, transparent 4%),
-      radial-gradient(circle at 58% 55%, rgba(255, 214, 104, .20) 0 1%, rgba(255, 214, 104, .07) 2%, transparent 4%) !important;
+      radial-gradient(circle at 39% 66%, rgba(255, 247, 198, .95) 0 .55%, rgba(255, 214, 104, .72) 1.2%, rgba(255, 214, 104, .16) 3.8%, transparent 6%),
+      radial-gradient(circle at 23% 58%, rgba(255, 247, 198, .92) 0 .5%, rgba(255, 214, 104, .64) 1.1%, rgba(255, 214, 104, .14) 3.5%, transparent 5.5%),
+      radial-gradient(circle at 55% 53%, rgba(255, 247, 198, .92) 0 .5%, rgba(255, 214, 104, .64) 1.1%, rgba(255, 214, 104, .14) 3.5%, transparent 5.5%),
+      radial-gradient(circle at 60% 48%, rgba(255, 247, 198, .95) 0 .55%, rgba(255, 214, 104, .70) 1.2%, rgba(255, 214, 104, .16) 3.8%, transparent 6%),
+      radial-gradient(circle at 61% 39%, rgba(255, 247, 198, .92) 0 .5%, rgba(255, 214, 104, .64) 1.1%, rgba(255, 214, 104, .14) 3.5%, transparent 5.5%),
+      radial-gradient(circle at 58% 55%, rgba(255, 247, 198, .92) 0 .5%, rgba(255, 214, 104, .64) 1.1%, rgba(255, 214, 104, .14) 3.5%, transparent 5.5%) !important;
     mix-blend-mode: screen !important;
-    opacity: .82 !important;
+    opacity: .96 !important;
   }
 
   html[lang^="pt"] .remote-ops-panel,
