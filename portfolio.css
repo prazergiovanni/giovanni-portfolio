@@ -3489,6 +3489,12 @@ html[lang^="es"] .remote-panel-commitment {
   pointer-events: none !important;
 }
 
+/* The composite panel is already complete; do not paint a second restoration
+   canvas over its corners. */
+.remote-master-foreground-repair {
+  display: none !important;
+}
+
 html[lang^="pt"] .remote-panel-reference-en,
 html[lang^="es"] .remote-panel-reference-en {
   display: none !important;
