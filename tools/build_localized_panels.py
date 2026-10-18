@@ -9,7 +9,9 @@ ASSET_DIR = ROOT / "assets" / "remote"
 SOURCE = Image.open(ASSET_DIR / "REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png").convert("RGBA")
 WIDTH, HEIGHT = SOURCE.size
 FONT_PATH = r"C:\Windows\Fonts\consolab.ttf"
-ANGLE = 3.7
+# The frozen EN panel keeps its internal labels level; the glass frame carries
+# the perspective. Localized labels must follow that same baseline.
+ANGLE = 0.0
 
 
 def add_component_text_mask(mask, rect, predicate, component_filter, dilation=7):
