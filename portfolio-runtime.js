@@ -76,6 +76,11 @@
     pt: { from: 'assets/optimized/panels/PANEL_FROM_COMPLEXITY_PT_GLASS.webp', to: 'assets/optimized/panels/PANEL_TO_PROGRESS_PT_GLASS.webp', better: 'assets/optimized/panels/PANEL_BETTER_SYSTEMS_PT_GLASS.webp' },
     es: { from: 'assets/optimized/panels/PANEL_FROM_COMPLEXITY_ES_GLASS.webp', to: 'assets/optimized/panels/PANEL_TO_PROGRESS_ES_GLASS.webp', better: 'assets/optimized/panels/PANEL_BETTER_SYSTEMS_ES_GLASS.webp' }
   };
+  const remoteCompositeSources = {
+    en: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png',
+    pt: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_PT_20261018.png?v=title-angle-list-level-v2-20261018',
+    es: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_ES_20261018.png?v=title-angle-list-level-v2-20261018'
+  };
   const panelAlt = {
     en: { from: 'From Complexity: Processes, People, Tools, Silos, Manual work', to: 'To Progress: Clarity, Automation, Efficiency, Scalability, Freedom', better: 'Better Systems — Bigger Possibilities' },
     pt: { from: 'Da complexidade: processos, pessoas, ferramentas, silos, trabalho manual', to: 'Para o progresso: clareza, automação, eficiência, escalabilidade, liberdade', better: 'Sistemas melhores — possibilidades maiores' },
@@ -304,6 +309,14 @@
     });
   }
 
+  function applyRemoteComposite(lang) {
+    $$('[data-remote-locale][data-remote-src]').forEach(image => {
+      if (image.dataset.remoteLocale === lang && !image.getAttribute('src')) {
+        image.src = image.dataset.remoteSrc;
+      }
+    });
+  }
+
   function applyVideo(lang) {
     const values = video[lang] || video.en;
     $$('#practice-area-03 [data-video-i18n], #video [data-video-i18n]').forEach(element => {
@@ -331,6 +344,7 @@
     $$('[data-final-alt]').forEach(element => { const value = values[element.dataset.finalAlt]; if (value !== undefined) element.alt = value; });
     applyVideo(safe);
     applyPanels(safe);
+    applyRemoteComposite(safe);
     // Final authority for the approved editorial clarity pass.
     const clarityKeys = ['hero.support', 'about.body', 'cta.title', 'cta.body', 'cta.box', 'cta.note', 'cta.button'];
     clarityKeys.forEach(key => {
@@ -358,6 +372,7 @@
   function preloadPanels(lang = currentLanguage(), priority = 'high') {
     const locale = panelSources[lang] || panelSources.en;
     Object.values(locale).forEach(href => ensureImagePreload(href, priority));
+    ensureImagePreload(remoteCompositeSources[lang] || remoteCompositeSources.en, priority);
   }
 
   function preloadAllPanels() {

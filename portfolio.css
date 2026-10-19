@@ -4254,3 +4254,4 @@ html[lang^="es"] .remote-panel-reference-localized {
     opacity: .58 !important;
   }
 }
+img[data-remote-src]:not([src]) { display: none !important; }
