@@ -4232,6 +4232,15 @@ html[lang^="es"] .remote-panel-reference-localized {
     mix-blend-mode: multiply !important;
   }
 
+  /* Diagnostic/final removal: no media gradient may paint a shadow at the
+     lower edge of Remote. */
+  .remote-v4-media::before,
+  .remote-v4-media::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+  }
+
   .remote-panel-reference-composite {
     opacity: .72 !important;
   }
