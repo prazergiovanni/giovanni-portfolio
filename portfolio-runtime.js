@@ -6,6 +6,11 @@
   const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
   const langs = ['en', 'pt', 'es'];
   const htmlKeys = new Set(['ticker.label', 'remote.rail']);
+  const seo = {
+    en: { title: 'Giovanni Barcelos | Operations, Systems & Automation', description: 'Giovanni Barcelos helps remote teams streamline operations through practical systems, workflows and automation across U.S. real estate, CRM and digital work.', locale: 'en_US' },
+    pt: { title: 'Giovanni Barcelos | Operações, Sistemas e Automação', description: 'Giovanni Barcelos organiza operações remotas com sistemas práticos, fluxos de trabalho e automação para operações imobiliárias, CRM e trabalho digital.', locale: 'pt_BR' },
+    es: { title: 'Giovanni Barcelos | Operaciones, Sistemas y Automatización', description: 'Giovanni Barcelos organiza operaciones remotas con sistemas prácticos, flujos de trabajo y automatización para operaciones inmobiliarias, CRM y trabajo digital.', locale: 'es_ES' }
+  };
 
   const text = {
     en: {
@@ -220,11 +225,33 @@
   }
 
   function currentLanguage() {
+    let fromUrl = '';
+    try { fromUrl = new URLSearchParams(window.location.search).get('lang') || ''; } catch (_) {}
+    if (langs.includes(fromUrl)) return fromUrl;
     let stored = '';
     try { stored = localStorage.getItem('gb-lang') || ''; } catch (_) {}
     if (langs.includes(stored)) return stored;
     const documentLang = document.documentElement.lang || 'en';
     return documentLang.toLowerCase().startsWith('pt') ? 'pt' : documentLang.toLowerCase().startsWith('es') ? 'es' : 'en';
+  }
+
+  function updateSeo(lang, updateUrl = false) {
+    const values = seo[lang] || seo.en;
+    document.title = values.title;
+    const description = $('meta[name="description"]');
+    const ogDescription = $('meta[property="og:description"]');
+    const twitterDescription = $('meta[name="twitter:description"]');
+    const ogTitle = $('meta[property="og:title"]');
+    const twitterTitle = $('meta[name="twitter:title"]');
+    const ogLocale = $('#meta-og-locale');
+    [description, ogDescription, twitterDescription].forEach(meta => meta?.setAttribute('content', values.description));
+    [ogTitle, twitterTitle].forEach(meta => meta?.setAttribute('content', values.title));
+    ogLocale?.setAttribute('content', values.locale);
+    if (updateUrl && window.history?.replaceState) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', lang);
+      window.history.replaceState({}, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
+    }
   }
 
   function setValue(element, value, key) {
@@ -313,6 +340,7 @@
     });
     if (options.animateHero !== false) replayHeroWordmarkSweep();
     else syncHeroWordmarkIllumination();
+    updateSeo(safe, options.updateUrl === true);
     try { localStorage.setItem('gb-lang', safe); } catch (_) {}
     window.GIOVANNI_FINAL_LANGUAGE = safe;
   }
@@ -810,7 +838,7 @@
       // committed. CSS supplies a brief opacity easing instead of hiding the
       // H1 and panels, which previously produced a visible blink.
       document.documentElement.classList.add('language-switching');
-      applyLocale(target, { animateHero: false });
+      applyLocale(target, { animateHero: false, updateUrl: true });
       await nextPaint();
       if (switchId !== pendingSwitch) return;
       document.documentElement.classList.remove('language-switching');
