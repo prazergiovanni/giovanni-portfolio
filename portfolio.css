@@ -4057,3 +4057,68 @@ html[lang^="es"] .remote-panel-reference-localized {
   .remote-v4 .remote-title { font-size: clamp(44px, 13vw, 62px) !important; }
   .remote-v4 .remote-body { font-size: 14px !important; }
 }
+
+/* Mobile proportion pass — keep the approved scenes intact while giving the
+   narrow layout its own typographic scale and a readable panel-to-photo ratio. */
+@media (max-width: 620px) {
+  .hero .stage {
+    height: clamp(700px, 224vw, 760px) !important;
+    min-height: 0 !important;
+  }
+
+  .hero-copy {
+    padding-top: 82px !important;
+  }
+
+  .hero-copy h1 {
+    max-width: 9.5ch !important;
+    font-size: clamp(42px, 12vw, 58px) !important;
+    line-height: .97 !important;
+  }
+
+  .hero .layer-subject .subject {
+    inset: auto -16% 48px auto !important;
+    width: 124% !important;
+  }
+
+  .hero .layer-foreground .foreground {
+    left: -30% !important;
+    width: 160% !important;
+  }
+
+  .remote-v4-media {
+    aspect-ratio: 4 / 3 !important;
+    min-height: 0 !important;
+  }
+
+  .remote-panel-reference {
+    inset: 7% 6% auto 6% !important;
+    width: 88% !important;
+  }
+
+  .remote-v4-copy {
+    padding: 40px 7% 54px !important;
+  }
+
+  .remote-v4 .remote-title {
+    max-width: none !important;
+    font-size: clamp(36px, 11vw, 54px) !important;
+    line-height: .98 !important;
+    letter-spacing: -.055em !important;
+  }
+
+  .remote-v4 .remote-title > span {
+    display: block !important;
+    white-space: normal !important;
+  }
+
+  html[lang^="pt"] .remote-v4 .remote-title,
+  html[lang^="es"] .remote-v4 .remote-title {
+    font-size: clamp(32px, 10vw, 50px) !important;
+  }
+
+  .remote-v4 .remote-body {
+    font-size: clamp(13.5px, 4.3vw, 15px) !important;
+    line-height: 1.55 !important;
+  }
+}
