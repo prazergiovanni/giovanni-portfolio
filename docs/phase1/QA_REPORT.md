@@ -47,4 +47,4 @@ Commit da fase de produto: `e3dc10d`; commit de entrega/QA: `1d74f33`. Revisões
 
 - INP real de campo ainda não está medido; não será inventado a partir de HTTP 200 ou Lighthouse sintético.
 - As variantes `?lang=` são compartilháveis e indexáveis como referência de idioma, mas o conteúdo ainda é aplicado por JavaScript; uma futura evolução para HTML pré-renderizado por idioma deve ser tratada como fase própria.
-- Read-back final desta rodada será atualizado após o deploy da correção de breakpoint; o domínio canônico permanece `giovanni.sejasagaz.com`, branch `main`.
+- Read-back final desta rodada: deploy Production Netlify `6ad6a71151bb4339aa27568a`, estado `ready`, domínio `giovanni.sejasagaz.com`, branch `main`.
