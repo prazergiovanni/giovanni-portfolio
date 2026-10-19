@@ -1,7 +1,7 @@
 # Fase 1 — SEO, localização e responsividade
 
 Data: 2026-10-19  
-Commit da fase de produto: `e3dc10d`; commit de entrega/QA: `1d74f33`.
+Commit da fase de produto: `e3dc10d`; commit de entrega/QA: `1d74f33`. Revisões finais: `7793466` (carregamento localizado) e `ad2292d` (cache-bust do runtime).
 
 ## Alterações executadas
 
@@ -44,4 +44,4 @@ Commit da fase de produto: `e3dc10d`; commit de entrega/QA: `1d74f33`.
 
 - Core Web Vitals reais (LCP, CLS e INP) ainda precisam de medição em uma execução de rede móvel controlada; não serão inventados a partir de HTTP 200.
 - As variantes `?lang=` são compartilháveis e indexáveis como referência de idioma, mas o conteúdo ainda é aplicado por JavaScript; uma futura evolução para HTML pré-renderizado por idioma deve ser tratada como fase própria.
-- A publicação Production desta fase ainda depende do read-back final do deploy e da conferência pública pós-deploy.
+- Read-back final desta rodada: deploy Production Netlify `6ad6a22dc88c4207b320e741`, estado `ready`, domínio `giovanni.sejasagaz.com`, branch `main`.
