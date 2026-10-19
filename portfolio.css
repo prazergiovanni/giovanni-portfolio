@@ -4168,3 +4168,61 @@ html[lang^="es"] .remote-panel-reference-localized {
     filter: brightness(.93) contrast(1.04) saturate(.92) sepia(.025) hue-rotate(-3deg) !important;
   }
 }
+
+/* Exposure correction v2 — preserve the approved assets and gold accents, but
+   remove the cumulative white lift that was flattening the photographs. */
+@media (min-width: 921px) {
+  .hero .layer-background .background {
+    filter: brightness(.78) contrast(1.08) saturate(.88) !important;
+  }
+
+  .hero .layer-subject .subject,
+  .hero .layer-chair .chair {
+    filter: brightness(.82) contrast(1.08) saturate(.88) sepia(.018) hue-rotate(-3deg)
+      drop-shadow(-11px 13px 14px rgba(2, 9, 15, .44)) !important;
+  }
+
+  .hero .layer-foreground .foreground {
+    filter: brightness(.80) contrast(1.08) saturate(.88) sepia(.018) hue-rotate(-3deg) !important;
+  }
+
+  .hero .layer-path > .light-path,
+  .hero .layer-path > .light-path-endpoint {
+    opacity: .72 !important;
+  }
+}
+
+@media (min-width: 1001px) {
+  .remote-v4-master {
+    filter: brightness(.76) contrast(1.08) saturate(.86) !important;
+  }
+
+  .remote-v4-media::before {
+    content: "" !important;
+    display: block !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+    background: linear-gradient(
+      180deg,
+      rgba(5, 20, 34, .18) 0%,
+      rgba(5, 20, 34, .08) 54%,
+      rgba(5, 20, 34, .16) 100%
+    ) !important;
+    mix-blend-mode: multiply !important;
+  }
+
+  .remote-panel-reference-composite {
+    opacity: .72 !important;
+  }
+
+  .remote-panel-reference-localized .remote-panel-reference-base,
+  .remote-panel-reference-localized .remote-panel-reference-map {
+    opacity: .76 !important;
+  }
+
+  .remote-panel-reference::after {
+    opacity: .58 !important;
+  }
+}
