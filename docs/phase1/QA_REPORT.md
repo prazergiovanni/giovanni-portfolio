@@ -1,7 +1,7 @@
 # Fase 1 — SEO, localização e responsividade
 
 Data: 2026-10-19  
-Commit da fase: será preenchido após o commit desta etapa.
+Commit da fase de produto: `e3dc10d`; commit de entrega/QA: `1d74f33`.
 
 ## Alterações executadas
 
