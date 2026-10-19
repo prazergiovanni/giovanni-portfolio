@@ -67,6 +67,7 @@
   --gb-gold-principal: #e9c38a;
   --gb-gold-light: #fbe3ab;
 }
+
 html { overflow-x: hidden; }
 body { min-width: 320px; overflow-x: hidden; background: var(--gb-petroleum); }
 
@@ -4120,5 +4121,50 @@ html[lang^="es"] .remote-panel-reference-localized {
   .remote-v4 .remote-body {
     font-size: clamp(13.5px, 4.3vw, 15px) !important;
     line-height: 1.55 !important;
+  }
+}
+
+/* Desktop optical correction — the scene canvas is wider than the viewport,
+   so keep the editorial copy inside the visible crop instead of allowing the
+   first letters to disappear. Reduce only the compositing lift that was
+   washing the supplied photographs; the gold path and panel glows remain. */
+@media (min-width: 921px) {
+  .hero-copy {
+    left: max(6.6%, calc((100% - 100vw) / 2 + 4.6vw)) !important;
+    width: min(33.6%, 34vw) !important;
+  }
+
+  .hero-copy h1 {
+    font-size: 4.35cqw !important;
+    line-height: 1.02 !important;
+    text-wrap: balance;
+  }
+
+  .hero-copy .support {
+    font-size: .79cqw !important;
+    line-height: 1.42 !important;
+  }
+
+  .hero .stage::before {
+    background: radial-gradient(
+      circle at 74.8% 20.8%,
+      rgba(255, 246, 194, .72) 0,
+      rgba(255, 211, 104, .48) .9%,
+      rgba(255, 186, 72, .12) 2.8%,
+      transparent 6%
+    ) !important;
+  }
+
+  .hero .layer-background .background {
+    filter: brightness(.93) contrast(1.04) saturate(.93) !important;
+  }
+
+  .hero .layer-subject .subject {
+    filter: brightness(.95) contrast(1.04) saturate(.93) sepia(.025) hue-rotate(-3deg)
+      drop-shadow(-11px 13px 14px rgba(2, 9, 15, .36)) !important;
+  }
+
+  .hero .layer-foreground .foreground {
+    filter: brightness(.93) contrast(1.04) saturate(.92) sepia(.025) hue-rotate(-3deg) !important;
   }
 }
