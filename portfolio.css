@@ -4194,7 +4194,18 @@ html[lang^="es"] .remote-panel-reference-localized {
 
 @media (min-width: 1001px) {
   .remote-v4-master {
-    filter: brightness(.76) contrast(1.08) saturate(.86) !important;
+    /* Do not filter the complete master: its lower off-white fade must stay
+       neutral, otherwise the photographic fade becomes a gray shadow. */
+    filter: none !important;
+  }
+
+  /* The approved master already carries the photographic lower fade. The
+     synthetic section veil created a visible gray shadow at the join with
+     Capabilities, so the transition must remain unpainted. */
+  .remote-work.remote-v4::after,
+  .remote-v4-media::after {
+    content: none !important;
+    display: none !important;
   }
 
   .remote-v4-media::before {
@@ -4204,12 +4215,20 @@ html[lang^="es"] .remote-panel-reference-localized {
     inset: 0 !important;
     z-index: 2 !important;
     pointer-events: none !important;
-    background: linear-gradient(
-      180deg,
-      rgba(5, 20, 34, .18) 0%,
-      rgba(5, 20, 34, .08) 54%,
-      rgba(5, 20, 34, .16) 100%
-    ) !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 20, 34, .24) 0%,
+        rgba(5, 20, 34, .16) 54%,
+        rgba(5, 20, 34, 0) 77%,
+        rgba(5, 20, 34, 0) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(5, 20, 34, .14) 0%,
+        rgba(5, 20, 34, .06) 48%,
+        rgba(5, 20, 34, 0) 78%
+      ) !important;
     mix-blend-mode: multiply !important;
   }
 
