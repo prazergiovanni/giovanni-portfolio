@@ -4255,3 +4255,58 @@ html[lang^="es"] .remote-panel-reference-localized {
   }
 }
 img[data-remote-src]:not([src]) { display: none !important; }
+
+/* Tablet breakpoint correction: 921–1023px uses the compact navigation, so it
+   must also use the contained mobile/tablet hero canvas instead of the wide
+   desktop artboard. This removes the off-canvas gap before the ticker. */
+@media (min-width: 721px) and (max-width: 1023px) {
+  .hero {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+  .hero .stage {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: min(820px, 100svh) !important;
+    min-height: 720px !important;
+    aspect-ratio: auto !important;
+    transform: none !important;
+    overflow: hidden !important;
+  }
+  .hero .stage > .layer-background,
+  .hero .stage > .layer-atmosphere,
+  .hero .stage > .layer-subject,
+  .hero .stage > .layer-foreground {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+  .hero .stage > .layer-subject { transform: none !important; }
+  .hero .stage > .layer-foreground { transform: none !important; }
+  .hero .layer-subject .subject {
+    inset: auto clamp(0px, 13vw, 100px) 16px auto !important;
+    width: clamp(620px, 117vw, 900px) !important;
+    height: auto !important;
+    max-width: none !important;
+    object-fit: contain !important;
+  }
+  .hero .layer-foreground .foreground {
+    inset: auto auto 0 -24% !important;
+    width: 150% !important;
+    height: auto !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .hero .ticker {
+    position: relative !important;
+    inset: auto !important;
+    height: 62px !important;
+    min-height: 62px !important;
+  }
+}
