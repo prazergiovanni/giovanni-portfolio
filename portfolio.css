@@ -4350,7 +4350,10 @@ img[data-remote-src]:not([src]) { display: none !important; }
     inset: 0 !important;
   }
   .hero .stage > .layer-subject { transform: none !important; }
-  .hero .stage > .layer-foreground { transform: none !important; }
+  .hero .stage > .layer-foreground {
+    transform: none !important;
+    z-index: 18 !important;
+  }
   /* Re-establish the physical seating plane on tablet. The isolated chair
      must remain visible behind Giovanni; otherwise the transparent desk
      canvas reads as a floating slab with no supporting furniture. */
@@ -4392,13 +4395,39 @@ img[data-remote-src]:not([src]) { display: none !important; }
     object-fit: contain !important;
   }
   .hero .layer-foreground .foreground {
-    inset: auto auto -2.5% -11% !important;
+    /* Let the transparent canvas exit below the hero so its lower edge does
+       not read as a floating tabletop above the ticker. */
+    inset: auto auto -18% -11% !important;
     width: 122% !important;
     height: auto !important;
     max-width: none !important;
     object-fit: contain !important;
-    transform: none !important;
+    transform: scale(1.08) translateY(4%) !important;
+    transform-origin: center bottom !important;
     clip-path: none !important;
+  }
+  .hero .layer-foreground::after {
+    content: "";
+    position: absolute;
+    left: -11% !important;
+    right: auto !important;
+    bottom: 0 !important;
+    width: 122% !important;
+    height: 8% !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(121, 68, 39, 0) 0%,
+        rgba(121, 68, 39, .30) 42%,
+        rgba(82, 45, 31, .82) 78%,
+        rgba(45, 26, 22, .96) 100%
+      );
+    box-shadow:
+      inset 0 2px 0 rgba(246, 188, 104, .18),
+      0 12px 18px rgba(2, 9, 15, .32);
+    border-radius: 0 0 4px 4px;
+    pointer-events: none;
+    z-index: 2 !important;
   }
   .hero .stage::after {
     background:

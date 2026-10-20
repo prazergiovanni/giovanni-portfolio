@@ -46,6 +46,7 @@ Commit da fase de produto: `e3dc10d`; commit de entrega/QA: `1d74f33`. Revisões
 - Medição móvel controlada final: `docs/phase1/lighthouse-mobile-final.json`; Performance 64, Accessibility 90, SEO 92; FCP 1,48 s; LCP 8,38 s; TBT 113 ms; CLS 0; transferência total 13.191 KiB. O LCP móvel ainda está acima do alvo de 2,5 s; o gate de performance não está fechado.
 - Revalidação após a correção do breakpoint: `docs/phase1/lighthouse-mobile-hero-fixed.json`; Performance 62, Accessibility 90, SEO 100; FCP 2,27 s; TBT 72 ms; CLS 0; transferência 13.496 KiB. A auditoria ainda reporta LCP bruto anômalo de 76,18 s, sem regressão visual ou de layout; permanece um gate de medição/performance, não um bloqueio visual.
 - Nova revisão visual do tablet: a poltrona azul isolada foi reancorada atrás do Giovanni e a mesa foi baixada para fechar o plano de apoio; conferido em 940px e 1023px, sem alteração dos breakpoints mobile e desktop.
+- Ajuste final de profundidade: o primeiro plano da mesa passa a sair pela base da Hero com uma frente de madeira suavizada, eliminando a borda transparente que fazia a mesa parecer suspensa; validado visualmente em 940px.
 
 - INP real de campo ainda não está medido; não será inventado a partir de HTTP 200 ou Lighthouse sintético.
 - As variantes `?lang=` são compartilháveis e indexáveis como referência de idioma, mas o conteúdo ainda é aplicado por JavaScript; uma futura evolução para HTML pré-renderizado por idioma deve ser tratada como fase própria.
