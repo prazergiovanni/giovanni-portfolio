@@ -4351,6 +4351,23 @@ img[data-remote-src]:not([src]) { display: none !important; }
   }
   .hero .stage > .layer-subject { transform: none !important; }
   .hero .stage > .layer-foreground { transform: none !important; }
+  /* Re-establish the physical seating plane on tablet. The isolated chair
+     must remain visible behind Giovanni; otherwise the transparent desk
+     canvas reads as a floating slab with no supporting furniture. */
+  .hero .stage > .layer-chair {
+    display: block !important;
+    z-index: 9 !important;
+  }
+  .hero .stage > .layer-chair .chair {
+    left: 28% !important;
+    right: auto !important;
+    top: 16% !important;
+    bottom: auto !important;
+    width: 68% !important;
+    height: auto !important;
+    max-width: none !important;
+    object-fit: contain !important;
+  }
   .hero .hero-copy {
     top: 13.5% !important;
     left: 12% !important;
@@ -4375,7 +4392,7 @@ img[data-remote-src]:not([src]) { display: none !important; }
     object-fit: contain !important;
   }
   .hero .layer-foreground .foreground {
-    inset: auto auto 0 -11% !important;
+    inset: auto auto -2.5% -11% !important;
     width: 122% !important;
     height: auto !important;
     max-width: none !important;
