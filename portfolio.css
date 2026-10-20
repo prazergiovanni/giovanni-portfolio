@@ -4256,7 +4256,7 @@ html[lang^="es"] .remote-panel-reference-localized {
 }
 img[data-remote-src]:not([src]) { display: none !important; }
 
-/* Tablet composition: 721–1023px is its own editorial scene. The earlier
+/* Tablet composition: 721–1100px is its own editorial scene. The earlier
    emergency fix removed the off-canvas gap but scaled the transparent subject
    and desk independently, which made the image read as a pasted strip. Keep
    one bounded stage, then give the copy, subject and desk deliberate anchors. */
