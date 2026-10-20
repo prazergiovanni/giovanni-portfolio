@@ -4256,10 +4256,74 @@ html[lang^="es"] .remote-panel-reference-localized {
 }
 img[data-remote-src]:not([src]) { display: none !important; }
 
-/* Tablet breakpoint correction: 921–1023px uses the compact navigation, so it
-   must also use the contained mobile/tablet hero canvas instead of the wide
-   desktop artboard. This removes the off-canvas gap before the ticker. */
-@media (min-width: 721px) and (max-width: 1023px) {
+/* Tablet composition: 721–1023px is its own editorial scene. The earlier
+   emergency fix removed the off-canvas gap but scaled the transparent subject
+   and desk independently, which made the image read as a pasted strip. Keep
+   one bounded stage, then give the copy, subject and desk deliberate anchors. */
+@media (min-width: 721px) and (max-width: 1100px) {
+  /* The tablet scene is intentionally the clean hero composition; the
+     desktop-only trajectory panels return at the desktop breakpoint instead
+     of appearing as detached cards over the subject. */
+  .hero .layer-rear,
+  .hero .layer-from-panel,
+  .hero .layer-path,
+  .hero .layer-front-panels,
+  .hero .layer-better-panel,
+  .hero .layer-subject-occlusion,
+  .hero .stage::before {
+    display: none !important;
+  }
+  .hero .layer-background .background {
+    filter: brightness(.93) contrast(1.04) saturate(.93) !important;
+  }
+  .hero .layer-subject .subject,
+  .hero .layer-chair .chair {
+    filter: brightness(.95) contrast(1.04) saturate(.93) sepia(.02)
+      hue-rotate(-3deg) drop-shadow(-11px 13px 14px rgba(2, 9, 15, .36)) !important;
+  }
+  .hero .layer-foreground .foreground {
+    filter: brightness(.93) contrast(1.04) saturate(.92) sepia(.02)
+      hue-rotate(-3deg) !important;
+  }
+  /* Keep the header mode consistent with the tablet composition through the
+     last width at which the desktop navigation becomes cramped. */
+  .site-header {
+    display: flex !important;
+    min-height: 82px !important;
+    padding: 7px 6% 0 !important;
+  }
+  .site-header > a { margin: 0 !important; }
+  .site-header .brand-full { width: 188px !important; }
+  .mobile-nav-toggle { display: block !important; order: 3; margin-left: auto; }
+  .site-nav {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    padding: 14px 7% 20px !important;
+    display: none !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    background: rgba(13,27,42,.98) !important;
+    border-top: 1px solid rgba(233,195,138,.12) !important;
+    border-bottom: 1px solid rgba(233,195,138,.22) !important;
+    box-shadow: 0 18px 30px rgba(0,0,0,.30) !important;
+    white-space: normal !important;
+  }
+  .site-nav.mobile-open { display: flex !important; }
+  .site-nav > a,
+  .site-nav .nav-practice-wrap { width: 100% !important; min-height: 42px; }
+  .site-nav > a { display: flex !important; align-items: center; padding: 10px 0; }
+  .site-nav .languages { display: flex !important; gap: 18px; margin: 8px 0 0; padding-top: 13px; border-top: 1px solid rgba(255,255,255,.13); }
+  .site-nav.mobile-open .languages { display: flex !important; }
+  .nav-practice-wrap { display: grid !important; grid-template-columns: 1fr 42px; gap: 0; align-items: center; }
+  .nav-practice-wrap .nav-practice-link { width: auto; }
+  .nav-submenu-toggle { width: 42px; height: 42px; justify-self: end; }
+  .nav-submenu { position: static; grid-column: 1 / -1; min-width: 0; margin: 0 0 8px; padding: 4px 0 4px 14px; border: 0; border-left: 1px solid rgba(233,195,138,.38); box-shadow: none; opacity: 1; pointer-events: none; transform: none; display: none; background: transparent; }
+  .nav-submenu.is-open { display: grid; pointer-events: auto; }
+  .nav-submenu a { padding: 9px 10px; }
   .hero {
     height: auto !important;
     min-height: 0 !important;
@@ -4272,7 +4336,7 @@ img[data-remote-src]:not([src]) { display: none !important; }
     top: auto !important;
     left: auto !important;
     width: 100% !important;
-    height: min(820px, 100svh) !important;
+    height: clamp(720px, 91.5vw, 860px) !important;
     min-height: 720px !important;
     aspect-ratio: auto !important;
     transform: none !important;
@@ -4287,21 +4351,48 @@ img[data-remote-src]:not([src]) { display: none !important; }
   }
   .hero .stage > .layer-subject { transform: none !important; }
   .hero .stage > .layer-foreground { transform: none !important; }
+  .hero .hero-copy {
+    top: 13.5% !important;
+    left: 12% !important;
+    width: 40% !important;
+  }
+  .hero .hero-copy h1 {
+    max-width: 9ch !important;
+    font-size: clamp(48px, 5.65vw, 64px) !important;
+    line-height: 1.01 !important;
+  }
+  .hero .hero-copy .support {
+    max-width: 31ch !important;
+    margin-top: 22px !important;
+    font-size: clamp(11px, 1.25vw, 14px) !important;
+    line-height: 1.42 !important;
+  }
   .hero .layer-subject .subject {
-    inset: auto clamp(0px, 13vw, 100px) 16px auto !important;
-    width: clamp(620px, 117vw, 900px) !important;
+    inset: auto clamp(-28px, -2vw, 0px) 76px auto !important;
+    width: clamp(570px, 92vw, 820px) !important;
     height: auto !important;
     max-width: none !important;
     object-fit: contain !important;
   }
   .hero .layer-foreground .foreground {
-    inset: auto auto 0 -24% !important;
-    width: 150% !important;
+    inset: auto auto 0 -11% !important;
+    width: 122% !important;
     height: auto !important;
     max-width: none !important;
     object-fit: contain !important;
     transform: none !important;
     clip-path: none !important;
+  }
+  .hero .stage::after {
+    background:
+      radial-gradient(ellipse 38% 34% at 56% 28%, rgba(255,226,170,.10), transparent 72%),
+      linear-gradient(90deg, rgba(5,18,33,.42) 0%, rgba(5,18,33,.22) 38%, rgba(5,18,33,.07) 70%, transparent 100%) !important;
+  }
+  .hero .layer-atmosphere .atmosphere {
+    background:
+      radial-gradient(ellipse 53% 82% at 12% 43%, rgba(2,14,29,.44) 0%, rgba(2,14,29,.18) 48%, transparent 100%),
+      linear-gradient(90deg, rgba(2,11,24,.28) 0%, rgba(2,13,26,.14) 36%, rgba(2,10,19,.04) 68%, transparent 100%),
+      linear-gradient(180deg, rgba(1,7,15,.10), transparent 24%, rgba(1,7,12,.08) 100%) !important;
   }
   .hero .ticker {
     position: relative !important;

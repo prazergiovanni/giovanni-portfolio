@@ -33,6 +33,7 @@ Commit da fase de produto: `e3dc10d`; commit de entrega/QA: `1d74f33`. Revisões
 - PT→ES no Preview local: URL, idioma, título, título Remote e estado ativo foram atualizados; geometria e composição permaneceram estáveis.
 - A captura de 320px confirmou o painel e o texto dentro do viewport; a captura de 1280px confirmou a continuidade Remote → Capabilities sem faixa lateral ou recorte horizontal.
 - O viewport de 950px que reproduzia o defeito foi corrigido: o artboard desktop não é mais aplicado entre 921px e 1023px enquanto a navegação já está em modo compacto; stage, foreground, ticker e overflow foram conferidos no Preview local.
+- Nova revisão visual do tablet: entre 721px e 1100px o Hero usa uma composição editorial única, com escala comum para fundo, Giovanni e mesa, sem painéis desktop soltos; a navegação permanece compacta e o ticker fecha o Hero sem faixa vazia. Conferido visualmente em 940px e 1023px, além de rechecagem em 390px.
 
 ## Limites ainda abertos
 
