@@ -1,2 +1,4 @@
 # Local Netlify folder
 .netlify
+# Generated Cloudflare public build, not a parallel source branch
+.cloudflare-public/
