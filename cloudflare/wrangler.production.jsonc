@@ -1,0 +1,19 @@
+{
+  "account_id": "f63d986e4f491b3a61f919e884e3aba5",
+  "name": "giovanni-portfolio-canonical-r1",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-07",
+  "workers_dev": true,
+  "assets": {
+    "directory": "../.cloudflare-public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "404-page"
+  },
+  "routes": [
+    {
+      "pattern": "giovanni.sejasagaz.com",
+      "custom_domain": true
+    }
+  ]
+}
