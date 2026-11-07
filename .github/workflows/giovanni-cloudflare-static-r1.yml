@@ -1,0 +1,37 @@
+name: Giovanni canonical Cloudflare assets
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'portfolio-runtime.js'
+      - 'portfolio.css'
+      - 'assets/**'
+      - 'cloudflare/**'
+      - 'scripts/**'
+      - '.github/workflows/giovanni-cloudflare-static-r1.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'portfolio-runtime.js'
+      - 'portfolio.css'
+      - 'assets/**'
+      - 'cloudflare/**'
+      - 'scripts/**'
+      - '.github/workflows/giovanni-cloudflare-static-r1.yml'
+permissions:
+  contents: read
+jobs:
+  source-to-cloudflare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build canonical public asset allowlist
+        run: node scripts/build-cloudflare-assets.mjs
+      - name: Verify public asset byte parity and no private directories
+        run: node --test scripts/verify-cloudflare-assets.test.mjs
+      - name: Validate Workers package without deploying
+        run: npx wrangler@4.149.0 deploy --config cloudflare/wrangler.jsonc --dry-run
