@@ -4447,3 +4447,123 @@ img[data-remote-src]:not([src]) { display: none !important; }
     min-height: 62px !important;
   }
 }
+
+/* R20 | 2026-11-13 mobile editorial restoration.
+   Desktop layer geometry is untouched. A stronger portrait/focal point and
+   more coherent reading hierarchy improve the narrow-first experience. */
+@media (max-width: 720px) {
+  .hero {
+    min-height: 0 !important;
+    height: auto !important;
+    background: #061527 !important;
+    overflow: hidden !important;
+  }
+  .hero .stage {
+    height: min(840px, 100svh) !important;
+    min-height: 725px !important;
+    max-height: 840px !important;
+    overflow: hidden !important;
+  }
+  .hero-copy {
+    padding: 91px 0 0 !important;
+    margin: 0 clamp(21px, 7vw, 32px) !important;
+    max-width: calc(100% - 42px) !important;
+  }
+  .hero-copy .eyebrow {
+    color: #ffe19d !important;
+    font-size: clamp(9px, 2.4vw, 11px) !important;
+    letter-spacing: .16em !important;
+    line-height: 1.45 !important;
+    max-width: 33ch !important;
+    margin: 0 0 16px !important;
+  }
+  .hero-copy h1 {
+    max-width: 100% !important;
+    font-size: clamp(47px, 12.3vw, 61px) !important;
+    line-height: .96 !important;
+    letter-spacing: -.062em !important;
+    overflow-wrap: normal !important;
+    text-wrap: balance !important;
+    text-shadow: 0 2px 18px rgba(0,8,20,.26) !important;
+  }
+  .hero-copy .support {
+    margin-top: 22px !important;
+    max-width: 31ch !important;
+    font-size: clamp(14px, 3.75vw, 16px) !important;
+    line-height: 1.55 !important;
+    color: #f2f4ec !important;
+    text-wrap: pretty !important;
+    text-shadow: 0 1px 12px #061527 !important;
+  }
+  .hero .layer-atmosphere .atmosphere {
+    background:
+      linear-gradient(180deg, rgba(2,13,28,.91) 0%,
+        rgba(2,13,28,.76) 31%,rgba(2,13,28,.14) 52%,
+        rgba(2,13,28,.09) 76%,rgba(2,13,28,.38) 100%),
+      linear-gradient(90deg,rgba(2,13,28,.54),transparent 72%) !important;
+  }
+  .hero .layer-subject .subject {
+    inset: auto -19% 68px auto !important;
+    width: 138% !important;
+    height: auto !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    transform: none !important;
+    filter: brightness(1.03) contrast(1.06) saturate(.98)
+      drop-shadow(-13px 12px 16px rgba(2,9,15,.38)) !important;
+  }
+  .hero .layer-foreground .foreground {
+    inset: auto auto 0 -20% !important;
+    width: 145% !important;
+    object-fit: contain !important;
+    filter: brightness(.98) contrast(1.06) saturate(.96) !important;
+  }
+  .hero .ticker {
+    min-height: 50px !important;
+    height: 50px !important;
+    overflow: hidden !important;
+    border-top: 1px solid rgba(225,181,106,.25) !important;
+  }
+  .hero .ticker-track-wrap { height: 49px !important; }
+  .hero .ticker-track { font-size: 10px !important; }
+}
+@media (max-width: 370px) {
+  .hero-copy h1 { font-size: clamp(42px, 12.4vw, 47px) !important; }
+  .hero-copy .support { font-size: 14px !important; }
+  .hero .layer-subject .subject { width: 145% !important; right: -21% !important; }
+}
+
+/* Contextual case-study link: shown only on mobile, translated with html[lang]. */
+.hero-mobile-action { display: none; }
+@media (max-width: 720px) {
+  .hero-copy .hero-mobile-action {
+    display: inline-flex !important;
+    position: relative !important;
+    align-items: center !important;
+    gap: 13px !important;
+    min-height: 45px !important;
+    margin-top: 22px !important;
+    padding: 10px 17px !important;
+    text-decoration: none !important;
+    color: #ffe9ad !important;
+    background: rgba(8,27,44,.76) !important;
+    border: 1px solid rgba(239,191,96,.56) !important;
+    border-radius: 4px !important;
+    font-family: "Avenir Next", Avenir, system-ui, sans-serif !important;
+    font-weight: 750 !important;
+    font-size: 12px !important;
+    letter-spacing: .02em !important;
+    box-shadow: 0 5px 17px rgba(0,11,24,.27) !important;
+    z-index: 30 !important;
+    pointer-events: auto !important;
+  }
+  .hero-mobile-action:hover,
+  .hero-mobile-action:focus-visible { background: rgba(25,53,61,.94) !important; }
+  .hero-mobile-arrow { font-size: 16px; }
+}
+.hero-mobile-action .hero-action-pt,
+.hero-mobile-action .hero-action-es { display:none; }
+html[lang^="pt"] .hero-mobile-action .hero-action-en,
+html[lang^="es"] .hero-mobile-action .hero-action-en { display:none; }
+html[lang^="pt"] .hero-mobile-action .hero-action-pt,
+html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
