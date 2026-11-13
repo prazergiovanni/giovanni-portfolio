@@ -68,6 +68,133 @@
   --gb-gold-light: #fbe3ab;
 }
 
+/* Approved static desktop scene: the photographic composition is one immutable
+   raster; navigation, hero copy, ticker and the animated gold path remain live. */
+@media (min-width: 681px) {
+  .hero.hero-static-master .stage {
+    opacity: 1 !important;
+    background: #061625 url("assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp") center / cover no-repeat;
+  }
+  .hero.hero-static-master .hero-static-scene {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero.hero-static-master .hero-static-light-path {
+    position: absolute;
+    left: 9.4%;
+    top: 8%;
+    z-index: 20;
+    display: block;
+    width: 79%;
+    height: 51%;
+    object-fit: fill;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: .72;
+    filter: saturate(.82) brightness(.82);
+    -webkit-mask-image: linear-gradient(90deg, #000 0 49%, transparent 53% 74%, #000 78% 100%);
+    mask-image: linear-gradient(90deg, #000 0 49%, transparent 53% 74%, #000 78% 100%);
+    clip-path: none;
+    animation: hero-static-path-pulse 4.6s ease-in-out infinite alternate;
+  }
+  .hero.hero-static-master .hero-static-scene-mobile,
+  .hero.hero-static-master .hero-static-mobile-light-path { display: none; }
+  .hero.hero-static-master .layer-background,
+  .hero.hero-static-master .layer-rear,
+  .hero.hero-static-master .layer-from-panel,
+  .hero.hero-static-master .layer-chair,
+  .hero.hero-static-master .layer-subject,
+  .hero.hero-static-master .layer-subject-occlusion,
+  .hero.hero-static-master .layer-foreground,
+  .hero.hero-static-master .layer-notebook,
+  .hero.hero-static-master .layer-front-panels,
+  .hero.hero-static-master .layer-better-panel,
+  .hero.hero-static-master .layer-atmosphere {
+    display: none !important;
+  }
+  .hero.hero-static-master .layer-path { display: none !important; }
+}
+@media (max-width: 680px) {
+  .hero.hero-static-master .hero-static-scene,
+  .hero.hero-static-master .hero-static-light-path { display: none; }
+  .hero.hero-static-master .stage {
+    opacity: 1 !important;
+    background: #071728;
+  }
+  .hero.hero-static-master .hero-static-scene-mobile {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .hero.hero-static-master .layer-background,
+  .hero.hero-static-master .layer-rear,
+  .hero.hero-static-master .layer-from-panel,
+  .hero.hero-static-master .layer-path,
+  .hero.hero-static-master .layer-chair,
+  .hero.hero-static-master .layer-subject,
+  .hero.hero-static-master .layer-subject-occlusion,
+  .hero.hero-static-master .layer-foreground,
+  .hero.hero-static-master .layer-notebook,
+  .hero.hero-static-master .layer-front-panels,
+  .hero.hero-static-master .layer-better-panel,
+  .hero.hero-static-master .layer-atmosphere { display: none !important; }
+  .hero.hero-static-master .hero-static-mobile-light-path {
+    position: absolute;
+    left: 7%;
+    top: 74%;
+    z-index: 12;
+    display: block;
+    width: 50%;
+    height: 2px;
+    border-radius: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,206,105,.82) 18%, #fff0b4 58%, rgba(255,190,75,.7) 82%, transparent);
+    box-shadow: 0 0 8px rgba(255,190,75,.55), 0 0 20px rgba(255,190,75,.28);
+    transform: rotate(-4deg);
+    transform-origin: left center;
+    animation: hero-mobile-light-pulse 3.8s ease-in-out infinite alternate;
+  }
+  .hero.hero-static-master .hero-copy {
+    top: 13% !important;
+    width: 86% !important;
+  }
+  .hero.hero-static-master .hero-copy .eyebrow { margin-bottom: 12px !important; }
+  .hero.hero-static-master .hero-copy h1 {
+    font-size: clamp(46px, 12.4vw, 53px) !important;
+    line-height: .92 !important;
+  }
+  .hero.hero-static-master .hero-copy .support {
+    max-width: 305px !important;
+    margin-top: 14px !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero.hero-static-master .hero-static-light-path {
+    animation: none;
+    clip-path: none;
+  }
+}
+@keyframes hero-static-path-pulse {
+  from { opacity: .56; filter: saturate(.76) brightness(.72); }
+  to { opacity: .78; filter: saturate(.94) brightness(.90); }
+}
+@keyframes hero-mobile-light-pulse {
+  from { opacity: .38; transform: rotate(-4deg) scaleX(.72); }
+  to { opacity: .92; transform: rotate(-4deg) scaleX(1); }
+}
+
 html { overflow-x: hidden; }
 body { min-width: 320px; overflow-x: hidden; background: var(--gb-petroleum); }
 

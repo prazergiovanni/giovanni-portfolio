@@ -76,6 +76,11 @@
     pt: { from: 'assets/optimized/panels/PANEL_FROM_COMPLEXITY_PT_GLASS.webp', to: 'assets/optimized/panels/PANEL_TO_PROGRESS_PT_GLASS.webp', better: 'assets/optimized/panels/PANEL_BETTER_SYSTEMS_PT_GLASS.webp' },
     es: { from: 'assets/optimized/panels/PANEL_FROM_COMPLEXITY_ES_GLASS.webp', to: 'assets/optimized/panels/PANEL_TO_PROGRESS_ES_GLASS.webp', better: 'assets/optimized/panels/PANEL_BETTER_SYSTEMS_ES_GLASS.webp' }
   };
+  const heroStaticSources = {
+    en: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_EN_20261113_V4.webp' },
+    pt: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_PT_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_PT_20261113.webp' },
+    es: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_ES_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_ES_20261113.webp' }
+  };
   const remoteCompositeSources = {
     en: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png',
     pt: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_PT_20261018.png?v=title-angle-list-level-v2-20261018',
@@ -309,6 +314,16 @@
     });
   }
 
+  function applyHeroStatic(lang) {
+    const sources = heroStaticSources[lang] || heroStaticSources.en;
+    const desktop = $('.hero-static-scene');
+    const mobile = $('.hero-static-scene-mobile');
+    const stage = $('.hero-static-master .stage');
+    if (desktop) desktop.src = sources.desktop;
+    if (mobile) mobile.src = sources.mobile;
+    if (stage) stage.style.backgroundImage = `url("${sources.desktop}")`;
+  }
+
   function applyRemoteComposite(lang) {
     $$('[data-remote-locale][data-remote-src]').forEach(image => {
       if (image.dataset.remoteLocale === lang && !image.getAttribute('src')) {
@@ -343,6 +358,7 @@
     $$('[data-i18n-alt]').forEach(element => { const value = values[element.dataset.i18nAlt]; if (value !== undefined) element.alt = value; });
     $$('[data-final-alt]').forEach(element => { const value = values[element.dataset.finalAlt]; if (value !== undefined) element.alt = value; });
     applyVideo(safe);
+    applyHeroStatic(safe);
     applyPanels(safe);
     applyRemoteComposite(safe);
     // Final authority for the approved editorial clarity pass.
@@ -824,8 +840,9 @@
       const visiblePanels = $$('[data-panel-key]')
         .map(panel => localeSources[panel.dataset.panelKey])
         .filter(Boolean);
+      const visibleStatic = Object.values(heroStaticSources[target] || heroStaticSources.en);
       preloadPanels(target, 'high');
-      await Promise.allSettled(visiblePanels.map(async src => {
+      await Promise.allSettled([...visiblePanels, ...visibleStatic].map(async src => {
         const image = new Image();
         image.src = src;
         if (typeof image.decode === 'function') await image.decode();
