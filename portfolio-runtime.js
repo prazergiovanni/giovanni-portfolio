@@ -77,9 +77,9 @@
     es: { from: 'assets/optimized/panels/PANEL_FROM_COMPLEXITY_ES_GLASS.webp', to: 'assets/optimized/panels/PANEL_TO_PROGRESS_ES_GLASS.webp', better: 'assets/optimized/panels/PANEL_BETTER_SYSTEMS_ES_GLASS.webp' }
   };
   const heroStaticSources = {
-    en: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_EN_20261113_V4.webp' },
-    pt: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_PT_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_PT_20261113.webp' },
-    es: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_ES_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_ES_20261113.webp' }
+    en: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' },
+    pt: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_PT_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' },
+    es: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_ES_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' }
   };
   const remoteCompositeSources = {
     en: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png',

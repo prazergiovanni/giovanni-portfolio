@@ -151,21 +151,42 @@
   .hero.hero-static-master .layer-atmosphere { display: none !important; }
   .hero.hero-static-master .hero-static-mobile-light-path {
     position: absolute;
-    left: 7%;
-    top: 74%;
-    z-index: 12;
+    left: -5%;
+    top: 66%;
+    z-index: 2;
     display: block;
-    width: 50%;
-    height: 2px;
+    width: 58%;
+    height: 5px;
     border-radius: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,206,105,.82) 18%, #fff0b4 58%, rgba(255,190,75,.7) 82%, transparent);
-    box-shadow: 0 0 8px rgba(255,190,75,.55), 0 0 20px rgba(255,190,75,.28);
-    transform: rotate(-4deg);
+    background: linear-gradient(90deg, transparent 0%, rgba(255,191,76,.24) 16%, #ffe8a0 58%, rgba(255,190,75,.68) 88%, transparent 100%);
+    box-shadow: 0 0 6px rgba(255,190,75,.64), 0 0 22px rgba(255,190,75,.34), 0 0 48px rgba(255,190,75,.17);
+    transform: rotate(-7deg);
     transform-origin: left center;
-    animation: hero-mobile-light-pulse 3.8s ease-in-out infinite alternate;
+    animation: hero-mobile-light-pulse 4.2s ease-in-out infinite alternate;
+  }
+  .hero.hero-static-master .hero-static-mobile-light-path::before {
+    content: "";
+    position: absolute;
+    left: 11%;
+    right: 8%;
+    top: 1px;
+    height: 1px;
+    background: #fff4c6;
+    box-shadow: 0 0 5px #fff0b4, 0 0 13px rgba(255,197,83,.72);
+  }
+  .hero.hero-static-master .hero-static-mobile-light-path::after {
+    content: "";
+    position: absolute;
+    right: 6%;
+    top: -3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff4c4;
+    box-shadow: 0 0 7px #fff0b4, 0 0 20px rgba(255,194,73,.82), 0 0 36px rgba(255,194,73,.35);
   }
   .hero.hero-static-master .hero-copy {
-    top: 13% !important;
+    top: 4% !important;
     width: 86% !important;
   }
   .hero.hero-static-master .hero-copy .eyebrow { margin-bottom: 12px !important; }
@@ -4382,7 +4403,6 @@ html[lang^="es"] .remote-panel-reference-localized {
   }
 }
 img[data-remote-src]:not([src]) { display: none !important; }
-
 /* Tablet composition: 721–1100px is its own editorial scene. The earlier
    emergency fix removed the off-canvas gap but scaled the transparent subject
    and desk independently, which made the image read as a pasted strip. Keep
@@ -4694,3 +4714,197 @@ html[lang^="pt"] .hero-mobile-action .hero-action-en,
 html[lang^="es"] .hero-mobile-action .hero-action-en { display:none; }
 html[lang^="pt"] .hero-mobile-action .hero-action-pt,
 html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
+
+/* FINAL MOBILE REMOTE AUTHORITY — this block is intentionally last so older
+   emergency media-query patches cannot reintroduce the compressed desktop
+   layout or a panel crop. */
+@media (max-width: 720px) {
+  .remote-work.remote-v4 {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+    scroll-margin-top: 74px !important;
+  }
+
+  .remote-v4-media {
+    position: relative !important;
+    inset: auto !important;
+    order: 1 !important;
+    width: 100% !important;
+    height: 520px !important;
+    min-height: 520px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+    isolation: isolate !important;
+    aspect-ratio: auto !important;
+  }
+
+  .remote-v4-media picture {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .remote-v4-master {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    object-position: 78% 42% !important;
+    transform: translateY(105px) scale(1.40) !important;
+    transform-origin: center 42% !important;
+    filter: brightness(.86) contrast(1.04) saturate(.90) !important;
+  }
+
+  .remote-v4-media::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    display: block !important;
+    pointer-events: none !important;
+    background: linear-gradient(180deg, rgba(5,19,32,.48) 0%, rgba(5,19,32,.16) 34%, rgba(5,19,32,0) 58%) !important;
+  }
+
+  .remote-v4-media::before,
+  .remote-v4-left-shade,
+  .remote-panel-original,
+  .remote-panel-map-forensic,
+  .remote-master-foreground-repair,
+  .remote-master-foreground-restore {
+    display: none !important;
+  }
+
+  .remote-panel-reference {
+    position: absolute !important;
+    top: 88px !important;
+    right: 14px !important;
+    left: auto !important;
+    z-index: 3 !important;
+    display: block !important;
+    width: 62% !important;
+    height: auto !important;
+    aspect-ratio: 1550 / 1015 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+    filter: drop-shadow(0 12px 22px rgba(2,14,25,.34)) !important;
+  }
+
+  .remote-panel-reference-en,
+  .remote-panel-reference-localized,
+  .remote-panel-reference-composite {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    pointer-events: none !important;
+  }
+
+  .remote-panel-reference-en { z-index: 2 !important; }
+  .remote-panel-reference-localized { z-index: 1 !important; }
+  .remote-panel-reference::after { display: none !important; }
+
+  html[lang^="pt"] .remote-panel-reference-en,
+  html[lang^="es"] .remote-panel-reference-en { display: none !important; }
+  html[lang^="pt"] .remote-panel-reference-localized .remote-panel-reference-pt,
+  html[lang^="es"] .remote-panel-reference-localized .remote-panel-reference-es { display: block !important; }
+  html[lang^="pt"] .remote-panel-reference-localized .remote-panel-reference-es,
+  html[lang^="es"] .remote-panel-reference-localized .remote-panel-reference-pt { display: none !important; }
+
+  .remote-ops-panel,
+  html[lang^="pt"] .remote-ops-panel,
+  html[lang^="es"] .remote-ops-panel { display: none !important; }
+
+  .remote-v4-copy {
+    position: relative !important;
+    inset: auto !important;
+    order: 2 !important;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 42px 22px 58px !important;
+    background: #082238 !important;
+    isolation: isolate !important;
+  }
+
+  .remote-v4-copy::before { display: none !important; }
+  .remote-v4-copy > * { position: relative !important; z-index: 1 !important; }
+
+  .remote-v4 .remote-kicker {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin: 0 0 17px !important;
+    color: #f2c35b !important;
+    font-size: 9px !important;
+    line-height: 1.35 !important;
+    letter-spacing: .22em !important;
+  }
+
+  .remote-v4 .remote-kicker::after {
+    width: 72px !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, #f2c35b, transparent) !important;
+  }
+
+  .remote-v4 .remote-title {
+    max-width: 13ch !important;
+    margin: 0 0 22px !important;
+    color: #fbfaf5 !important;
+    font-size: clamp(40px, 11.6vw, 50px) !important;
+    font-weight: 400 !important;
+    line-height: .98 !important;
+    letter-spacing: -.055em !important;
+    text-wrap: balance !important;
+  }
+
+  .remote-v4 .remote-title > span { display: block !important; white-space: normal !important; }
+
+  html[lang^="pt"] .remote-v4 .remote-title,
+  html[lang^="es"] .remote-v4 .remote-title {
+    max-width: 12.5ch !important;
+    font-size: clamp(36px, 10.2vw, 46px) !important;
+  }
+
+  .remote-v4 .remote-body {
+    width: 100% !important;
+    max-width: 620px !important;
+    color: rgba(248,250,248,.88) !important;
+    font-size: 15px !important;
+    line-height: 1.58 !important;
+    letter-spacing: normal !important;
+    text-shadow: none !important;
+  }
+
+  .remote-v4 .remote-body p { margin: 0 0 14px !important; }
+  .remote-v4 .remote-body p:nth-child(n + 2) { display: block !important; }
+  .remote-v4 .remote-values,
+  .remote-to-capabilities { display: none !important; }
+}
+
+@media (max-width: 380px) {
+  .remote-v4-media { height: 500px !important; min-height: 500px !important; }
+  .remote-panel-reference { top: 80px !important; right: 10px !important; width: 63% !important; }
+  .remote-v4-copy { padding-left: 20px !important; padding-right: 20px !important; }
+}
