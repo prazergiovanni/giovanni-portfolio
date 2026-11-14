@@ -1582,7 +1582,7 @@ body.scrolled .site-header { border-bottom-color: transparent; }
 
   .remote-v4-copy {
     top: 7% !important;
-    left: 6% !important;
+    left: 54% !important;
     width: 52% !important;
     max-width: 430px !important;
   }
@@ -4909,9 +4909,9 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
   .remote-v4-copy { padding-left: 20px !important; padding-right: 20px !important; }
 }
 
-/* FINAL HERO RASTER AUTHORITY — every breakpoint gets one complete,
-   language-specific scene. No background, subject, chair, desk or panel
-   layers remain in the hero DOM. */
+/* FINAL HERO RASTER AUTHORITY — desktop/tablet use complete localized scenes;
+   mobile uses the exact approved portrait composition. No background, subject,
+   chair, desk or panel layers remain in the hero DOM. */
 .hero.hero-static-master .stage {
   position: relative !important;
   overflow: hidden !important;
@@ -4980,15 +4980,28 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
     min-height: 520px !important;
   }
   .hero.hero-static-master .hero-static-scene-tablet { display: block !important; }
+  .hero.hero-static-master .hero-static-light-path { display: none !important; }
   .hero.hero-static-master .hero-copy {
-    top: 7% !important;
+    position: absolute !important;
+    inset: auto !important;
+    top: 14% !important;
     left: 5% !important;
     width: 36% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   .hero.hero-static-master .hero-copy h1 {
     max-width: 9.2ch !important;
     font-size: clamp(44px, 5.4vw, 60px) !important;
     line-height: .98 !important;
+  }
+  .hero.hero-static-master .hero-copy .eyebrow {
+    width: max-content !important;
+    max-width: none !important;
+    white-space: nowrap !important;
+    font-size: clamp(7px, 1.2vw, 10px) !important;
+    letter-spacing: .12em !important;
   }
   .hero.hero-static-master .hero-copy .support { max-width: 30ch !important; }
   .hero.hero-static-master .ticker {
@@ -5012,14 +5025,16 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
   .hero.hero-static-master .hero-static-mobile-light-path {
     position: absolute !important;
     left: 6% !important;
-    top: 58% !important;
+    /* Keep the animated ribbon in the open sunset band; it must never cross
+       Giovanni's face or the approved glass cards. */
+    top: 40% !important;
     z-index: 8 !important;
     display: block !important;
-    width: 82% !important;
+    width: 40% !important;
     height: 4px !important;
     border-radius: 999px !important;
-    background: linear-gradient(90deg, transparent, rgba(255,191,76,.42) 16%, #ffe8a0 58%, rgba(255,190,75,.72) 88%, transparent) !important;
-    box-shadow: 0 0 8px rgba(255,190,75,.58), 0 0 24px rgba(255,190,75,.28) !important;
+    background: linear-gradient(90deg, rgba(255,191,76,.22), rgba(255,191,76,.58) 18%, #ffe8a0 58%, rgba(255,190,75,.84) 88%, transparent) !important;
+    box-shadow: 0 0 8px rgba(255,190,75,.70), 0 0 24px rgba(255,190,75,.36) !important;
     transform: rotate(-7deg) !important;
     transform-origin: left center !important;
     animation: hero-mobile-light-pulse 4.2s ease-in-out infinite alternate !important;
@@ -5057,10 +5072,8 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
     line-height: 1.46 !important;
   }
   .hero.hero-static-master .ticker {
-    position: absolute !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
+    position: relative !important;
+    inset: auto !important;
     height: 56px !important;
     min-height: 56px !important;
     display: flex !important;
@@ -5097,6 +5110,6 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
 }
 
 @media (max-width: 370px) {
-  .hero.hero-static-master .hero-copy { padding-top: 56px !important; }
+  .hero.hero-static-master .hero-copy { padding-top: 72px !important; }
   .hero.hero-static-master .hero-copy h1 { font-size: clamp(42px, 11.8vw, 48px) !important; }
 }

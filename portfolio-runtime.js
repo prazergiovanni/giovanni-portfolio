@@ -72,9 +72,9 @@
   };
 
   const heroStaticSources = {
-    en: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_EN_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_EN_20261113_V4.webp' },
-    pt: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_PT_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_PT_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_PT_20261113.webp' },
-    es: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_ES_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_ES_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_ES_20261113.webp' }
+    en: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_EN_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' },
+    pt: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_PT_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_PT_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' },
+    es: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_ES_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_ES_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' }
   };
   const remoteCompositeSources = {
     en: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png',
