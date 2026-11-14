@@ -5097,3 +5097,246 @@ img[data-remote-src]:not([src]) { display: none !important; }
   .hero.hero-static-master .hero-copy { padding-top: 104px !important; }
   .hero.hero-static-master .hero-copy h1 { font-size: clamp(42px, 11.8vw, 48px) !important; }
 }
+
+/* MOBILE HERO REFINEMENT R1 — keep the approved portrait raster intact while
+   restoring the two live glass displays that were intentionally left blank in
+   the image. The copy stays live so all three languages can share one frame. */
+.hero.hero-static-master .hero-static-panels {
+  display: none !important;
+}
+
+@keyframes hero-static-path-rise {
+  0% {
+    opacity: .48;
+    transform: translate3d(-1.5%, 7%, 0);
+  }
+  52% {
+    opacity: .82;
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: .64;
+    transform: translate3d(1.5%, -7%, 0);
+  }
+}
+
+@media (min-width: 1101px) {
+  .hero.hero-static-master .hero-static-light-path {
+    animation: hero-static-path-rise 7.2s cubic-bezier(.22, .72, .28, 1) infinite alternate !important;
+  }
+}
+
+@media (max-width: 720px) {
+  /* The same rising ribbon asset used by desktop replaces the former flat
+     mobile stroke. Its native geometry carries the ascent; the animation only
+     gives that geometry a restrained upward travel. */
+  .hero.hero-static-master .hero-static-light-path {
+    left: -12% !important;
+    top: 25% !important;
+    z-index: 8 !important;
+    display: block !important;
+    width: 126% !important;
+    height: 28% !important;
+    object-fit: fill !important;
+    opacity: .68 !important;
+    mix-blend-mode: screen !important;
+    filter: saturate(.86) brightness(.78) !important;
+    animation: hero-static-path-rise 7.2s cubic-bezier(.22, .72, .28, 1) infinite alternate !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-light-path {
+    display: none !important;
+  }
+
+  .hero.hero-static-master .hero-static-panels {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 11 !important;
+    display: block !important;
+    pointer-events: none !important;
+    color: rgba(248, 247, 239, .94) !important;
+    font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    text-shadow: 0 1px 7px rgba(0, 0, 0, .72) !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel {
+    position: absolute !important;
+    display: flex !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: clamp(7px, 1.7vw, 12px) clamp(8px, 1.9vw, 14px) !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel strong,
+  .hero.hero-static-master .hero-static-panel span,
+  .hero.hero-static-master .hero-static-panel li {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-progress {
+    top: 41.6% !important;
+    right: 3.1% !important;
+    width: 26.8% !important;
+    height: 11.5% !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-progress strong {
+    max-width: 100% !important;
+    font-size: clamp(8px, 2.1vw, 13px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -.02em !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-progress ul {
+    display: grid !important;
+    gap: clamp(2px, .6vw, 5px) !important;
+    width: 100% !important;
+    margin: clamp(5px, 1.1vw, 8px) 0 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-progress li {
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(3px, .7vw, 5px) !important;
+    min-width: 0 !important;
+    font-size: clamp(6px, 1.45vw, 9px) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-progress li::before {
+    content: "" !important;
+    flex: 0 0 auto !important;
+    width: clamp(3px, .7vw, 5px) !important;
+    height: clamp(3px, .7vw, 5px) !important;
+    border-radius: 50% !important;
+    background: #f8d676 !important;
+    box-shadow: 0 0 7px rgba(248, 214, 118, .76) !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-systems {
+    top: 54.9% !important;
+    right: 3.1% !important;
+    width: 24.4% !important;
+    height: 8.7% !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-systems strong {
+    max-width: 100% !important;
+    font-size: clamp(7px, 1.8vw, 11px) !important;
+    line-height: 1.05 !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-systems span {
+    margin-top: clamp(2px, .5vw, 4px) !important;
+    color: rgba(248, 247, 239, .76) !important;
+    font-size: clamp(5px, 1.28vw, 8px) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+  }
+
+  /* Keep the copy column purposeful: it owns the left reading lane and does
+     not stretch into the live displays on the right. */
+  .hero.hero-static-master .hero-copy {
+    max-width: min(72%, 360px) !important;
+  }
+}
+
+/* MOBILE TICKER BOUNDARY — clipping belongs to the viewport-sized band, not
+   to the moving text. This prevents the loop from painting beyond the Hero. */
+@media (max-width: 720px) {
+  html, body { max-width: 100% !important; overflow-x: hidden !important; }
+  .hero.hero-static-master { width: 100% !important; max-width: 100% !important; overflow: hidden !important; }
+  .hero.hero-static-master .ticker {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    contain: paint !important;
+  }
+  .hero.hero-static-master .ticker-track-wrap {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    contain: paint !important;
+  }
+  .hero.hero-static-master .ticker-track,
+  .hero.hero-static-master .ticker-group {
+    white-space: nowrap !important;
+  }
+}
+
+/* REMOTE MOBILE BALANCE — no exposed gradient strip, no oversized empty
+   right lane, and a two-line reading rhythm wherever the viewport permits. */
+@media (max-width: 720px) {
+  .remote-work.remote-v4 {
+    background: #082238 !important;
+  }
+
+  .remote-v4-media {
+    background: transparent !important;
+  }
+
+  .remote-v4-master {
+    /* The previous +105px translation exposed the section background as a
+       horizontal blue strip above the photograph. Scale in place instead. */
+    transform: scale(1.40) !important;
+    transform-origin: center 42% !important;
+  }
+
+  .remote-v4-copy {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 38px 22px 54px !important;
+    background: #082238 !important;
+  }
+
+  .remote-work.remote-v4 .remote-title,
+  html[lang^="pt"] .remote-work.remote-v4 .remote-title,
+  html[lang^="es"] .remote-work.remote-v4 .remote-title {
+    max-width: none !important;
+    width: 100% !important;
+    font-size: clamp(32px, 7.1vw, 43px) !important;
+    line-height: .98 !important;
+    letter-spacing: -.052em !important;
+    text-wrap: balance !important;
+  }
+
+  .remote-v4 .remote-title > span {
+    display: block !important;
+    max-width: none !important;
+    white-space: normal !important;
+  }
+
+  .remote-v4 .remote-body {
+    max-width: none !important;
+    width: 100% !important;
+  }
+
+  /* No decorative bridge or gradient may reveal a horizontal blue/ivory
+     transition between Remote and the following section. */
+  .remote-to-capabilities,
+  .remote-work.remote-v4::after {
+    display: none !important;
+    background: none !important;
+  }
+}
