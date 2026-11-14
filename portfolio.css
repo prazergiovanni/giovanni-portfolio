@@ -5000,8 +5000,10 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
     width: max-content !important;
     max-width: none !important;
     white-space: nowrap !important;
-    font-size: clamp(7px, 1.2vw, 10px) !important;
-    letter-spacing: .12em !important;
+    /* At the narrow tablet edge, keep the single-line kicker inside the
+       clear left column instead of letting its tracking touch the glass panel. */
+    font-size: clamp(7px, 1vw, 9px) !important;
+    letter-spacing: .08em !important;
   }
   .hero.hero-static-master .hero-copy .support { max-width: 30ch !important; }
   .hero.hero-static-master .ticker {
