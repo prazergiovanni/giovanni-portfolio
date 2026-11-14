@@ -71,25 +71,15 @@
     es: { tag: 'ÁREA 03 · OPERACIONES DE CONTENIDO', title: 'Del video completo a un flujo coordinado de publicación y descubrimiento.', body: 'La edición de video era una parte de una operación de contenidos más amplia: convertir materiales largos en cortes breves, adaptarlos para redes sociales y conectar revisión, aprobación, metadatos, SEO y protocolos de publicación.', e1: 'CapCut Desktop', e2: 'Edición para YouTube', e3: 'Video completo → cortes cortos', e4: 'Adaptación para redes', b1t: 'Condensar la narrativa', b1b: 'Mantener el mensaje y hacer que el contenido sea más fácil de seguir.', b2t: 'Construir el ritmo', b2b: 'Usar ritmo, continuidad y secuencia para sostener la historia.', b3t: 'Adaptar el formato', b3b: 'Preparar cortes más cortos y adecuados para la plataforma.', b4t: 'Repetir el flujo', b4b: 'Conectar edición, revisión, aprobación y protocolos de publicación.' }
   };
 
-  const panelSources = {
-    en: { from: 'assets/optimized/panels/PANEL_FROM_COMPLEXITY_EN_GLASS.webp', to: 'assets/optimized/panels/PANEL_TO_PROGRESS_EN_GLASS.webp', better: 'assets/optimized/panels/PANEL_BETTER_SYSTEMS_EN_GLASS.webp' },
-    pt: { from: 'assets/optimized/panels/PANEL_FROM_COMPLEXITY_PT_GLASS.webp', to: 'assets/optimized/panels/PANEL_TO_PROGRESS_PT_GLASS.webp', better: 'assets/optimized/panels/PANEL_BETTER_SYSTEMS_PT_GLASS.webp' },
-    es: { from: 'assets/optimized/panels/PANEL_FROM_COMPLEXITY_ES_GLASS.webp', to: 'assets/optimized/panels/PANEL_TO_PROGRESS_ES_GLASS.webp', better: 'assets/optimized/panels/PANEL_BETTER_SYSTEMS_ES_GLASS.webp' }
-  };
   const heroStaticSources = {
-    en: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' },
-    pt: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_PT_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' },
-    es: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_ES_20261113.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png' }
+    en: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_EN_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_EN_20261113_V4.webp' },
+    pt: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_PT_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_PT_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_PT_20261113.webp' },
+    es: { desktop: 'assets/optimized/layers/HERO_STATIC_DESKTOP_ES_20261113.webp', tablet: 'assets/optimized/layers/HERO_STATIC_TABLET_ES_20261114.webp', mobile: 'assets/optimized/layers/HERO_STATIC_MOBILE_ES_20261113.webp' }
   };
   const remoteCompositeSources = {
     en: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_EN_20260930.png',
     pt: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_PT_20261018.png?v=title-angle-list-level-v2-20261018',
     es: 'assets/remote/REMOTE_PANEL_REFERENCE_COMPOSITE_ES_20261018.png?v=title-angle-list-level-v2-20261018'
-  };
-  const panelAlt = {
-    en: { from: 'From Complexity: Processes, People, Tools, Silos, Manual work', to: 'To Progress: Clarity, Automation, Efficiency, Scalability, Freedom', better: 'Better Systems — Bigger Possibilities' },
-    pt: { from: 'Da complexidade: processos, pessoas, ferramentas, silos, trabalho manual', to: 'Para o progresso: clareza, automação, eficiência, escalabilidade, liberdade', better: 'Sistemas melhores — possibilidades maiores' },
-    es: { from: 'De la complejidad: procesos, personas, herramientas, silos, trabajo manual', to: 'Al progreso: claridad, automatización, eficiencia, escalabilidad, libertad', better: 'Mejores sistemas — posibilidades mayores' }
   };
 
   const publishedCopy = window.__PUBLISHED_COPY || {};
@@ -304,22 +294,14 @@
     syncHeroWordmarkIllumination({ animate: true });
   }
 
-  function applyPanels(lang) {
-    const sources = panelSources[lang] || panelSources.en;
-    const alts = panelAlt[lang] || panelAlt.en;
-    $$('[data-panel-key]').forEach(panel => {
-      const key = panel.dataset.panelKey;
-      panel.src = sources[key] || panel.src;
-      panel.alt = alts[key] || panel.alt;
-    });
-  }
-
   function applyHeroStatic(lang) {
     const sources = heroStaticSources[lang] || heroStaticSources.en;
     const desktop = $('.hero-static-scene');
+    const tablet = $('.hero-static-scene-tablet');
     const mobile = $('.hero-static-scene-mobile');
     const stage = $('.hero-static-master .stage');
     if (desktop) desktop.src = sources.desktop;
+    if (tablet) tablet.src = sources.tablet || sources.desktop;
     if (mobile) mobile.src = sources.mobile;
     if (stage) stage.style.backgroundImage = `url("${sources.desktop}")`;
   }
@@ -359,7 +341,6 @@
     $$('[data-final-alt]').forEach(element => { const value = values[element.dataset.finalAlt]; if (value !== undefined) element.alt = value; });
     applyVideo(safe);
     applyHeroStatic(safe);
-    applyPanels(safe);
     applyRemoteComposite(safe);
     // Final authority for the approved editorial clarity pass.
     const clarityKeys = ['hero.support', 'about.body', 'cta.title', 'cta.body', 'cta.box', 'cta.note', 'cta.button'];
@@ -385,18 +366,8 @@
     document.head.appendChild(link);
   }
 
-  function preloadPanels(lang = currentLanguage(), priority = 'high') {
-    const locale = panelSources[lang] || panelSources.en;
-    Object.values(locale).forEach(href => ensureImagePreload(href, priority));
+  function preloadPublicImages(lang = currentLanguage(), priority = 'high') {
     ensureImagePreload(remoteCompositeSources[lang] || remoteCompositeSources.en, priority);
-  }
-
-  function preloadAllPanels() {
-    const active = currentLanguage();
-    Object.entries(panelSources).forEach(([lang, locale]) => {
-      const priority = lang === active ? 'high' : 'low';
-      Object.values(locale).forEach(href => ensureImagePreload(href, priority));
-    });
   }
 
   function waitForImage(image) {
@@ -424,7 +395,7 @@
   function revealHeroWhenReady() {
     const hero = $('.hero');
     if (!hero) return;
-    const criticalImages = $$('.layer-background img, .layer-rear img, .layer-path img, .layer-chair img, .layer-subject img, .layer-subject-occlusion img, .layer-foreground img, .layer-better-panel img');
+    const criticalImages = $$('.hero-static-scene, .hero-static-scene-tablet, .hero-static-scene-mobile, .hero-static-light-path');
     const decoded = Promise.all(criticalImages.map(waitForImage));
     const safety = new Promise(resolve => setTimeout(resolve, 1800));
     Promise.race([decoded, safety]).then(() => {
@@ -836,13 +807,9 @@
       if (!langs.includes(target) || target === currentLanguage()) return;
 
       const switchId = ++pendingSwitch;
-      const localeSources = panelSources[target] || panelSources.en;
-      const visiblePanels = $$('[data-panel-key]')
-        .map(panel => localeSources[panel.dataset.panelKey])
-        .filter(Boolean);
       const visibleStatic = Object.values(heroStaticSources[target] || heroStaticSources.en);
-      preloadPanels(target, 'high');
-      await Promise.allSettled([...visiblePanels, ...visibleStatic].map(async src => {
+      preloadPublicImages(target, 'high');
+      await Promise.allSettled(visibleStatic.map(async src => {
         const image = new Image();
         image.src = src;
         if (typeof image.decode === 'function') await image.decode();
@@ -902,10 +869,10 @@
     setupActiveNavigation();
     setupLanguageControls();
     setupMobileMenuClose();
-    // Load only the active locale at startup. Other panel variants are
-    // decoded on demand before a language switch, keeping the first view
-    // lighter without reintroducing a visual swap.
-    preloadPanels(currentLanguage(), 'high');
+    // Load only the active locale at startup. The complete hero raster for
+    // each breakpoint is decoded on demand before a language switch, keeping
+    // the first view lighter without reintroducing a visual swap.
+    preloadPublicImages(currentLanguage(), 'high');
     applyLocale(currentLanguage());
     revealHeroWhenReady();
     window.GIOVANNI_FINAL_READY = true;

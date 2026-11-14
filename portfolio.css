@@ -4908,3 +4908,195 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
   .remote-panel-reference { top: 80px !important; right: 10px !important; width: 63% !important; }
   .remote-v4-copy { padding-left: 20px !important; padding-right: 20px !important; }
 }
+
+/* FINAL HERO RASTER AUTHORITY — every breakpoint gets one complete,
+   language-specific scene. No background, subject, chair, desk or panel
+   layers remain in the hero DOM. */
+.hero.hero-static-master .stage {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #061625 !important;
+  isolation: isolate !important;
+}
+
+.hero.hero-static-master .hero-static-scene,
+.hero.hero-static-master .hero-static-scene-tablet,
+.hero.hero-static-master .hero-static-scene-mobile {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  display: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.hero.hero-static-master .stage::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 4 !important;
+  pointer-events: none !important;
+  background: linear-gradient(90deg, rgba(3,14,28,.38) 0%, rgba(3,14,28,.10) 36%, transparent 60%) !important;
+}
+
+.hero.hero-static-master .hero-copy { z-index: 20 !important; }
+.hero.hero-static-master .ticker { z-index: 30 !important; }
+
+.hero.hero-static-master .hero-static-light-path {
+  position: absolute !important;
+  left: 8% !important;
+  top: 8% !important;
+  z-index: 8 !important;
+  display: block !important;
+  width: 82% !important;
+  height: 55% !important;
+  object-fit: fill !important;
+  pointer-events: none !important;
+  mix-blend-mode: screen !important;
+  opacity: .66 !important;
+  filter: saturate(.82) brightness(.80) !important;
+  animation: hero-static-path-pulse 4.6s ease-in-out infinite alternate !important;
+}
+
+.hero.hero-static-master .hero-static-mobile-light-path { display: none !important; }
+
+@media (min-width: 1101px) {
+  .hero.hero-static-master { height: 100svh !important; min-height: 100svh !important; }
+  .hero.hero-static-master .stage { height: 100% !important; }
+  .hero.hero-static-master .hero-static-scene { display: block !important; }
+}
+
+@media (min-width: 721px) and (max-width: 1100px) {
+  .hero.hero-static-master { height: auto !important; min-height: 0 !important; }
+  .hero.hero-static-master .stage {
+    /* The tablet raster is a complete 16:9 scene; keep its native ratio so
+       the right-side panels and the subject are never cropped. */
+    height: clamp(520px, 56.25vw, 700px) !important;
+    min-height: 520px !important;
+  }
+  .hero.hero-static-master .hero-static-scene-tablet { display: block !important; }
+  .hero.hero-static-master .hero-copy {
+    top: 7% !important;
+    left: 5% !important;
+    width: 36% !important;
+  }
+  .hero.hero-static-master .hero-copy h1 {
+    max-width: 9.2ch !important;
+    font-size: clamp(44px, 5.4vw, 60px) !important;
+    line-height: .98 !important;
+  }
+  .hero.hero-static-master .hero-copy .support { max-width: 30ch !important; }
+  .hero.hero-static-master .ticker {
+    height: 64px !important;
+    min-height: 64px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero.hero-static-master { height: auto !important; min-height: 0 !important; }
+  .hero.hero-static-master .stage {
+    height: clamp(760px, 175vw, 960px) !important;
+    min-height: 760px !important;
+    max-height: 960px !important;
+  }
+  .hero.hero-static-master .hero-static-scene-mobile {
+    display: block !important;
+    object-position: center center !important;
+  }
+  .hero.hero-static-master .hero-static-light-path { display: none !important; }
+  .hero.hero-static-master .hero-static-mobile-light-path {
+    position: absolute !important;
+    left: 6% !important;
+    top: 58% !important;
+    z-index: 8 !important;
+    display: block !important;
+    width: 82% !important;
+    height: 4px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(90deg, transparent, rgba(255,191,76,.42) 16%, #ffe8a0 58%, rgba(255,190,75,.72) 88%, transparent) !important;
+    box-shadow: 0 0 8px rgba(255,190,75,.58), 0 0 24px rgba(255,190,75,.28) !important;
+    transform: rotate(-7deg) !important;
+    transform-origin: left center !important;
+    animation: hero-mobile-light-pulse 4.2s ease-in-out infinite alternate !important;
+  }
+  .hero.hero-static-master .hero-static-mobile-light-path::before,
+  .hero.hero-static-master .hero-static-mobile-light-path::after { content: none !important; }
+  .hero.hero-static-master .hero-copy {
+    position: relative !important;
+    inset: auto !important;
+    width: auto !important;
+    max-width: calc(100% - 42px) !important;
+    margin: 0 21px !important;
+    padding: 62px 0 0 !important;
+  }
+  .hero.hero-static-master .hero-copy .eyebrow {
+    display: block !important;
+    width: max-content !important;
+    max-width: none !important;
+    margin: 0 0 13px !important;
+    white-space: nowrap !important;
+    font-size: clamp(7px, 2.15vw, 10px) !important;
+    line-height: 1 !important;
+    letter-spacing: .12em !important;
+  }
+  .hero.hero-static-master .hero-copy h1 {
+    max-width: 9.8ch !important;
+    font-size: clamp(45px, 11.8vw, 61px) !important;
+    line-height: .95 !important;
+    letter-spacing: -.062em !important;
+  }
+  .hero.hero-static-master .hero-copy .support {
+    max-width: 31ch !important;
+    margin-top: 17px !important;
+    font-size: clamp(13px, 3.65vw, 16px) !important;
+    line-height: 1.46 !important;
+  }
+  .hero.hero-static-master .ticker {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 14px !important;
+    overflow: hidden !important;
+    background: rgba(5, 22, 36, .54) !important;
+    border-top: 1px solid rgba(244, 195, 104, .34) !important;
+    backdrop-filter: blur(13px) saturate(1.12) !important;
+    -webkit-backdrop-filter: blur(13px) saturate(1.12) !important;
+  }
+  .hero.hero-static-master .ticker-label,
+  .hero.hero-static-master .signature { display: none !important; }
+  .hero.hero-static-master .ticker-track-wrap {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent) !important;
+    mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent) !important;
+  }
+  .hero.hero-static-master .ticker-track {
+    width: max-content !important;
+    min-width: max-content !important;
+    align-items: center !important;
+    color: rgba(249, 247, 242, .9) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    animation: gb-ticker-loop 34s linear infinite !important;
+  }
+}
+
+@media (max-width: 370px) {
+  .hero.hero-static-master .hero-copy { padding-top: 56px !important; }
+  .hero.hero-static-master .hero-copy h1 { font-size: clamp(42px, 11.8vw, 48px) !important; }
+}
