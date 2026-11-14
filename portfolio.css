@@ -4680,41 +4680,6 @@ img[data-remote-src]:not([src]) { display: none !important; }
   .hero .layer-subject .subject { width: 145% !important; right: -21% !important; }
 }
 
-/* Contextual case-study link: shown only on mobile, translated with html[lang]. */
-.hero-mobile-action { display: none; }
-@media (max-width: 720px) {
-  .hero-copy .hero-mobile-action {
-    display: inline-flex !important;
-    position: relative !important;
-    align-items: center !important;
-    gap: 13px !important;
-    min-height: 45px !important;
-    margin-top: 22px !important;
-    padding: 10px 17px !important;
-    text-decoration: none !important;
-    color: #ffe9ad !important;
-    background: rgba(8,27,44,.76) !important;
-    border: 1px solid rgba(239,191,96,.56) !important;
-    border-radius: 4px !important;
-    font-family: "Avenir Next", Avenir, system-ui, sans-serif !important;
-    font-weight: 750 !important;
-    font-size: 12px !important;
-    letter-spacing: .02em !important;
-    box-shadow: 0 5px 17px rgba(0,11,24,.27) !important;
-    z-index: 30 !important;
-    pointer-events: auto !important;
-  }
-  .hero-mobile-action:hover,
-  .hero-mobile-action:focus-visible { background: rgba(25,53,61,.94) !important; }
-  .hero-mobile-arrow { font-size: 16px; }
-}
-.hero-mobile-action .hero-action-pt,
-.hero-mobile-action .hero-action-es { display:none; }
-html[lang^="pt"] .hero-mobile-action .hero-action-en,
-html[lang^="es"] .hero-mobile-action .hero-action-en { display:none; }
-html[lang^="pt"] .hero-mobile-action .hero-action-pt,
-html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
-
 /* FINAL MOBILE REMOTE AUTHORITY — this block is intentionally last so older
    emergency media-query patches cannot reintroduce the compressed desktop
    layout or a panel crop. */
@@ -4947,6 +4912,23 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
 .hero.hero-static-master .hero-copy { z-index: 20 !important; }
 .hero.hero-static-master .ticker { z-index: 30 !important; }
 
+/* The ticker is the actual lower edge of the Hero viewport. It must sit on
+   that boundary at every breakpoint, with the scene still visible through a
+   translucent blurred glass band. */
+.hero.hero-static-master .ticker {
+  position: absolute !important;
+  inset: auto 0 0 !important;
+  background: rgba(5, 22, 36, .42) !important;
+  border-top: 1px solid rgba(244, 195, 104, .34) !important;
+  border-bottom: 1px solid rgba(244, 195, 104, .14) !important;
+  backdrop-filter: blur(16px) saturate(1.16) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(1.16) !important;
+  box-shadow: 0 -10px 30px rgba(2, 12, 24, .16) !important;
+}
+
+/* This CTA was exploratory only; the approved Hero has no button. */
+.hero.hero-static-master .hero-mobile-action { display: none !important; }
+
 .hero.hero-static-master .hero-static-light-path {
   position: absolute !important;
   left: 8% !important;
@@ -4984,7 +4966,7 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
   .hero.hero-static-master .hero-copy {
     position: absolute !important;
     inset: auto !important;
-    top: 14% !important;
+    top: 18% !important;
     left: 5% !important;
     width: 36% !important;
     max-width: none !important;
@@ -5026,7 +5008,7 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
   .hero.hero-static-master .hero-static-light-path { display: none !important; }
   .hero.hero-static-master .hero-static-mobile-light-path {
     position: absolute !important;
-    left: 6% !important;
+    left: 54% !important;
     /* Keep the animated ribbon in the open sunset band; it must never cross
        Giovanni's face or the approved glass cards. */
     top: 40% !important;
@@ -5049,7 +5031,7 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
     width: auto !important;
     max-width: calc(100% - 42px) !important;
     margin: 0 21px !important;
-    padding: 62px 0 0 !important;
+    padding: 104px 0 0 !important;
   }
   .hero.hero-static-master .hero-copy .eyebrow {
     display: block !important;
@@ -5074,15 +5056,15 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
     line-height: 1.46 !important;
   }
   .hero.hero-static-master .ticker {
-    position: relative !important;
-    inset: auto !important;
+    position: absolute !important;
+    inset: auto 0 0 !important;
     height: 56px !important;
     min-height: 56px !important;
     display: flex !important;
     align-items: center !important;
     padding: 0 14px !important;
     overflow: hidden !important;
-    background: rgba(5, 22, 36, .54) !important;
+    background: rgba(5, 22, 36, .42) !important;
     border-top: 1px solid rgba(244, 195, 104, .34) !important;
     backdrop-filter: blur(13px) saturate(1.12) !important;
     -webkit-backdrop-filter: blur(13px) saturate(1.12) !important;
@@ -5112,6 +5094,6 @@ html[lang^="es"] .hero-mobile-action .hero-action-es { display:inline; }
 }
 
 @media (max-width: 370px) {
-  .hero.hero-static-master .hero-copy { padding-top: 72px !important; }
+  .hero.hero-static-master .hero-copy { padding-top: 104px !important; }
   .hero.hero-static-master .hero-copy h1 { font-size: clamp(42px, 11.8vw, 48px) !important; }
 }
