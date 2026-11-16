@@ -667,6 +667,263 @@ body.scrolled .site-header { border-bottom-color: transparent; }
   }
 }
 
+@media (max-width: 1100px) {
+  html body main section#top.hero.hero-static-master .hero-rising-light-path-mobile {
+    display: none !important;
+  }
+
+  html[lang^="pt"] .remote-v4-media .remote-ops-panel,
+  html[lang^="es"] .remote-v4-media .remote-ops-panel {
+    display: grid !important;
+    position: absolute !important;
+    top: 7% !important;
+    right: 4% !important;
+    left: auto !important;
+    width: 43% !important;
+    height: 27% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    place-items: center !important;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1100px) {
+  html[lang^="pt"] .remote-v4-media .remote-ops-panel,
+  html[lang^="es"] .remote-v4-media .remote-ops-panel {
+    top: 6% !important;
+    right: 4% !important;
+    width: 34% !important;
+    height: 27% !important;
+  }
+}
+
+/* SCROLL ROOT REPAIR R1 — keep one vertical scroll owner. A snap container
+   on both html and body traps touch scrolling between the hero plates. */
+@media (max-width: 1100px) {
+  html:root {
+    overflow-y: auto !important;
+    overscroll-behavior-y: auto !important;
+    scroll-snap-type: none !important;
+  }
+
+  html:root body {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overscroll-behavior-y: auto !important;
+    scroll-snap-type: none !important;
+  }
+
+  html:root body main section#top.hero.hero-static-master,
+  html:root body main section#remote-work.remote-v4 {
+    scroll-snap-align: none !important;
+    scroll-snap-stop: normal !important;
+  }
+
+  html:root body main section#top.hero.hero-static-master,
+  html:root body main section#top.hero.hero-static-master > .stage {
+    overflow: visible !important;
+    pointer-events: none !important;
+  }
+}
+
+/* HERO NARROW COMPOSITION R4 — one readable plate in the empty upper-right
+   quadrant. The stepped light route stays entirely above the portrait. */
+@media (max-width: 1100px) {
+  html body main section#top.hero.hero-static-master .hero-static-panel-systems {
+    display: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-panels::after {
+    content: "" !important;
+    position: absolute !important;
+    z-index: 0 !important;
+    display: none !important;
+    pointer-events: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    z-index: 1 !important;
+    display: none !important;
+    place-items: center !important;
+    align-content: center !important;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1100px) {
+  html body main section#top.hero.hero-static-master .hero-copy {
+    width: 45% !important;
+    max-width: 360px !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-rising-light-path {
+    top: 7% !important;
+    height: 35% !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-panel-progress {
+    top: 5% !important;
+    left: 73% !important;
+    width: 21% !important;
+    height: 44% !important;
+    border-color: rgba(244, 202, 104, .58) !important;
+    border-radius: 18px !important;
+    background: linear-gradient(160deg, rgba(7, 26, 40, .86), rgba(15, 34, 43, .91)) !important;
+    backdrop-filter: blur(14px) saturate(1.04) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(1.04) !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-panel-progress strong {
+    font-size: clamp(13px, 2vw, 20px) !important;
+  }
+}
+
+@media (max-width: 720px) {
+  html body main section#top.hero.hero-static-master .hero-rising-light-path-tablet {
+    display: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-rising-light-path-mobile {
+    display: block !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-rising-light-path-glow {
+    stroke-width: 10 !important;
+    opacity: .58 !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-rising-light-path-line {
+    stroke-width: 2.5 !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-rising-light-path {
+    top: 7% !important;
+    height: 34% !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-copy {
+    position: absolute !important;
+    top: clamp(102px, 13svh, 116px) !important;
+    left: 5.5% !important;
+    width: 78% !important;
+    max-width: 360px !important;
+    padding: 0 !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-copy h1 {
+    font-size: clamp(44px, 12vw, 58px) !important;
+    line-height: .98 !important;
+  }
+
+  html[lang^="es"] body main section#top.hero.hero-static-master .hero-copy h1 {
+    font-size: clamp(39px, 10.2vw, 50px) !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-copy .eyebrow {
+    margin-bottom: 11px !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-copy .support {
+    margin-top: 14px !important;
+    max-width: 34ch !important;
+    font-size: clamp(14px, 3.65vw, 16px) !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panels::after {
+    top: 39.2% !important;
+    left: 66.8% !important;
+    width: 33.5% !important;
+    height: 26.8% !important;
+    border-radius: 28px !important;
+    background: linear-gradient(148deg, rgba(7, 29, 46, .98), rgba(8, 41, 57, .98)) !important;
+    box-shadow: none !important;
+    filter: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    top: 15.8% !important;
+    left: 77.5% !important;
+    width: 20.5% !important;
+    height: 11.5% !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress strong {
+    font-size: clamp(12px, 3.35vw, 16px) !important;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1100px) {
+  .hero.hero-static-master .stage .hero-static-panel {
+    background: rgba(5, 24, 39, .98) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  html body main .remote-work .remote-v4-media .remote-ops-panel::before {
+    background: rgba(7, 27, 43, .94) !important;
+    border-color: rgba(248, 224, 172, .78) !important;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1100px) {
+  html body main section#remote-work.remote-work.remote-v4 {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    padding-top: 82px !important;
+    overflow: hidden !important;
+  }
+
+  html body main section#remote-work.remote-work.remote-v4 .remote-v4-media {
+    flex: 0 0 36% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+  }
+
+  html body main section#remote-work.remote-work.remote-v4 .remote-v4-copy {
+    flex: 1 1 64% !important;
+    min-height: 0 !important;
+    padding: 24px 5% 14px !important;
+    overflow: hidden !important;
+  }
+
+  html body main section#remote-work.remote-work.remote-v4 .remote-title {
+    margin-bottom: 14px !important;
+    font-size: clamp(30px, 4.2vw, 42px) !important;
+    line-height: .94 !important;
+  }
+
+  html body main section#remote-work.remote-work.remote-v4 .remote-title > span {
+    white-space: nowrap !important;
+  }
+
+  html body main section#remote-work.remote-work.remote-v4 .remote-body {
+    max-width: none !important;
+    font-size: clamp(12px, 1.25vw, 14px) !important;
+    line-height: 1.32 !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  html body main section#remote-work.remote-work.remote-v4 .remote-panel-title {
+    transform: none !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 100% !important;
+    display: grid !important;
+    place-items: center !important;
+    text-align: center !important;
+  }
+}
+
 /* Hero-only Cumbuco balance: keep Giovanni fixed, bring the connected panels
    back into the legacy Hero relationship, and leave Remote's cream transition
    out of this section. */
@@ -4199,6 +4456,74 @@ html[lang^="es"] .remote-panel-reference-localized {
   .remote-to-capabilities { display: none !important; }
 }
 
+@media (max-width: 720px) and (max-aspect-ratio: 941 / 1672) {
+  .hero.hero-static-master .hero-static-mobile-canvas {
+    transform: translateX(-60%) !important;
+  }
+}
+
+/* TABLET PLATE OVERRIDES R1 — keep the live copy clear of the tablet raster,
+   move the Remote panel into its own right-hand lane, and crop the approved
+   Remote photograph before its baked-in cream transition. */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .hero.hero-static-master .hero-copy {
+    top: 18% !important;
+    left: 5% !important;
+    width: 31% !important;
+    max-width: 260px !important;
+  }
+
+  .hero.hero-static-master #hero-title {
+    font-size: clamp(36px, 5.2vw, 44px) !important;
+    line-height: .98 !important;
+  }
+
+  .hero.hero-static-master .hero-copy .support {
+    max-width: 220px !important;
+  }
+
+  .remote-v4-master {
+    inset: -16% 0 auto !important;
+    height: 170% !important;
+    object-position: 35% 30% !important;
+    transform: none !important;
+  }
+
+  .remote-panel-reference {
+    top: 4% !important;
+    right: 3% !important;
+    left: auto !important;
+    width: 42% !important;
+    max-width: none !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  .remote-v4-master {
+    inset: -10% 0 auto !important;
+    height: 160% !important;
+  }
+}
+
+/* Dynamic viewport correction: mobile browser chrome can make svh shorter
+   than the visible layout viewport. The plates must still occupy the actual
+   screen, with the ticker closing the Hero and Remote beginning immediately. */
+@supports (height: 100dvh) {
+  @media (max-width: 1100px) {
+    .hero.hero-static-master,
+    .remote-work.remote-v4 {
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+      max-height: 100dvh !important;
+    }
+
+    .hero.hero-static-master .stage {
+      height: 100% !important;
+    }
+  }
+}
+
 @media (max-width: 620px) {
   .remote-v4-media { aspect-ratio: 10 / 9 !important; }
   .remote-panel-reference { inset: 8% 11% auto 11% !important; width: 78% !important; }
@@ -4874,6 +5199,577 @@ img[data-remote-src]:not([src]) { display: none !important; }
   .remote-v4-copy { padding-left: 20px !important; padding-right: 20px !important; }
 }
 
+/* VIEWPORT COMPOSITION RESET R1
+   The Hero and Remote Work sections are two deliberate viewport plates on
+   narrow screens. The mobile raster and its live panel copy share one
+   coordinate plane; the ticker is the hard lower edge of the Hero plate; the
+   Remote plate owns one complete swipe instead of spilling into the next one. */
+@media (max-width: 1100px) {
+  html,
+  body {
+    scroll-snap-type: y mandatory !important;
+    overscroll-behavior-y: contain !important;
+  }
+
+  .hero.hero-static-master,
+  .remote-work.remote-v4 {
+    scroll-snap-align: start !important;
+    scroll-snap-stop: always !important;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1100px) {
+  .hero.hero-static-master {
+    position: relative !important;
+    width: 100% !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    max-height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  .hero.hero-static-master .stage {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  .hero.hero-static-master .hero-static-scene-tablet {
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  .hero.hero-static-master .hero-copy {
+    top: clamp(108px, 15svh, 158px) !important;
+    left: 5% !important;
+    width: 38% !important;
+    max-width: 410px !important;
+  }
+
+  .hero.hero-static-master .ticker {
+    bottom: 0 !important;
+    height: 62px !important;
+    min-height: 62px !important;
+  }
+
+  .remote-work.remote-v4 {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    max-height: 100svh !important;
+    box-sizing: border-box !important;
+    padding: 82px 0 0 !important;
+    scroll-margin-top: 0 !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+  }
+
+  .remote-v4-media {
+    position: relative !important;
+    inset: auto !important;
+    order: 1 !important;
+    flex: 0 0 48% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .remote-v4-master {
+    position: absolute !important;
+    inset: -7% 0 auto !important;
+    width: 100% !important;
+    height: 121% !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    object-position: center 34% !important;
+    transform: none !important;
+    filter: brightness(.86) contrast(1.04) saturate(.90) !important;
+  }
+
+  .remote-v4-media::after {
+    background: linear-gradient(180deg, rgba(5,19,32,.34), transparent 42%, rgba(5,19,32,.08)) !important;
+  }
+
+  .remote-panel-reference {
+    top: 7% !important;
+    right: 5% !important;
+    width: 55% !important;
+    height: auto !important;
+    transform: none !important;
+  }
+
+  .remote-v4-copy {
+    position: relative !important;
+    inset: auto !important;
+    order: 2 !important;
+    flex: 1 1 52% !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 34px 5% 30px !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+  }
+
+  .remote-v4 .remote-title {
+    max-width: 13ch !important;
+    margin-bottom: 18px !important;
+    font-size: clamp(42px, 5.6vw, 62px) !important;
+    line-height: .96 !important;
+  }
+
+  .remote-v4 .remote-body {
+    max-width: 620px !important;
+    font-size: clamp(12px, 1.45vw, 15px) !important;
+    line-height: 1.43 !important;
+  }
+
+  .remote-v4 .remote-body p { margin-bottom: 9px !important; }
+  .remote-v4 .remote-values,
+  .remote-to-capabilities { display: none !important; }
+}
+
+@media (max-width: 720px) {
+  .hero.hero-static-master {
+    position: relative !important;
+    width: 100% !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    max-height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  .hero.hero-static-master .stage {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  /* The raster and the live panel copy are one portrait artboard. At wide
+     phone/tablet ratios the artboard is width-bound and crops only its top
+     and bottom; at tall ratios it is height-bound and crops only its sides.
+     In both cases the percentages below remain image-native. */
+  .hero.hero-static-master .hero-static-mobile-canvas {
+    display: block !important;
+    position: absolute !important;
+    z-index: 1 !important;
+    top: 50% !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 941 / 1672 !important;
+    transform: translateY(-50%) !important;
+    overflow: visible !important;
+  }
+
+  .hero.hero-static-master .hero-static-scene-mobile {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: fill !important;
+    object-position: center !important;
+  }
+
+  @media (max-aspect-ratio: 941 / 1672) {
+    .hero.hero-static-master .hero-static-mobile-canvas {
+      top: 0 !important;
+      left: 50% !important;
+      width: auto !important;
+      height: 100% !important;
+      transform: translateX(-50%) !important;
+    }
+  }
+
+  .hero.hero-static-master .hero-static-scene,
+  .hero.hero-static-master .hero-static-scene-tablet {
+    display: none !important;
+  }
+
+  .hero.hero-static-master .stage::after { z-index: 5 !important; }
+
+  .hero.hero-static-master .hero-static-light-path {
+    left: -18% !important;
+    top: 56% !important;
+    z-index: 8 !important;
+    display: block !important;
+    width: 136% !important;
+    height: 24% !important;
+    object-fit: fill !important;
+    opacity: .58 !important;
+    filter: saturate(.78) brightness(.74) !important;
+    mix-blend-mode: screen !important;
+    animation: hero-static-path-rise 7.2s cubic-bezier(.22, .72, .28, 1) infinite alternate !important;
+  }
+
+  .hero.hero-static-master .hero-copy {
+    position: absolute !important;
+    z-index: 25 !important;
+    top: clamp(102px, 14svh, 132px) !important;
+    left: 7% !important;
+    width: 58% !important;
+    max-width: 330px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .hero.hero-static-master .hero-copy .eyebrow {
+    width: max-content !important;
+    max-width: none !important;
+    margin: 0 0 14px !important;
+    white-space: nowrap !important;
+    font-size: clamp(7px, 1.9vw, 10px) !important;
+    line-height: 1 !important;
+    letter-spacing: .09em !important;
+  }
+
+  .hero.hero-static-master .hero-copy h1 {
+    max-width: none !important;
+    font-size: clamp(42px, 10.8vw, 58px) !important;
+    line-height: .95 !important;
+    letter-spacing: -.064em !important;
+  }
+
+  .hero.hero-static-master .hero-copy .support {
+    max-width: 31ch !important;
+    margin-top: 17px !important;
+    font-size: clamp(12px, 3.45vw, 16px) !important;
+    line-height: 1.42 !important;
+  }
+
+  /* Panels use the native coordinates of the approved 941x1672 raster. The
+     text cannot drift onto the image because its containing block is the
+     raster itself, not the viewport. */
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panels {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 20 !important;
+    display: block !important;
+    pointer-events: none !important;
+    color: rgba(248, 247, 239, .94) !important;
+    font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    text-shadow: 0 1px 7px rgba(0, 0, 0, .72) !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel {
+    position: absolute !important;
+    left: auto !important;
+    right: auto !important;
+    display: flex !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 7% 8% !important;
+    border: 0 !important;
+    background: transparent !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel strong,
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel span,
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel li {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    top: 41.8% !important;
+    left: 69.9% !important;
+    width: 26.7% !important;
+    height: 11.6% !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress strong {
+    max-width: 100% !important;
+    font-size: clamp(7px, 1.7vw, 11px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -.02em !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress ul {
+    display: grid !important;
+    gap: clamp(2px, .55vw, 5px) !important;
+    width: 100% !important;
+    margin: clamp(5px, 1vw, 8px) 0 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress li {
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(3px, .65vw, 5px) !important;
+    min-width: 0 !important;
+    font-size: clamp(6px, 1.38vw, 9px) !important;
+    line-height: 1.03 !important;
+    white-space: nowrap !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress li::before {
+    content: "" !important;
+    flex: 0 0 auto !important;
+    width: clamp(3px, .65vw, 5px) !important;
+    height: clamp(3px, .65vw, 5px) !important;
+    border-radius: 50% !important;
+    background: #f8d676 !important;
+    box-shadow: 0 0 7px rgba(248, 214, 118, .76) !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems {
+    top: 54.9% !important;
+    left: 72.5% !important;
+    width: 24.1% !important;
+    height: 8.6% !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    padding-top: 5% !important;
+    padding-bottom: 5% !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems strong {
+    max-width: 100% !important;
+    font-size: clamp(6px, 1.55vw, 10px) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems span {
+    margin-top: clamp(2px, .4vw, 4px) !important;
+    color: rgba(248, 247, 239, .76) !important;
+    font-size: clamp(5px, 1.18vw, 8px) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+  }
+
+  .hero.hero-static-master .ticker {
+    position: absolute !important;
+    z-index: 50 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+    padding: 0 14px !important;
+    overflow: hidden !important;
+    contain: paint !important;
+    background: rgba(5, 22, 36, .46) !important;
+    border-top: 1px solid rgba(244, 195, 104, .34) !important;
+    border-bottom: 1px solid rgba(244, 195, 104, .14) !important;
+    backdrop-filter: blur(16px) saturate(1.14) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(1.14) !important;
+  }
+
+  .hero.hero-static-master .ticker-label,
+  .hero.hero-static-master .signature { display: none !important; }
+
+  .hero.hero-static-master .ticker-track-wrap {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    contain: paint !important;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent) !important;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent) !important;
+  }
+
+  .hero.hero-static-master .ticker-track {
+    width: max-content !important;
+    min-width: max-content !important;
+    align-items: center !important;
+    color: rgba(249, 247, 242, .90) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    animation: gb-ticker-loop 34s linear infinite !important;
+  }
+
+  .remote-work.remote-v4 {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100svh !important;
+    min-height: 100svh !important;
+    max-height: 100svh !important;
+    box-sizing: border-box !important;
+    padding: 74px 0 0 !important;
+    scroll-margin-top: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+  }
+
+  .remote-v4-media {
+    position: relative !important;
+    inset: auto !important;
+    order: 1 !important;
+    flex: 0 0 48% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+    isolation: isolate !important;
+  }
+
+  .remote-v4-media picture {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .remote-v4-master {
+    position: absolute !important;
+    inset: -9% 0 auto !important;
+    z-index: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 126% !important;
+    max-width: none !important;
+    object-fit: cover !important;
+    object-position: 35% 30% !important;
+    transform: none !important;
+    transform-origin: center center !important;
+    filter: brightness(.86) contrast(1.04) saturate(.90) !important;
+  }
+
+  .remote-v4-media::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    display: block !important;
+    pointer-events: none !important;
+    background: linear-gradient(180deg, rgba(5,19,32,.30), transparent 48%, rgba(5,19,32,.08)) !important;
+  }
+
+  .remote-v4-media::before,
+  .remote-v4-left-shade,
+  .remote-panel-original,
+  .remote-panel-map-forensic,
+  .remote-master-foreground-repair,
+  .remote-master-foreground-restore {
+    display: none !important;
+  }
+
+  .remote-panel-reference {
+    top: 7% !important;
+    right: 2% !important;
+    left: auto !important;
+    z-index: 3 !important;
+    width: 42% !important;
+    height: auto !important;
+    aspect-ratio: 1550 / 1015 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+    filter: drop-shadow(0 10px 18px rgba(2,14,25,.34)) !important;
+  }
+
+  .remote-ops-panel,
+  html[lang^="pt"] .remote-ops-panel,
+  html[lang^="es"] .remote-ops-panel { display: none !important; }
+
+  .remote-v4-copy {
+    position: relative !important;
+    inset: auto !important;
+    order: 2 !important;
+    flex: 1 1 52% !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: clamp(24px, 4.2svh, 38px) 7% 24px !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+    isolation: isolate !important;
+  }
+
+  .remote-v4-copy::before { display: none !important; }
+  .remote-v4-copy > * { position: relative !important; z-index: 1 !important; }
+
+  .remote-v4 .remote-kicker {
+    display: flex !important;
+    align-items: center !important;
+    gap: 13px !important;
+    margin: 0 0 13px !important;
+    color: #f2c35b !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    letter-spacing: .22em !important;
+  }
+
+  .remote-v4 .remote-kicker::after {
+    width: 78px !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, #f2c35b, transparent) !important;
+  }
+
+  .remote-v4 .remote-title {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 0 16px !important;
+    color: #fbfaf5 !important;
+    font-size: clamp(30px, 8.35vw, 42px) !important;
+    font-weight: 400 !important;
+    line-height: .98 !important;
+    letter-spacing: -.055em !important;
+    text-wrap: balance !important;
+  }
+
+  .remote-v4 .remote-title > span {
+    display: block !important;
+    max-width: none !important;
+    white-space: nowrap !important;
+  }
+
+  .remote-v4 .remote-body {
+    width: 100% !important;
+    max-width: none !important;
+    color: rgba(248,250,248,.88) !important;
+    font-size: clamp(12px, 3.25vw, 14px) !important;
+    line-height: 1.38 !important;
+    letter-spacing: normal !important;
+    text-shadow: none !important;
+  }
+
+  .remote-v4 .remote-body p { margin: 0 !important; }
+  .remote-v4 .remote-body p:nth-child(n + 2) { display: none !important; }
+  .remote-v4 .remote-values,
+  .remote-to-capabilities { display: none !important; }
+}
+
 /* FINAL HERO RASTER AUTHORITY — desktop/tablet use complete localized scenes;
    mobile uses the exact approved portrait composition. No background, subject,
    chair, desk or panel layers remain in the hero DOM. */
@@ -5338,5 +6234,989 @@ img[data-remote-src]:not([src]) { display: none !important; }
   .remote-work.remote-v4::after {
     display: none !important;
     background: none !important;
+  }
+}
+
+/* FINAL VIEWPORT PLATE OVERRIDES R2 — last in cascade by design. */
+@supports (height: 100dvh) {
+  @media (max-width: 1100px) {
+    .hero.hero-static-master,
+    .remote-work.remote-v4 {
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+      max-height: 100dvh !important;
+    }
+
+    .hero.hero-static-master .stage { height: 100% !important; }
+  }
+}
+
+@media (max-width: 720px) {
+  .hero.hero-static-master .hero-static-mobile-canvas {
+    display: block !important;
+    position: absolute !important;
+    z-index: 1 !important;
+    top: 50% !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 941 / 1672 !important;
+    transform: translateY(-50%) !important;
+    overflow: visible !important;
+  }
+
+  @media (max-aspect-ratio: 941 / 1672) {
+    .hero.hero-static-master .hero-static-mobile-canvas {
+      top: 0 !important;
+      left: 50% !important;
+      width: auto !important;
+      height: 100% !important;
+      transform: translateX(-50%) !important;
+    }
+  }
+
+  .hero.hero-static-master .hero-static-scene-mobile {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: fill !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panels {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 20 !important;
+    display: block !important;
+    pointer-events: none !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    top: 41.8% !important;
+    left: 69.9% !important;
+    right: auto !important;
+    width: 26.7% !important;
+    height: 11.6% !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems {
+    top: 54.9% !important;
+    left: 72.5% !important;
+    right: auto !important;
+    width: 24.1% !important;
+    height: 8.6% !important;
+  }
+
+  .hero.hero-static-master .ticker {
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    max-height: 56px !important;
+    overflow: hidden !important;
+    contain: paint !important;
+  }
+
+  .remote-work.remote-v4 {
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    padding: 74px 0 0 !important;
+    margin: 0 !important;
+    scroll-margin-top: 0 !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+  }
+
+  .remote-v4-media {
+    position: relative !important;
+    inset: auto !important;
+    order: 1 !important;
+    flex: 0 0 48% !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .remote-v4-master {
+    position: absolute !important;
+    /* The approved master carries a cream fade in its lower ~30%.  The
+       Remote plate must end on the photograph, so the image extends below
+       the media window and the media clips before that source fade begins. */
+    inset: -12% 0 auto !important;
+    width: 100% !important;
+    height: 170% !important;
+    object-fit: cover !important;
+    object-position: 35% 30% !important;
+    transform: none !important;
+  }
+
+  .remote-panel-reference {
+    top: 7% !important;
+    right: 2% !important;
+    width: 42% !important;
+    transform: none !important;
+  }
+
+  .remote-v4-copy {
+    position: relative !important;
+    inset: auto !important;
+    order: 2 !important;
+    flex: 1 1 52% !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: clamp(24px, 4.2svh, 38px) 7% 24px !important;
+    overflow: hidden !important;
+    background: #082238 !important;
+  }
+
+  .remote-v4 .remote-title {
+    max-width: none !important;
+    width: 100% !important;
+    font-size: clamp(30px, 8.35vw, 42px) !important;
+  }
+
+  .remote-v4 .remote-title > span { white-space: nowrap !important; }
+  .remote-v4 .remote-body { width: 100% !important; max-width: none !important; }
+  .remote-v4 .remote-body p:nth-child(n + 2),
+  .remote-v4 .remote-values,
+  .remote-to-capabilities { display: none !important; }
+}
+
+/* TABLET PLATE OVERRIDES R1 — final cascade position. */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .hero.hero-static-master .hero-copy {
+    top: 18% !important;
+    left: 5% !important;
+    width: 31% !important;
+    max-width: 260px !important;
+  }
+
+  .hero.hero-static-master #hero-title {
+    font-size: clamp(36px, 5.2vw, 44px) !important;
+    line-height: .98 !important;
+  }
+
+  .hero.hero-static-master .hero-copy .support {
+    max-width: 220px !important;
+  }
+
+  .remote-v4-master {
+    inset: -16% 0 auto !important;
+    height: 170% !important;
+    object-position: 35% 30% !important;
+    transform: none !important;
+  }
+
+  .remote-panel-reference {
+    top: 4% !important;
+    right: 3% !important;
+    left: auto !important;
+    width: 42% !important;
+    max-width: none !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 720px) and (max-aspect-ratio: 941 / 1672) {
+  .hero.hero-static-master .hero-static-mobile-canvas {
+    transform: translateX(-60%) !important;
+  }
+}
+
+/* MOBILE PANEL FIT — padding is viewport-relative so translated panel copy
+   cannot overflow the native glass bounds in any of the three languages. */
+@media (max-width: 720px) {
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel {
+    padding: clamp(4px, 1.1vw, 8px) clamp(5px, 1.4vw, 10px) !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress strong {
+    font-size: clamp(6px, 1.75vw, 9px) !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress ul {
+    gap: clamp(1px, .35vw, 2px) !important;
+    margin-top: clamp(2px, .6vw, 4px) !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress li {
+    gap: clamp(2px, .45vw, 4px) !important;
+    font-size: clamp(5px, 1.2vw, 7px) !important;
+    line-height: 1 !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems strong {
+    font-size: clamp(6px, 1.45vw, 8px) !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems span {
+    margin-top: clamp(1px, .35vw, 3px) !important;
+    font-size: clamp(4px, 1vw, 6px) !important;
+  }
+}
+
+/* VISUAL CORRECTION R3 — breakpoint panels and stepped light path.
+   The narrow plates use short live labels over the approved glass surfaces;
+   the light is a real rising route, not a translated raster diagonal. */
+.hero-rising-light-path {
+  position: absolute !important;
+  display: none !important;
+  pointer-events: none !important;
+  overflow: visible !important;
+}
+
+.hero-rising-light-path-glow,
+.hero-rising-light-path-line {
+  fill: none !important;
+  stroke: url(#heroRisingLightGradient) !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  vector-effect: non-scaling-stroke !important;
+}
+
+.hero-rising-light-path-glow {
+  stroke-width: 18 !important;
+  opacity: .72 !important;
+  stroke-dasharray: 170 830 !important;
+  animation: hero-rising-light-flow 7.6s linear infinite !important;
+  filter: url(#heroRisingLightBlur) !important;
+}
+
+.hero-rising-light-path-line {
+  stroke-width: 3 !important;
+  opacity: .86 !important;
+  stroke-dasharray: none !important;
+  animation: none !important;
+}
+
+@keyframes hero-rising-light-flow {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -1000; }
+}
+
+@media (max-width: 1100px) {
+  .hero.hero-static-master .hero-static-light-path,
+  .hero.hero-static-master .hero-static-mobile-light-path {
+    display: none !important;
+  }
+
+  .hero.hero-static-master .hero-rising-light-path {
+    display: block !important;
+    z-index: 8 !important;
+    left: 0 !important;
+    top: 21% !important;
+    width: 100% !important;
+    height: 46% !important;
+    opacity: .78 !important;
+  }
+
+  .hero.hero-static-master .hero-static-panels {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 20 !important;
+    display: block !important;
+    pointer-events: none !important;
+    color: rgba(250, 248, 239, .98) !important;
+    font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+    text-shadow: 0 1px 9px rgba(0, 0, 0, .88) !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel {
+    box-sizing: border-box !important;
+    display: grid !important;
+    place-items: center !important;
+    align-content: center !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 5px !important;
+    border: 1px solid rgba(244, 202, 104, .34) !important;
+    border-radius: 12px !important;
+    background: rgba(5, 24, 39, .40) !important;
+    backdrop-filter: blur(2px) saturate(1.05) !important;
+    -webkit-backdrop-filter: blur(2px) saturate(1.05) !important;
+    text-align: center !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel strong {
+    display: block !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: clamp(11px, 2.8vw, 18px) !important;
+    font-weight: 650 !important;
+    line-height: 1 !important;
+    letter-spacing: .025em !important;
+    white-space: nowrap !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel ul,
+  .hero.hero-static-master .hero-static-panel span {
+    display: none !important;
+  }
+}
+
+/* Tablet uses the complete 16:9 raster without a cover crop. The live labels
+   sit over the same panel bounds and mask the unreadable baked microcopy. */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .hero.hero-static-master .hero-static-scene-tablet {
+    object-fit: fill !important;
+    object-position: center !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-progress {
+    position: absolute !important;
+    top: 6.2% !important;
+    left: 75.5% !important;
+    width: 17.2% !important;
+    height: 30.5% !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel-systems {
+    position: absolute !important;
+    top: 39.6% !important;
+    left: 77% !important;
+    width: 14.3% !important;
+    height: 12.4% !important;
+  }
+
+  .hero.hero-static-master .hero-static-panel strong {
+    font-size: clamp(13px, 2.3vw, 22px) !important;
+  }
+}
+
+/* Mobile panel coordinates remain tied to the approved 941x1672 artboard. */
+@media (max-width: 720px) {
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    top: 41.8% !important;
+    left: 69.4% !important;
+    width: 27.2% !important;
+    height: 11.6% !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems {
+    top: 54.9% !important;
+    left: 72.1% !important;
+    width: 24.8% !important;
+    height: 8.7% !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel strong {
+    font-size: clamp(11px, 3.1vw, 15px) !important;
+  }
+}
+
+/* Remote narrow plates use the real live panel with one localized, centered
+   word. The old composite is hidden here because its baked labels cannot be
+   enlarged or reflowed without becoming illegible. */
+@media (max-width: 1100px) {
+  .remote-v4-media .remote-panel-reference,
+  .remote-v4-media .remote-panel-original,
+  .remote-v4-media .remote-panel-map-forensic,
+  .remote-v4-media .remote-master-foreground-repair {
+    display: none !important;
+  }
+
+  .remote-v4-media .remote-ops-panel {
+    display: grid !important;
+    position: absolute !important;
+    z-index: 6 !important;
+    top: 7% !important;
+    right: 4% !important;
+    left: auto !important;
+    width: 43% !important;
+    height: 27% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    place-items: center !important;
+    color: #f7f4e9 !important;
+    filter: drop-shadow(0 12px 22px rgba(2, 14, 25, .34)) !important;
+  }
+
+  .remote-v4-media .remote-ops-panel::before {
+    inset: 0 !important;
+    border: 1px solid rgba(248, 224, 172, .62) !important;
+    border-radius: 14px !important;
+    background: rgba(7, 27, 43, .68) !important;
+    backdrop-filter: blur(7px) saturate(1.08) !important;
+    -webkit-backdrop-filter: blur(7px) saturate(1.08) !important;
+  }
+
+  .remote-v4-media .remote-ops-panel::after,
+  .remote-v4-media .remote-panel-title span,
+  .remote-v4-media .remote-context-list,
+  .remote-v4-media .remote-panel-commitment {
+    display: none !important;
+  }
+
+  .remote-v4-media .remote-panel-title {
+    position: relative !important;
+    z-index: 1 !important;
+    display: grid !important;
+    place-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 5px !important;
+    text-align: center !important;
+  }
+
+  .remote-v4-media .remote-panel-title strong {
+    display: block !important;
+    color: #fff4c8 !important;
+    font-size: clamp(12px, 3.2vw, 21px) !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    letter-spacing: .06em !important;
+    white-space: nowrap !important;
+    text-shadow: 0 0 10px rgba(250, 205, 100, .42) !important;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1100px) {
+  .remote-v4-media .remote-ops-panel {
+    top: 6% !important;
+    right: 4% !important;
+    width: 34% !important;
+    height: 27% !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel {
+    display: grid !important;
+    place-items: center !important;
+    align-content: center !important;
+    padding: 0 5px !important;
+    border: 1px solid rgba(244, 202, 104, .34) !important;
+    border-radius: 12px !important;
+    background: rgba(5, 24, 39, .40) !important;
+    backdrop-filter: blur(2px) saturate(1.05) !important;
+    -webkit-backdrop-filter: blur(2px) saturate(1.05) !important;
+    text-align: center !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress ul,
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems span {
+    display: none !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress strong,
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems strong {
+    display: block !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: clamp(11px, 3.1vw, 15px) !important;
+    font-weight: 650 !important;
+    line-height: 1 !important;
+    letter-spacing: .025em !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (max-width: 1100px) {
+  html[lang^="pt"] .remote-v4-media .remote-ops-panel,
+  html[lang^="es"] .remote-v4-media .remote-ops-panel {
+    display: grid !important;
+    position: absolute !important;
+    top: 7% !important;
+    right: 4% !important;
+    left: auto !important;
+    width: 43% !important;
+    height: 27% !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    place-items: center !important;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 1100px) {
+  html[lang^="pt"] .remote-v4-media .remote-ops-panel,
+  html[lang^="es"] .remote-v4-media .remote-ops-panel {
+    top: 6% !important;
+    right: 4% !important;
+    width: 34% !important;
+    height: 27% !important;
+  }
+}
+
+/* MOBILE ART DIRECTION R8 — final cascade by design. */
+@media (max-width: 720px) {
+  html body main section#top.hero.hero-static-master .hero-rising-light-path {
+    top: 11% !important;
+    height: 34% !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel {
+    grid-template-rows: auto minmax(0, 1fr) !important;
+    gap: clamp(5px, 1.35vw, 8px) !important;
+    padding: clamp(7px, 1.55vw, 10px) !important;
+    box-shadow: inset 0 0 18px rgba(111, 207, 255, .07), 0 12px 30px rgba(1, 12, 23, .22) !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-panel-progress,
+  html body main section#top.hero.hero-static-master .hero-static-panel-systems {
+    display: grid !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    display: grid !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    top: 50.7% !important;
+    left: 70.2% !important;
+    width: 26% !important;
+    height: 8.5% !important;
+    padding: 12px 14px !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress strong,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress ul {
+    display: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress .hero-panel-flow {
+    width: 92% !important;
+    max-height: 58px !important;
+    stroke-width: 2.8 !important;
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 5px rgba(248, 214, 118, .95)) drop-shadow(0 0 11px rgba(88, 202, 255, .36)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-illustration {
+    display: block !important;
+    width: min(88%, 112px) !important;
+    height: auto !important;
+    max-height: 46px !important;
+    overflow: visible !important;
+    fill: none !important;
+    stroke: #f8d676 !important;
+    stroke-width: 3 !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    filter: drop-shadow(0 0 5px rgba(248, 214, 118, .82)) !important;
+    opacity: 1 !important;
+  }
+
+  .hero.hero-static-master .hero-panel-flow circle {
+    fill: #fff2bd !important;
+    stroke: #f8d676 !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules rect {
+    fill: rgba(12, 52, 78, .55) !important;
+  }
+
+  .hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel strong {
+    align-self: end !important;
+    color: #fff0a8 !important;
+    font-family: "Share Tech Mono", "IBM Plex Mono", "Courier New", monospace !important;
+    font-size: clamp(9px, 2.2vw, 11px) !important;
+    font-weight: 700 !important;
+    letter-spacing: .12em !important;
+    text-transform: uppercase !important;
+    text-shadow: 0 0 3px #fff4bf, 0 0 8px rgba(248, 214, 118, .92), 0 0 18px rgba(87, 203, 255, .35) !important;
+  }
+
+  .remote-work.remote-v4 { padding: 0 !important; }
+
+  .remote-work.remote-v4 .remote-v4-media {
+    flex: 0 0 69% !important;
+    overflow: hidden !important;
+  }
+
+  .remote-work.remote-v4 .remote-v4-master {
+    inset: -7% 0 auto !important;
+    width: 100% !important;
+    height: 126% !important;
+    object-fit: cover !important;
+    object-position: 31% 36% !important;
+    transform: none !important;
+  }
+
+  .remote-work.remote-v4 .remote-v4-copy {
+    flex: 1 1 31% !important;
+    padding: clamp(18px, 2.6svh, 24px) 22px 18px !important;
+  }
+
+  html[lang^="es"] .remote-work.remote-v4 .remote-v4-media {
+    flex-basis: 66% !important;
+  }
+
+  html[lang^="es"] .remote-work.remote-v4 .remote-v4-copy {
+    flex-basis: 34% !important;
+    padding-top: clamp(15px, 2.1svh, 19px) !important;
+  }
+
+  .remote-v4-media .remote-ops-panel,
+  html[lang^="pt"] .remote-v4-media .remote-ops-panel,
+  html[lang^="es"] .remote-v4-media .remote-ops-panel { display: none !important; }
+
+  .remote-v4-media .remote-panel-reference {
+    display: block !important;
+    position: absolute !important;
+    z-index: 8 !important;
+    top: 16% !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: 2.5% !important;
+    width: 58% !important;
+    height: auto !important;
+    aspect-ratio: 1550 / 1015 !important;
+    transform: perspective(800px) rotateY(5deg) rotateZ(-1.2deg) !important;
+    transform-origin: left center !important;
+    filter: drop-shadow(0 16px 24px rgba(0, 8, 18, .42)) drop-shadow(0 0 10px rgba(245, 196, 80, .20)) !important;
+    pointer-events: none !important;
+  }
+
+  .remote-v4-media .remote-panel-reference-en,
+  .remote-v4-media .remote-panel-reference-localized,
+  .remote-v4-media .remote-panel-reference-composite {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+
+  .remote-v4-media .remote-panel-reference-en { display: block !important; }
+  .remote-v4-media .remote-panel-reference-localized { display: none !important; }
+  html[lang^="pt"] .remote-v4-media .remote-panel-reference-en,
+  html[lang^="es"] .remote-v4-media .remote-panel-reference-en { display: none !important; }
+  html[lang^="pt"] .remote-v4-media .remote-panel-reference-localized,
+  html[lang^="es"] .remote-v4-media .remote-panel-reference-localized { display: block !important; }
+  html[lang^="pt"] .remote-v4-media .remote-panel-reference-pt,
+  html[lang^="es"] .remote-v4-media .remote-panel-reference-es { display: block !important; }
+  html[lang^="pt"] .remote-v4-media .remote-panel-reference-es,
+  html[lang^="es"] .remote-v4-media .remote-panel-reference-pt { display: none !important; }
+}
+
+
+/* MOBILE PANEL R11 | Coordinated raster alignment and protected portrait margins.
+   No inner panel/frame, no additional overlay, no desktop/tablet change. */
+@media (max-width: 720px) {
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    top: 43.0% !important;
+    left: 68.5% !important;
+    width: 25.2% !important;
+    height: 10.8% !important;
+    display: block !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    clip-path: inset(0 round 10px) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress strong,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress ul {
+    display: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress .hero-panel-flow {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    opacity: 1 !important;
+    stroke-width: 2.1 !important;
+    filter: none !important;
+  }
+
+  .hero.hero-static-master .hero-panel-flow .hero-flow-field {
+    fill: url(#heroFlowFieldR10) !important;
+    stroke: none !important;
+  }
+
+  .hero.hero-static-master .hero-panel-flow .hero-flow-grid {
+    fill: none !important;
+    stroke: rgba(134, 206, 228, .25) !important;
+    stroke-width: .75 !important;
+    filter: none !important;
+  }
+
+  .hero.hero-static-master .hero-panel-flow .hero-flow-track {
+    fill: none !important;
+    stroke: url(#heroFlowR9) !important;
+    stroke-width: 3 !important;
+    filter: drop-shadow(0 0 2px rgba(250, 220, 139, .85)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-flow .hero-flow-signal {
+    fill: none !important;
+    stroke: #fff8cf !important;
+    stroke-width: 4.4 !important;
+    stroke-dasharray: 14 170 !important;
+    animation: hero-r10-flow 4.2s linear infinite !important;
+    filter: drop-shadow(0 0 2px rgba(255, 242, 179, .96)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-flow .hero-flow-node {
+    fill: #fff4ca !important;
+    stroke: #f4c772 !important;
+    stroke-width: 1.3 !important;
+    filter: drop-shadow(0 0 3px rgba(255, 224, 131, .92)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-flow .hero-flow-final {
+    animation: hero-r10-pulse 2.4s ease-in-out infinite !important;
+  }
+
+  .hero.hero-static-master .hero-panel-flow .hero-flow-horizon {
+    fill: none !important;
+    stroke: rgba(118, 212, 231, .37) !important;
+    stroke-width: .9 !important;
+    stroke-dasharray: 3 6 !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems {
+    top: 54.9% !important;
+    left: 70.1% !important;
+    width: 23.5% !important;
+    height: 8.5% !important;
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+    border-radius: 10px !important;
+    clip-path: inset(0 round 10px) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems strong,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems span {
+    display: none !important;
+  }
+
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems .hero-panel-modules {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    filter: none !important;
+    stroke-width: 1.8 !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-field {
+    fill: url(#heroSystemFieldR10) !important;
+    stroke: none !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-grid {
+    fill: none !important;
+    stroke: rgba(103, 202, 225, .19) !important;
+    stroke-width: .7 !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-modules-circuit {
+    fill: none !important;
+    stroke: url(#heroSystemsR9) !important;
+    stroke-width: 2.3 !important;
+    filter: drop-shadow(0 0 2px rgba(247, 210, 112, .70)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-packets {
+    fill: none !important;
+    stroke: #fff2b6 !important;
+    stroke-width: 3.5 !important;
+    stroke-dasharray: 8 65 !important;
+    animation: hero-r10-circuit 2.8s linear infinite !important;
+    filter: drop-shadow(0 0 3px rgba(251, 220, 132, .83)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-terminal {
+    fill: rgba(15, 70, 95, .57) !important;
+    stroke: #9ce3f9 !important;
+    stroke-width: 2 !important;
+    filter: drop-shadow(0 0 2px rgba(130, 217, 248, .85)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-glyph {
+    fill: none !important;
+    stroke: #ffe6a4 !important;
+    stroke-width: 1.9 !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-orbit {
+    fill: none !important;
+    stroke: #85dafa !important;
+    stroke-width: 1.7 !important;
+    stroke-dasharray: 4 6 !important;
+    transform-origin: 60px 34px !important;
+    animation: hero-r10-orbit 8s linear infinite !important;
+    filter: drop-shadow(0 0 2px rgba(135, 222, 246, .45)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-core {
+    fill: rgba(10, 69, 93, .57) !important;
+    stroke: url(#heroSystemsR9) !important;
+    stroke-width: 2.8 !important;
+    animation: hero-r10-pulse 2.8s ease-in-out infinite !important;
+    filter: drop-shadow(0 0 4px rgba(255, 222, 134, .68)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-inner {
+    fill: rgba(26, 109, 133, .66) !important;
+    stroke: rgba(159, 234, 253, .75) !important;
+    stroke-width: 1.4 !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-spark {
+    fill: #fff1b7 !important;
+    stroke: #fff8e3 !important;
+    stroke-width: 1.4 !important;
+    animation: hero-r10-pulse 1.7s ease-in-out infinite !important;
+    filter: drop-shadow(0 0 4px rgba(255, 235, 162, .95)) !important;
+  }
+
+  .hero.hero-static-master .hero-panel-modules .hero-module-data {
+    fill: #96e5fa !important;
+    stroke: none !important;
+    animation: hero-r10-pulse 2.5s ease-in-out infinite alternate !important;
+  }
+}
+
+@keyframes hero-r10-flow {
+  from { stroke-dashoffset: 185; opacity: .45; }
+  40%, 70% { opacity: 1; }
+  to { stroke-dashoffset: 0; opacity: .45; }
+}
+@keyframes hero-r10-circuit {
+  from { stroke-dashoffset: 73; opacity: .28; }
+  45%, 75% { opacity: .98; }
+  to { stroke-dashoffset: 0; opacity: .28; }
+}
+@keyframes hero-r10-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes hero-r10-pulse {
+  0%, 100% { opacity: .6; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-flow-signal,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-flow-final,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-module-packets,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-module-orbit,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-module-core,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-module-spark,
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-module-data {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}
+
+
+/* Tall phones center the portrait artboard rather than width-binding it. */
+@media (max-width: 720px) and (max-aspect-ratio: 941/1672) {
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-progress {
+    left: 70% !important;
+    top: 41.9% !important;
+    width: 26.4% !important;
+    height: 11.0% !important;
+  }
+  html body main section#top.hero.hero-static-master .hero-static-mobile-canvas .hero-static-panel-systems {
+    left: 72% !important;
+    top: 54.85% !important;
+    width: 24.3% !important;
+    height: 8.05% !important;
+  }
+}
+
+/* The new route rises across the empty upper-right diagonal, then ends
+   in a warm starburst visually related to the wordmark glint. */
+@media (max-width: 720px) {
+  html body main section#top.hero.hero-static-master .hero-mobile-flare {
+    display: block !important;
+    opacity: .95 !important;
+    pointer-events: none !important;
+    overflow: visible !important;
+  }
+  html body main section#top.hero.hero-static-master .hero-mobile-flare-halo {
+    stroke: none !important;
+    animation: hero-r11-flare-breathe 3.8s ease-in-out infinite !important;
+  }
+  html body main section#top.hero.hero-static-master .hero-mobile-flare-rays {
+    stroke: #ffe4a2 !important;
+    stroke-width: 2 !important;
+    stroke-linecap: round !important;
+    fill: none !important;
+    opacity: .78 !important;
+    filter: drop-shadow(0 0 6px rgba(255,222,139,.92)) !important;
+    animation: hero-r11-flare-breathe 4.2s ease-in-out infinite !important;
+  }
+  html body main section#top.hero.hero-static-master .hero-mobile-flare-ring {
+    fill: none !important;
+    stroke: rgba(255,228,166,.68) !important;
+    stroke-width: 1.5 !important;
+  }
+  html body main section#top.hero.hero-static-master .hero-mobile-flare-core {
+    fill: #fffbea !important;
+    stroke: #ffe3a6 !important;
+    stroke-width: 2 !important;
+    filter: drop-shadow(0 0 8px rgba(255,241,176,1)) !important;
+    animation: hero-r11-flare-breathe 3s ease-in-out infinite !important;
+  }
+  html body main section#top.hero.hero-static-master .hero-rising-light-path-glow.hero-rising-light-path-mobile {
+    stroke: url(#heroMobileRouteR11) !important;
+    stroke-width: 13 !important;
+    opacity: .72 !important;
+    filter: blur(5px) !important;
+  }
+  html body main section#top.hero.hero-static-master .hero-rising-light-path-line.hero-rising-light-path-mobile {
+    stroke: url(#heroMobileRouteR11) !important;
+    stroke-width: 2.8 !important;
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 4px rgba(255,223,147,.72)) !important;
+  }
+}
+@keyframes hero-r11-flare-breathe {
+  0%, 100% { opacity: .64; }
+  55% { opacity: 1; }
+}
+@media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+  html body main section#top.hero.hero-static-master .hero-mobile-flare-halo,
+  html body main section#top.hero.hero-static-master .hero-mobile-flare-rays,
+  html body main section#top.hero.hero-static-master .hero-mobile-flare-core {
+    animation: none !important;
+    opacity: 1 !important;
   }
 }

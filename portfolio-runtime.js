@@ -15,7 +15,7 @@
   const text = {
     en: {
       'nav.remote': 'Remote Work', 'nav.capabilities': 'Capabilities', 'nav.practiceAreas': 'Practice Areas', 'nav.journey': 'Journey', 'nav.moments': 'Highlights', 'nav.about': 'About', 'nav.resume': 'Resume', 'nav.contact': 'Contact',
-      'hero.kicker': 'SYSTEMS FOR A MORE HUMAN TOMORROW', 'hero.titleLine1': 'Operations,', 'hero.titleLine2': 'Systems &', 'hero.titleLine3': 'Automation', 'hero.support': 'I turn operational friction into practical systems that make work move.', 'hero.panelProgressTitle': 'To Progress', 'hero.panelProgress1': 'Clarity', 'hero.panelProgress2': 'Automation', 'hero.panelProgress3': 'Efficiency', 'hero.panelProgress4': 'Scalability', 'hero.panelProgress5': 'Freedom', 'hero.panelSystemsTitle': 'Better systems', 'hero.panelSystemsSubtitle': 'Bigger possibilities',
+      'hero.kicker': 'SYSTEMS FOR A MORE HUMAN TOMORROW', 'hero.titleLine1': 'Operations,', 'hero.titleLine2': 'Systems &', 'hero.titleLine3': 'Automation', 'hero.support': 'I turn operational friction into practical systems that make work move.', 'hero.panelProgressTitle': 'Progress', 'hero.panelProgress1': 'Clarity', 'hero.panelProgress2': 'Automation', 'hero.panelProgress3': 'Efficiency', 'hero.panelProgress4': 'Scalability', 'hero.panelProgress5': 'Freedom', 'hero.panelSystemsTitle': 'Systems', 'hero.panelSystemsSubtitle': 'Bigger possibilities',
       'ticker.label': 'TOOLS &<br>TECHNOLOGIES', 'ticker.1': 'CRM & Customer Journey', 'ticker.2': 'Transaction Coordination', 'ticker.3': 'Video Editing', 'ticker.4': 'Sales Prospecting', 'ticker.5': 'Business Operations', 'ticker.6': 'Systems & Automation', 'ticker.7': 'U.S. Real Estate', 'ticker.signature': 'IDEAS TO OPERATIONS',
       'remote.kicker': 'REMOTE WORK', 'remote.titleLine1': 'Remote doesn’t', 'remote.titleLine2': 'mean distant.', 'remote.rail': 'SAME<br>FOCUS<br>DIFFERENT<br>LOCATION',
       'remote.body1': 'Supporting U.S. real estate operations remotely across North and South Carolina with clarity, coordination and follow-through. From CRM management to client support, I help keep operations organized, people informed and results moving — no matter the distance.',
@@ -33,7 +33,7 @@
     },
     pt: {
       'nav.remote': 'Trabalho remoto', 'nav.capabilities': 'Competências', 'nav.practiceAreas': 'Áreas de atuação', 'nav.journey': 'Trajetória', 'nav.moments': 'Destaques', 'nav.about': 'Sobre', 'nav.resume': 'Currículo', 'nav.contact': 'Contato',
-      'hero.kicker': 'SISTEMAS PARA UM AMANHÃ MAIS HUMANO', 'hero.titleLine1': 'Operações,', 'hero.titleLine2': 'Sistemas e', 'hero.titleLine3': 'Automação', 'hero.support': 'Transformo atrito operacional em sistemas práticos que fazem o trabalho andar.', 'hero.panelProgressTitle': 'Para progredir', 'hero.panelProgress1': 'Clareza', 'hero.panelProgress2': 'Automação', 'hero.panelProgress3': 'Eficiência', 'hero.panelProgress4': 'Escalabilidade', 'hero.panelProgress5': 'Liberdade', 'hero.panelSystemsTitle': 'Sistemas melhores', 'hero.panelSystemsSubtitle': 'Possibilidades maiores',
+      'hero.kicker': 'SISTEMAS PARA UM AMANHÃ MAIS HUMANO', 'hero.titleLine1': 'Operações,', 'hero.titleLine2': 'Sistemas e', 'hero.titleLine3': 'Automação', 'hero.support': 'Transformo atrito operacional em sistemas práticos que fazem o trabalho andar.', 'hero.panelProgressTitle': 'Progresso', 'hero.panelProgress1': 'Clareza', 'hero.panelProgress2': 'Automação', 'hero.panelProgress3': 'Eficiência', 'hero.panelProgress4': 'Escalabilidade', 'hero.panelProgress5': 'Liberdade', 'hero.panelSystemsTitle': 'Sistemas', 'hero.panelSystemsSubtitle': 'Possibilidades maiores',
       'ticker.label': 'FERRAMENTAS &<br>TECNOLOGIAS', 'ticker.1': 'CRM e jornada do cliente', 'ticker.2': 'Coordenação de transações', 'ticker.3': 'Edição de vídeo', 'ticker.4': 'Prospecção de vendas', 'ticker.5': 'Operações empresariais', 'ticker.6': 'Sistemas e automação', 'ticker.7': 'Mercado imobiliário nos EUA', 'ticker.signature': 'IDEIAS PARA OPERAÇÕES',
       'remote.kicker': 'TRABALHO REMOTO', 'remote.titleLine1': 'Trabalho remoto', 'remote.titleLine2': 'não significa distância.', 'remote.rail': 'MESMO<br>FOCO<br>LOCAIS<br>DIFERENTES',
       'remote.body1': 'Apoio operações imobiliárias nos Estados Unidos, na Carolina do Norte e na Carolina do Sul, trabalhando remotamente com clareza, coordenação e continuidade. Do CRM ao suporte a clientes, ajudo a manter a operação organizada, as pessoas informadas e os resultados em movimento, independentemente da distância.',
@@ -49,7 +49,7 @@
     },
     es: {
       'nav.remote': 'Trabajo remoto', 'nav.capabilities': 'Capacidades', 'nav.practiceAreas': 'Áreas de actuación', 'nav.journey': 'Trayectoria', 'nav.moments': 'Hitos', 'nav.about': 'Sobre mí', 'nav.resume': 'CV', 'nav.contact': 'Contacto',
-      'hero.kicker': 'SISTEMAS PARA UN MAÑANA MÁS HUMANO', 'hero.titleLine1': 'Operaciones,', 'hero.titleLine2': 'Sistemas y', 'hero.titleLine3': 'Automatización', 'hero.support': 'Transformo la fricción operativa en sistemas prácticos que hacen avanzar el trabajo.', 'hero.panelProgressTitle': 'Para progresar', 'hero.panelProgress1': 'Claridad', 'hero.panelProgress2': 'Automatización', 'hero.panelProgress3': 'Eficiencia', 'hero.panelProgress4': 'Escalabilidad', 'hero.panelProgress5': 'Libertad', 'hero.panelSystemsTitle': 'Mejores sistemas', 'hero.panelSystemsSubtitle': 'Más posibilidades',
+      'hero.kicker': 'SISTEMAS PARA UN MAÑANA MÁS HUMANO', 'hero.titleLine1': 'Operaciones,', 'hero.titleLine2': 'Sistemas y', 'hero.titleLine3': 'Automatización', 'hero.support': 'Transformo la fricción operativa en sistemas prácticos que hacen avanzar el trabajo.', 'hero.panelProgressTitle': 'Progreso', 'hero.panelProgress1': 'Claridad', 'hero.panelProgress2': 'Automatización', 'hero.panelProgress3': 'Eficiencia', 'hero.panelProgress4': 'Escalabilidad', 'hero.panelProgress5': 'Libertad', 'hero.panelSystemsTitle': 'Sistemas', 'hero.panelSystemsSubtitle': 'Más posibilidades',
       'ticker.label': 'HERRAMIENTAS &<br>TECNOLOGÍAS', 'ticker.1': 'CRM y experiencia del cliente', 'ticker.2': 'Coordinación de transacciones', 'ticker.3': 'Edición de vídeo', 'ticker.4': 'Prospección de ventas', 'ticker.5': 'Operaciones empresariales', 'ticker.6': 'Sistemas y automatización', 'ticker.7': 'Sector inmobiliario en EE. UU.', 'ticker.signature': 'IDEAS A OPERACIONES',
       'remote.kicker': 'TRABAJO REMOTO', 'remote.titleLine1': 'Trabajar en remoto', 'remote.titleLine2': 'no significa distancia.', 'remote.rail': 'MISMO<br>FOCO<br>LUGARES<br>DIFERENTES',
       'remote.body1': 'Apoyo operaciones inmobiliarias en Estados Unidos, en Carolina del Norte y Carolina del Sur, trabajando a distancia con claridad, coordinación y seguimiento. Desde la gestión del CRM hasta la atención al cliente, ayudo a mantener la operación organizada, a las personas informadas y los resultados en movimiento, sin importar la distancia.',
@@ -858,6 +858,80 @@
     nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => { nav.classList.remove('mobile-open'); toggle.setAttribute('aria-expanded', 'false'); }));
   }
 
+  function setupViewportSwipe() {
+    const narrowViewport = window.matchMedia('(max-width: 1100px)');
+    if (!narrowViewport.matches) return;
+
+    const sections = () => $$('main > section[id]');
+    let gesture = null;
+    let lockedUntil = 0;
+
+    const sectionIndexAt = (y) => {
+      const items = sections();
+      const marker = y + Math.min(window.innerHeight * 0.42, 260);
+      let index = 0;
+      items.forEach((section, candidate) => {
+        const top = section.getBoundingClientRect().top + y;
+        if (top <= marker) index = candidate;
+      });
+      return { items, index };
+    };
+
+    const begin = (x, y, target) => {
+      if (!narrowViewport.matches) {
+        gesture = null;
+        return;
+      }
+      if (target?.closest('a, button, input, textarea, select, [role="button"]')) {
+        gesture = null;
+        return;
+      }
+      const position = sectionIndexAt(window.scrollY);
+      gesture = { x, y, index: position.index, items: position.items };
+    };
+
+    const finish = (x, y) => {
+      if (!gesture || !narrowViewport.matches || Date.now() < lockedUntil) return;
+      const deltaX = x - gesture.x;
+      const deltaY = y - gesture.y;
+      const vertical = Math.abs(deltaY) >= 52 && Math.abs(deltaY) > Math.abs(deltaX) * 1.15;
+      const items = gesture.items;
+      const index = gesture.index;
+      gesture = null;
+      if (!vertical || !items.length) return;
+
+      const nextIndex = deltaY < 0
+        ? Math.min(index + 1, items.length - 1)
+        : Math.max(index - 1, 0);
+      if (nextIndex === index) return;
+      const target = items[nextIndex];
+      const top = target.getBoundingClientRect().top + window.scrollY;
+      lockedUntil = Date.now() + 720;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    };
+
+    document.addEventListener('touchstart', event => {
+      if (event.touches.length === 1) {
+        const touch = event.touches[0];
+        begin(touch.clientX, touch.clientY, event.target instanceof Element ? event.target : null);
+      } else gesture = null;
+    }, { passive: true });
+    document.addEventListener('touchend', event => {
+      const touch = event.changedTouches[0];
+      if (touch) finish(touch.clientX, touch.clientY);
+    }, { passive: true });
+
+    // Some mobile/tablet browser shells expose the same gesture as pointer
+    // events instead of TouchEvents. Keep the fallback scoped to the narrow
+    // layout so desktop pointer interaction remains untouched.
+    document.addEventListener('pointerdown', event => {
+      if (event.isPrimary) begin(event.clientX, event.clientY, event.target instanceof Element ? event.target : null);
+    }, { passive: true });
+    document.addEventListener('pointerup', event => {
+      if (event.isPrimary) finish(event.clientX, event.clientY);
+    }, { passive: true });
+  }
+
   function boot() {
     applyPublishedCopy();
     applyContentClarityOverrides();
@@ -869,6 +943,7 @@
     setupActiveNavigation();
     setupLanguageControls();
     setupMobileMenuClose();
+    setupViewportSwipe();
     // Load only the active locale at startup. The complete hero raster for
     // each breakpoint is decoded on demand before a language switch, keeping
     // the first view lighter without reintroducing a visual swap.
@@ -886,9 +961,9 @@
 (()=>{
 'use strict';
 const copy={
- en:{panelTitle:'U.S. OPERATIONS',panelRegion:'NORTH + SOUTH CAROLINA',commitment:'DIFFERENT PLACES. SAME COMMITMENT.',origin:'BRAZIL',destination:'U.S. OPERATIONS → NORTH + SOUTH CAROLINA',contexts:['REAL ESTATE','OPERATIONS','CRM','CLIENT SUPPORT','MARKETING','COORDINATION'],mapAlt:'United States map highlighting North and South Carolina'},
- pt:{panelTitle:'OPERAÇÕES NOS EUA',panelRegion:'CAROLINA DO NORTE + SUL',commitment:'LUGARES DIFERENTES. O MESMO COMPROMISSO.',origin:'BRASIL',destination:'OPERAÇÕES NOS EUA → CAROLINA DO NORTE + SUL',contexts:['MERCADO IMOBILIÁRIO','OPERAÇÕES','CRM','SUPORTE A CLIENTES','MARKETING','COORDENAÇÃO'],mapAlt:'Mapa dos Estados Unidos destacando Carolina do Norte e Carolina do Sul'},
- es:{panelTitle:'OPERACIONES EN EE. UU.',panelRegion:'CAROLINA DEL NORTE + SUR',commitment:'LUGARES DIFERENTES. EL MISMO COMPROMISO.',origin:'BRASIL',destination:'OPERACIONES EN EE. UU. → CAROLINA DEL NORTE + SUR',contexts:['SECTOR INMOBILIARIO','OPERACIONES','CRM','ATENCIÓN AL CLIENTE','MARKETING','COORDINACIÓN'],mapAlt:'Mapa de Estados Unidos destacando Carolina del Norte y Carolina del Sur'}
+ en:{panelTitle:'OPERATIONS',panelRegion:'NORTH + SOUTH CAROLINA',commitment:'DIFFERENT PLACES. SAME COMMITMENT.',origin:'BRAZIL',destination:'U.S. OPERATIONS → NORTH + SOUTH CAROLINA',contexts:['REAL ESTATE','OPERATIONS','CRM','CLIENT SUPPORT','MARKETING','COORDINATION'],mapAlt:'United States map highlighting North and South Carolina'},
+ pt:{panelTitle:'OPERAÇÕES',panelRegion:'CAROLINA DO NORTE + SUL',commitment:'LUGARES DIFERENTES. O MESMO COMPROMISSO.',origin:'BRASIL',destination:'OPERAÇÕES NOS EUA → CAROLINA DO NORTE + SUL',contexts:['MERCADO IMOBILIÁRIO','OPERAÇÕES','CRM','SUPORTE A CLIENTES','MARKETING','COORDENAÇÃO'],mapAlt:'Mapa dos Estados Unidos destacando Carolina do Norte e Carolina do Sul'},
+ es:{panelTitle:'OPERACIONES',panelRegion:'CAROLINA DEL NORTE + SUR',commitment:'LUGARES DIFERENTES. EL MISMO COMPROMISO.',origin:'BRASIL',destination:'OPERACIONES EN EE. UU. → CAROLINA DEL NORTE + SUR',contexts:['SECTOR INMOBILIARIO','OPERACIONES','CRM','ATENCIÓN AL CLIENTE','MARKETING','COORDINACIÓN'],mapAlt:'Mapa de Estados Unidos destacando Carolina del Norte y Carolina del Sur'}
 };
 function currentLang(){const v=(document.documentElement.lang||'en').toLowerCase();return v.startsWith('pt')?'pt':v.startsWith('es')?'es':'en'}
 function sync(){const lang=currentLang(),t=copy[lang];document.querySelectorAll('[data-rv4]').forEach(el=>{const k=el.dataset.rv4;if(k==='contexts'){el.innerHTML='';t.contexts.forEach(x=>{const s=document.createElement('span');s.textContent=x;el.appendChild(s)})}else if(k==='mapAlt'){el.setAttribute('alt',t.mapAlt)}else if(t[k])el.textContent=t[k]})}

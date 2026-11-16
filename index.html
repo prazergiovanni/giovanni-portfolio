@@ -516,7 +516,7 @@ body.scrolled .hero{overflow:visible;z-index:100}
 @media(max-width:620px){.remote-copy{padding:58px 7% 44px}.remote-title{font-size:clamp(43px,13vw,60px)}.remote-body{font-size:15px}.remote-evidence{grid-template-columns:1fr}.remote-evidence-item+.remote-evidence-item{padding-left:0;border-left:0;border-top:1px solid rgba(248,245,239,.10)}.remote-signature i{display:none}.remote-signature{gap:10px 18px}}
 
 </style>
-  <link rel="stylesheet" href="portfolio.css?v=hero-mobile-refinement-r1-20261114" />
+  <link rel="stylesheet" href="portfolio.css?v=mobile-art-r11-20261116" />
   <link rel="preload" as="image" href="assets/optimized/remote/REMOTE_MASTER_FOREGROUND_RIGHT_SHOULDER_20260928.webp" type="image/webp" fetchpriority="high" />
   <link rel="preload" as="image" href="assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp" fetchpriority="high" />
   <link rel="preload" as="image" href="assets/optimized/layers/HERO_STATIC_TABLET_EN_20261114.webp" fetchpriority="high" />
@@ -532,24 +532,102 @@ body.scrolled .hero{overflow:visible;z-index:100}
     <div class="stage">
       <img class="hero-static-scene" src="assets/optimized/layers/HERO_STATIC_DESKTOP_EN_20261113.webp" alt="" fetchpriority="high" decoding="async" />
       <img class="hero-static-scene-tablet" src="assets/optimized/layers/HERO_STATIC_TABLET_EN_20261114.webp" alt="" fetchpriority="high" decoding="async" />
-      <img class="hero-static-scene-mobile" src="assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png" alt="" fetchpriority="high" decoding="async" />
-      <img class="hero-static-light-path" src="assets/optimized/effects/alternates/HERO_LIGHT_PATH_RESTORED_BELOW_AUTOMATION_20260926.png" alt="" aria-hidden="true" fetchpriority="high" decoding="async" />
-      <div class="hero-static-panels" aria-label="Hero operating principles">
-        <div class="hero-static-panel hero-static-panel-progress">
-          <strong data-i18n="hero.panelProgressTitle">To Progress</strong>
-          <ul>
-            <li data-i18n="hero.panelProgress1">Clarity</li>
-            <li data-i18n="hero.panelProgress2">Automation</li>
-            <li data-i18n="hero.panelProgress3">Efficiency</li>
-            <li data-i18n="hero.panelProgress4">Scalability</li>
-            <li data-i18n="hero.panelProgress5">Freedom</li>
-          </ul>
-        </div>
-        <div class="hero-static-panel hero-static-panel-systems">
-          <strong data-i18n="hero.panelSystemsTitle">Better systems</strong>
-          <span data-i18n="hero.panelSystemsSubtitle">Bigger possibilities</span>
+      <div class="hero-static-mobile-canvas">
+        <img class="hero-static-scene-mobile" src="assets/optimized/layers/HERO_STATIC_MOBILE_APPROVED_20261113.png" alt="" aria-hidden="true" fetchpriority="high" decoding="async" />
+        <div class="hero-static-panels" role="group" aria-label="Hero operating principles">
+          <div class="hero-static-panel hero-static-panel-progress">
+            <strong data-i18n="hero.panelProgressTitle">Progress</strong>
+            <svg class="hero-panel-illustration hero-panel-flow" viewBox="0 0 120 86" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="heroFlowR9" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0" stop-color="#59c9f4" /><stop offset=".52" stop-color="#f6cb6c" /><stop offset="1" stop-color="#fff3b9" />
+                </linearGradient>
+                <radialGradient id="heroFlowFieldR10" cx=".68" cy=".52" r=".76">
+                  <stop offset="0" stop-color="#3e9dbb" stop-opacity=".19" /><stop offset="1" stop-color="#032b41" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <rect class="hero-flow-field" width="120" height="86" fill="url(#heroFlowFieldR10)" />
+              <path class="hero-flow-grid" d="M0 15H120M0 34H120M0 53H120M0 72H120M22 0V86M47 0V86M72 0V86M97 0V86" />
+              <path class="hero-flow-horizon" d="M0 78H120" />
+              <path class="hero-flow-track" d="M21 66H30L43 55H58L76 35H94L111 18H116" />
+              <path class="hero-flow-signal" d="M21 66H30L43 55H58L76 35H94L111 18H116" />
+              <circle class="hero-flow-node" cx="21" cy="66" r="3" /><circle class="hero-flow-node" cx="43" cy="55" r="3.5" />
+              <circle class="hero-flow-node" cx="76" cy="35" r="3.5" /><circle class="hero-flow-node hero-flow-final" cx="111" cy="18" r="4" />
+            </svg>
+            <ul>
+              <li data-i18n="hero.panelProgress1">Clarity</li>
+              <li data-i18n="hero.panelProgress2">Automation</li>
+              <li data-i18n="hero.panelProgress3">Efficiency</li>
+              <li data-i18n="hero.panelProgress4">Scalability</li>
+              <li data-i18n="hero.panelProgress5">Freedom</li>
+            </ul>
+          </div>
+          <div class="hero-static-panel hero-static-panel-systems">
+            <strong data-i18n="hero.panelSystemsTitle">Systems</strong>
+            <svg class="hero-panel-illustration hero-panel-modules" viewBox="0 0 120 68" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="heroSystemsR9" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#8eddfb" /><stop offset=".5" stop-color="#f9d77f" /><stop offset="1" stop-color="#fff1af" />
+                </linearGradient>
+                <radialGradient id="heroSystemFieldR10" cx=".52" cy=".5" r=".74">
+                  <stop offset="0" stop-color="#3c9cbb" stop-opacity=".25" /><stop offset="1" stop-color="#063044" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <rect class="hero-module-field" width="120" height="68" fill="url(#heroSystemFieldR10)" />
+              <path class="hero-module-grid" d="M0 16H120M0 34H120M0 52H120M24 0V68M60 0V68M96 0V68" />
+              <path class="hero-modules-circuit" d="M4 34H40M80 34H116M60 10V3M60 58V65" />
+              <path class="hero-module-packets" d="M4 34H40M80 34H116" />
+              <circle class="hero-module-terminal" cx="15" cy="34" r="10" />
+              <circle class="hero-module-terminal" cx="105" cy="34" r="10" />
+              <path class="hero-module-glyph" d="M10 30H20M10 34H20M10 38H20M101 34H109M105 30L109 34L105 38" />
+              <circle class="hero-module-orbit" cx="60" cy="34" r="24" />
+              <circle class="hero-module-core" cx="60" cy="34" r="16" />
+              <circle class="hero-module-inner" cx="60" cy="34" r="9" />
+              <circle class="hero-module-spark" cx="60" cy="34" r="4.5" />
+              <circle class="hero-module-data" cx="40" cy="34" r="2.5" />
+              <circle class="hero-module-data" cx="80" cy="34" r="2.5" />
+            </svg>
+            <span data-i18n="hero.panelSystemsSubtitle">Bigger possibilities</span>
+          </div>
         </div>
       </div>
+      <img class="hero-static-light-path" src="assets/optimized/effects/alternates/HERO_LIGHT_PATH_RESTORED_BELOW_AUTOMATION_20260926.png" alt="" aria-hidden="true" fetchpriority="high" decoding="async" />
+      <svg class="hero-rising-light-path" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="heroRisingLightGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#d6a54c" stop-opacity=".28" />
+            <stop offset=".22" stop-color="#f3cc73" stop-opacity=".86" />
+            <stop offset=".58" stop-color="#fff0ac" stop-opacity="1" />
+            <stop offset=".84" stop-color="#f3c15d" stop-opacity=".82" />
+            <stop offset="1" stop-color="#d6a54c" stop-opacity=".18" />
+          </linearGradient>
+          <filter id="heroRisingLightBlur" x="-20%" y="-80%" width="140%" height="260%">
+            <feGaussianBlur stdDeviation="8" />
+          </filter>
+          <linearGradient id="heroMobileRouteR11" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0" stop-color="#e1b263" stop-opacity=".58" />
+            <stop offset=".34" stop-color="#f2cc7b" stop-opacity=".9" />
+            <stop offset=".7" stop-color="#f6d48a" stop-opacity="1" />
+            <stop offset="1" stop-color="#fff0b4" stop-opacity="1" />
+          </linearGradient>
+          <radialGradient id="heroMobileFlareR11" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="#fffbed" stop-opacity="1" />
+            <stop offset=".20" stop-color="#ffedb1" stop-opacity=".92" />
+            <stop offset=".5" stop-color="#f3c76b" stop-opacity=".32" />
+            <stop offset="1" stop-color="#e9ad52" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <path class="hero-rising-light-path-glow hero-rising-light-path-tablet" pathLength="1000" d="M -40 400 H 420 L 500 360 H 700 L 850 90 H 1040" />
+        <path class="hero-rising-light-path-line hero-rising-light-path-tablet" pathLength="1000" d="M -40 400 H 420 L 500 360 H 700 L 850 90 H 1040" />
+        <path class="hero-rising-light-path-glow hero-rising-light-path-mobile" pathLength="1000" d="M -40 400 H 510 L 590 350 H 924 L 836 66" />
+        <path class="hero-rising-light-path-line hero-rising-light-path-mobile" pathLength="1000" d="M -40 400 H 510 L 590 350 H 924 L 836 66" />
+        <g class="hero-mobile-flare hero-rising-light-path-mobile" transform="translate(836 66)" aria-hidden="true">
+          <circle class="hero-mobile-flare-halo" r="56" fill="url(#heroMobileFlareR11)" />
+          <path class="hero-mobile-flare-rays" d="M-58 0H58M0 -63V63M-35 -35L35 35M-35 35L35 -35" />
+          <circle class="hero-mobile-flare-ring" r="18" />
+          <circle class="hero-mobile-flare-core" r="8" />
+        </g>
+      </svg>
       <!-- One localized raster owns the full hero scene at each breakpoint. -->
       <div class="hero-copy" data-layer="hero-ui">
         <p class="eyebrow" data-i18n="hero.kicker">SYSTEMS FOR A MORE HUMAN TOMORROW</p>
@@ -608,6 +686,11 @@ body.scrolled .hero{overflow:visible;z-index:100}
       </div>
     </div>
     <img class="remote-master-foreground-repair" src="assets/remote/REMOTE_MASTER_FOREGROUND_RESTORE_NO_PANEL_20260930.png" alt="" aria-hidden="true" loading="eager" fetchpriority="high" decoding="sync" />
+    <div class="remote-ops-panel" aria-label="U.S. operations context">
+      <div class="remote-panel-title"><strong data-rv4="panelTitle">OPERATIONS</strong><span data-rv4="panelRegion">NORTH + SOUTH CAROLINA</span></div>
+      <div class="remote-context-list" data-rv4="contexts"><span>REAL ESTATE</span><span>OPERATIONS</span><span>CRM</span><span>CLIENT SUPPORT</span><span>MARKETING</span><span>COORDINATION</span></div>
+      <div class="remote-panel-commitment" data-rv4="commitment">DIFFERENT PLACES.<br>SAME COMMITMENT.</div>
+    </div>
   </figure>
   <div class="remote-v4-copy">
     <p class="remote-kicker" data-i18n="remote.kicker">REMOTE WORK</p>
@@ -617,11 +700,6 @@ body.scrolled .hero{overflow:visible;z-index:100}
       <p data-i18n="remote.body2"></p>
       <p data-i18n="remote.body3"></p>
     </div>
-  </div>
-  <div class="remote-ops-panel" aria-label="U.S. operations context">
-    <div class="remote-panel-title"><strong data-rv4="panelTitle">U.S. OPERATIONS</strong><span data-rv4="panelRegion">NORTH + SOUTH CAROLINA</span></div>
-    <div class="remote-context-list" data-rv4="contexts"><span>REAL ESTATE</span><span>OPERATIONS</span><span>CRM</span><span>CLIENT SUPPORT</span><span>MARKETING</span><span>COORDINATION</span></div>
-    <div class="remote-panel-commitment" data-rv4="commitment">DIFFERENT PLACES.<br>SAME COMMITMENT.</div>
   </div>
 </section>
 <div class="remote-to-capabilities" aria-hidden="true">
@@ -944,6 +1022,6 @@ Object.assign(T.es,{
 });
 // Language runtime consolidated in portfolio-runtime.js
 </script>
-  <script src="portfolio-runtime.js?v=localized-panel-loading-v4-20261114"></script>
+  <script src="portfolio-runtime.js?v=viewport-swipe-r1-20261116"></script>
 </body>
 </html>
