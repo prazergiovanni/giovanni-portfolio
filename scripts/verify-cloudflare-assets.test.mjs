@@ -10,7 +10,7 @@ const publicPath = join(root, ".cloudflare-public");
 const publicAssetDirectories = ["brand", "layers", "optimized", "remote", "social"];
 
 test("canonical Cloudflare build preserves the deployed public entrypoints byte-for-byte", () => {
-  for (const name of ["index.html", "portfolio-runtime.js", "portfolio.css", "robots.txt", "sitemap.xml", "_headers"]) {
+  for (const name of ["index.html", "portfolio-runtime.js", "portfolio.css", "portfolio-responsive.css", "robots.txt", "sitemap.xml", "_headers"]) {
     const source = createHash("sha256").update(readFileSync(join(root, name))).digest("hex");
     const result = createHash("sha256").update(readFileSync(join(publicPath, name))).digest("hex");
     assert.equal(result, source, name);

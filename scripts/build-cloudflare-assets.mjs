@@ -4,7 +4,7 @@ import { dirname, join, resolve } from "node:path";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const target = join(root, ".cloudflare-public");
-const allowedFiles = ["index.html", "portfolio-runtime.js", "portfolio.css", "robots.txt", "sitemap.xml", "_headers"];
+const allowedFiles = ["index.html", "portfolio-runtime.js", "portfolio.css", "portfolio-responsive.css", "robots.txt", "sitemap.xml", "_headers"];
 const allowedAssetDirectories = ["brand", "layers", "optimized", "remote", "social"];
 
 rmSync(target, { recursive: true, force: true });
